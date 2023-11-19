@@ -6,8 +6,8 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +19,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PieceofDayFront"
         tools:targetApi="31">
+        <activity
+            android:name=".MainMypage"
+            android:exported="false" />
+        <activity
+            android:name=".MainDiarySharepage"
+            android:exported="false" />
+        <activity
+            android:name=".MainDiaryWritepage"
+            android:exported="false" />
         <activity
             android:name=".LoginSigninpagePopup"
             android:exported="false" />

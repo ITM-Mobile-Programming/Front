@@ -1,16 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMainpage">
+    tools:context="com.hwido.pieceofdayfront.MainMainpage"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="this is main page"
-        tools:ignore="MissingConstraints"/>
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Piece of Day"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <CalendarView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/main_mainpage_calendar"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_mainpage_day"
+                android:textSize="25dp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4">
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="일기 목록"
+            android:textSize="12sp"
+            android:id="@+id/main_button_diaryList"
+            />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="일기 작성"
+            android:textSize="12sp"
+            android:id="@+id/main_button_diaryWrite"
+            />
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="친구와 공유"
+            android:textSize="10sp"
+            android:id="@+id/main_button_diaryShare"
+            />
+
+        <Button
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:text="마이 페이지"
+            android:textSize="12sp"
+            android:id="@+id/main_button_myPage"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
