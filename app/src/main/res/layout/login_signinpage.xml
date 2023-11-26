@@ -16,48 +16,7 @@
         android:textSize="30dp"
         android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="20dp">
 
-        <ImageView
-            android:id="@+id/individualPicture"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/profile_basic"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-        <Button
-            android:id="@+id/login_signinpage_takePicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="사진촬영"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/login_signinpage_changeProfileGalleryPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="기기에서 업로드"
-            android:textAlignment="center" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,6 +73,6 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="등록" />
+        android:text="이미지 등록" />
 
 </LinearLayout>

@@ -1,12 +1,16 @@
 package com.hwido.pieceofdayfront
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -47,6 +51,22 @@ class LoginMainpage : AppCompatActivity() {
     // 2-2. 기존 회원이면 sharedPreference에 바로 넣는다, 기존 회원이 아니면 비게 두고,
     // 회원 등록 완료 시에 encyted를 요청해서 방아온다
 
+    // sharepreference에  서버 토큰 저장하는것은 맞다
+     val sharedPreferences: SharedPreferences by lazy {
+        val masterKeyAlias = MasterKey
+            .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+
+        EncryptedSharedPreferences.create(
+            applicationContext,
+            FILE_NAME,
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
 
 
     //로그인
@@ -57,7 +77,7 @@ class LoginMainpage : AppCompatActivity() {
         val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
         handleSignInResult(task)
 
-        Log.d("ITM","handleSignInResul, signInActivityResult나감")
+        Log.d("ITM","handleSignInResult, signInActivityResult나감")
     }
 
 
@@ -93,9 +113,6 @@ class LoginMainpage : AppCompatActivity() {
             val signInIntent = mGoogleSignInClient.signInIntent
             signInActivityResult.launch(signInIntent)
         }
-
-
-
 
 
     }
@@ -170,7 +187,7 @@ class LoginMainpage : AppCompatActivity() {
 
 
 
-    private fun deliverTokenToSpringServer(accessToken : String){
+    fun deliverTokenToSpringServer(accessToken : String){
         Log.d("ITM", accessToken)
         Log.d("ITM", "서버 레트로 핏 설정")
         val retrofit = Retrofit.Builder()
@@ -196,8 +213,14 @@ class LoginMainpage : AppCompatActivity() {
                             val signupResponse = Gson().fromJson(baseResponse?.data.toString(), SignupNeededResponse::class.java)
                             Log.d("ITM","회원가입필요 이메일 : ${signupResponse?.email}, 비밀번호 ${signupResponse?.password}")
 
+
+                            // 이메일이랑 password를 받아야하나??
                             val intent = Intent(this@LoginMainpage, LoginSigninpage::class.java)
 //                            intent.putExtra("email","${signupResponse.email}.")
+
+                            signupResponse?.email?.let { signupResponse?.password?.let { it1 ->
+                                Google_Access_EmailPW_SavePref(accessToken, it, it1)
+                            } }
 
                             startActivity(intent)
                         }
@@ -205,6 +228,8 @@ class LoginMainpage : AppCompatActivity() {
                             // loginResponse 처리
                             val loginResponse = Gson().fromJson(baseResponse.data.toString(), LoginSuccessResponse::class.java)
 //                            intent.putExtra("access_token","${loginResponse.accessToken}")
+
+                            loginResponse.accessToken?.let { AddToGoogleToSpringToken(it) }
                             val intent = Intent(this@LoginMainpage, MainMainpage::class.java)
                             startActivity(intent)
 
@@ -222,6 +247,43 @@ class LoginMainpage : AppCompatActivity() {
             }
         })
 
+    }
+
+    // JWT 저장
+    fun AddToGoogleToSpringToken(JWTaccessToken: String){
+        val editor = sharedPreferences.edit()
+
+        if(sharedPreferences.contains(google_access_token)){
+            editor.remove(google_access_token)
+            editor.remove(google_email)
+            editor.remove(server_password)
+        }
+
+        editor.putString(app_JWT_token, JWTaccessToken)
+
+        editor.apply()//shared Preference에 저장
+        Toast.makeText(this, "SH, JWT정보저장.", Toast.LENGTH_SHORT).show()
+    }
+
+    fun Google_Access_EmailPW_SavePref(google_access: String, email: String, password:String){
+        val editor = sharedPreferences.edit()
+
+        editor.putString(google_email, email)
+        editor.putString(server_password, password)
+        editor.putString(google_access_token, google_access)
+
+        editor.apply()//shared Preference에 저장
+        Toast.makeText(this, "email, password 정보저장.", Toast.LENGTH_SHORT).show()
+    }
+
+
+
+    companion object{
+        const val FILE_NAME = "encrypted_settings"
+        const val google_access_token = "google_access_token"
+        const val app_JWT_token = "app_JWT_token"
+        const val google_email = "google_email"
+        const val server_password = "google_password"
     }
 
 

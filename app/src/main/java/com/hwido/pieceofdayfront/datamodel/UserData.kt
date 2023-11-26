@@ -1,7 +1,6 @@
 package com.hwido.pieceofdayfront.datamodel
 
 import com.google.gson.annotations.SerializedName
-import retrofit2.http.Field
 
 //Field => requestform
 //SerializedName => responseform
@@ -22,7 +21,12 @@ data class ServerAccessTokenRequest(
 //    @Field("access_token")
 //    val accessToken2: String //"access_token":"dd"이런 형태로 간다
 )
-
+data class SignUpRequest(
+    @SerializedName("email") val email: String?,
+    @SerializedName("password") val password : String?,
+    @SerializedName("introduce") val introduce : String?,
+    @SerializedName("nickName") val nickName : String?
+)
 
 //첫번쨰 json,, http 폼으로 받아온다 T는 2가지 상황을 대처할 수 있도록 제너릭으로 설정
 //Any => object 모든객체 가능
@@ -37,10 +41,16 @@ data class SignupNeededResponse(
     @SerializedName("email") val email: String?,
     @SerializedName("password") val password: String?
 )
+
 //기존회원
 data class LoginSuccessResponse(
-    @SerializedName("access_token") val accessToken: String?,
+    @SerializedName("accessToken") val accessToken: String?,
     @SerializedName("key") val key: String?
+)
+
+
+data class SignUpResponse(
+    @SerializedName("memberId") val memberId : String?
 )
 
 

@@ -74,6 +74,11 @@ dependencies {
     // Kotlin 코루틴 코어 및 안드로이드 라이브러리
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation ("androidx.security:security-crypto-ktx:1.1.0-alpha03")
+
+
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
 
 
 }
