@@ -77,6 +77,8 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
+    // fragment commit
+    implementation("androidx.fragment:fragment-ktx:1.4.0")
 
 
 }

@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="오늘 당신의 기분을 알려주세요"
         android:textSize="20dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:id="@+id/main_diarywritepage_secondfragment_btn"/>
 
 </LinearLayout>
