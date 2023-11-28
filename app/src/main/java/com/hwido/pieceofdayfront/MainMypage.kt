@@ -12,7 +12,10 @@ class MainMypage : AppCompatActivity() {
 
         // 하단 버튼 통한 페이지 변경
         val mainBtnMain = findViewById<Button>(R.id.main_button_diaryList)
+
         val mainBtnShare = findViewById<Button>(R.id.main_button_diaryShare)
+
+	val temp = R.layout.main_mypage
         val mainBtnWrite = findViewById<Button>(R.id.main_button_diaryWrite)
 
         mainBtnMain.setOnClickListener {
