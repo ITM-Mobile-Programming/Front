@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainDiaryWritepageThirdFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="오늘 하루 어떠셨나요?"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_margin="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="오늘 하루 에너지를 얻은 주된 방법은 무엇인가요?"
+                        android:textSize="18dp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="혼자 조용히 시간을 보내며 휴식" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="사람들과 함께 시간을 보내며 활동" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="#DFDADA"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="새로운 환경에 뛰어드는 것을 어떻게 생각하나요?"
+                        android:textSize="18dp" />
+
+                    <SeekBar
+                        android:id="@+id/main_diarywritepage_thirdfragment_seekBar1"
+                        style="@style/Widget.AppCompat.SeekBar.Discrete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="3"
+                        android:layout_marginTop="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="불편하다" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="흥미롭다" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="대화 중, 당신이 더 선호하는 방식은 무엇인가요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="활기찬 논쟁과 생각의 교환이 있는 방식" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="깊은 이야기와 개인적인 공유가 있는 방식" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="어떤 방식으로 문제를 해결하는 것을 선호하나요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="구체적이고 실제적인 정보와 사실을 기반으로" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="가능성과 아이디어에 중점을 두고" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="새로운 아이디어나 계획을 만들 때 당신의 방식은?"
+                        android:textSize="18sp" />
+
+                    <SeekBar
+                        android:id="@+id/main_diarywritepage_thirdfragment_seekBar2"
+                        style="@style/Widget.AppCompat.SeekBar.Discrete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="3"
+                        android:layout_marginTop="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="실제적" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="창의적" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="새로운 경험을 할 때, 더 주의를 기울이는 것은?"
+                        android:textSize="18sp" />
+
+                    <SeekBar
+                        android:id="@+id/main_diarywritepage_thirdfragment_seekBar3"
+                        style="@style/Widget.AppCompat.SeekBar.Discrete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="5"
+                        android:progress="3"
+                        android:layout_marginTop="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="세부적" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="일반적" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="결정을 할 때, 무엇을 더 중요하게 여기나요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="논리적인 분석과 객관적인 기준" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="다른 사람의 감정과 가치에 대한 고려" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="문제가 발생했을 때, 당신의 반응은 무엇인가요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="논리적으로 문제를 해결하려고 노력" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="감정적으로 상황에 공감하려고 노력" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="중요한 결정을 내릴 때, 당신의 기준은?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="논리적인 장단점 분석과 가능한 대안들의 검토" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="감정적인 가치와 다른 사람들의 의견에 대한 고려" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="계획을 세우는 것에 대해 어떻게 생각하나요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="계획을 세우고 조직적으로 일하는 것을 선호" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="일을 더 융통성 있게 처리하며 즉흥적인 결정을 선호" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일 처리에 대해 어떻게 생각하나요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox15"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="미루지 않고 즉각 처리하는 것을 선호" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="상황에 따라 융퉁성 있게 대처하는 것을 선호" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="370dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="#DFDADA"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="어떤 상황에서 당신이 더 행복하게 느끼나요?"
+                        android:textSize="18sp" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkbox17"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="계획된 일정을 따라 가는 것을 선호" />
+
+                    <CheckBox
+                        android:id="@+id/main_diarywritepage_thirdfragment_checkBox18"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="상황에 따라 적응하며 자유롭게 움직이는 것을 선호" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_diarywritepage_thirdfragment_saveBtn"
+        android:text="다이어리 저장"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

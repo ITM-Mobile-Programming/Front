@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "PieceofDayFront"
 include(":app")
- 
+
