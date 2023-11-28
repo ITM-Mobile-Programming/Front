@@ -9,6 +9,7 @@ class MainMypage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_mypage)
+	val test = "test"
 
         // 하단 버튼 통한 페이지 변경
         val mainBtnMain = findViewById<Button>(R.id.main_button_diaryList)
