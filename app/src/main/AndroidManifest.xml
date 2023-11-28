@@ -24,9 +24,11 @@
         <activity
             android:name=".MainDiaryWritepageBase"
             android:exported="false" />
+
         <activity
             android:name=".LoginSignInProfilePicture"
             android:exported="false" />
+
         <activity
             android:name=".MainMypage"
             android:exported="false" />
