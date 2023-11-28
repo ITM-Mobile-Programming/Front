@@ -46,7 +46,14 @@
 
         </LinearLayout>
 
-<!--        여기에 format을 어떻게 넣지-->
+        <LinearLayout
+            android:layout_width="400dp"
+            android:layout_height="200dp"
+            android:id="@+id/main_mainpage_diaryView"
+            android:layout_marginStart="5dp"
+            android:gravity="center">
+            <include layout="@layout/main_diaryformat_modify" />
+        </LinearLayout>
 
     </LinearLayout>
 

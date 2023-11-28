@@ -46,7 +46,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -72,13 +72,13 @@ dependencies {
     // Kotlin 코루틴 코어 및 안드로이드 라이브러리
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation ("androidx.security:security-crypto-ktx:1.1.0-alpha03")
+    implementation ("androidx.security:security-crypto-ktx:1.1.0-alpha06")
 
 
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     // fragment commit
-    implementation("androidx.fragment:fragment-ktx:1.4.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
 
 }
