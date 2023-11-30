@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.login
 
 import com.hwido.pieceofdayfront.datamodel.GoogleApiAccessTokenResponse
 import retrofit2.http.Field

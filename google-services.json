@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "348919961549-e2vssjlge0tp5g2v57hc11trr5hsomhj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwido.pieceofdayfront",
+            "certificate_hash": "2bb70d2678d987e52f8e329ddad517b98a46cdb1"
+          }
+        },
+        {
           "client_id": "348919961549-q41k1adg20l997d5i5rgderv4aiem44l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -85,5 +85,13 @@ dependencies {
     // fragment commit
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    //location library
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
+
+//    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 }

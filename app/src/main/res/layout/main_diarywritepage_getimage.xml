@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainDiaryWritepageSecondFragment"
+    tools:context=".MainDiaryWritepageGetImage"
     android:orientation="vertical">
 
     <TextView
@@ -16,24 +16,41 @@
         android:gravity="center"
         android:layout_margin="10dp"/>
 
+
+
     <ProgressBar
-        android:id="@+id/main_diarywritepage_secondfragment_progressBar"
+        android:id="@+id/main_diarywritepage_GetImage_progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="설정된 해시태그"
-        android:textSize="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="설정된 해시태그"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/writeImageReload"
+            android:layout_marginStart="90dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="이미지 재생성"/>
+
+    </LinearLayout>
+
 
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/main_diarywritepage_secondfragment_showHashtag"
-        android:layout_width="370dp"
+        android:layout_width="350dp"
         android:layout_height="80dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
@@ -42,11 +59,12 @@
         android:hint="여기에 해시태그가 표시됩니다." />
 
     <ImageView
-        android:layout_width="370dp"
+        android:layout_gravity="center"
+        android:layout_width="350dp"
         android:layout_height="370dp"
         android:layout_margin="20dp"
         android:background="#BDB8B8"
-        android:id="@+id/main_diarywritepage_secondfragment_showImage"/>
+        android:id="@+id/main_diarywritepage_second_showImage"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -55,5 +73,7 @@
         android:textSize="20dp"
         android:layout_gravity="center"
         android:id="@+id/main_diarywritepage_secondfragment_btn"/>
+
+
 
 </LinearLayout>

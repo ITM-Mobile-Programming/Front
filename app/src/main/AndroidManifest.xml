@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -10,6 +9,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 필요에 의해 사용 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -23,21 +25,25 @@
         android:theme="@style/Theme.PieceofDayFront"
         tools:targetApi="31">
         <activity
-            android:name=".MainMypageMBTI"
+            android:name=".MainDiaryWritepageMBTI"
             android:exported="false" />
         <activity
-            android:name=".MainMypageSharelist"
+            android:name=".MainDiaryWritepageGetImage"
             android:exported="false" />
         <activity
-            android:name=".MainDiaryWritepageBase"
+            android:name=".MainDiaryWritepageContent"
             android:exported="false" />
-
         <activity
-            android:name=".LoginSignInProfilePicture"
+            android:name=".myPage.MainMypageMBTI"
             android:exported="false" />
-
         <activity
-            android:name=".MainMypage"
+            android:name=".myPage.MainMypageSharelist"
+            android:exported="false" />
+        <activity
+            android:name=".login.LoginSignInProfilePicture"
+            android:exported="false" />
+        <activity
+            android:name=".myPage.MainMypage"
             android:exported="false" />
         <activity
             android:name=".MainDiarySharepage"
@@ -46,13 +52,13 @@
             android:name=".MainDiaryWritepage"
             android:exported="false" />
         <activity
-            android:name=".LoginSigninpagePopup"
+            android:name=".login.LoginSigninpagePopup"
             android:exported="false" />
         <activity
-            android:name=".LoginSigninpage"
+            android:name=".login.LoginSigninpage"
             android:exported="false" />
         <activity
-            android:name=".LoginMainpage"
+            android:name=".login.LoginMainpage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
