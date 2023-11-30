@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
+import com.hwido.pieceofdayfront.databinding.MainDiaryformatModifyBinding
+import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date

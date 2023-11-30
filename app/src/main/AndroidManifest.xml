@@ -23,11 +23,19 @@
         android:theme="@style/Theme.PieceofDayFront"
         tools:targetApi="31">
         <activity
+            android:name=".MainMypageMBTI"
+            android:exported="false" />
+        <activity
+            android:name=".MainMypageSharelist"
+            android:exported="false" />
+        <activity
             android:name=".MainDiaryWritepageBase"
             android:exported="false" />
+
         <activity
             android:name=".LoginSignInProfilePicture"
             android:exported="false" />
+
         <activity
             android:name=".MainMypage"
             android:exported="false" />
