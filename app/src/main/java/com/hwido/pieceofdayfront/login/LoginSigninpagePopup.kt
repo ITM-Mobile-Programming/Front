@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.login
 
 import android.app.Dialog
 import android.content.Context
@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
+import com.hwido.pieceofdayfront.MainMainpage
+import com.hwido.pieceofdayfront.R
 
 class LoginSigninpagePopup(context: Context) : Dialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {

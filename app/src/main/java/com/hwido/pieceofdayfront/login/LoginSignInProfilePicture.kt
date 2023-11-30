@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.login
 
 import android.content.ActivityNotFoundException
 import android.content.ContentValues
@@ -10,7 +10,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.FileUtils
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
@@ -20,25 +19,23 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
+import com.hwido.pieceofdayfront.R
+import com.hwido.pieceofdayfront.ServerApiService
 import com.hwido.pieceofdayfront.databinding.LoginSignInProfilePictureBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.LoginSuccessResponse
 import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 
@@ -95,7 +92,7 @@ class LoginSignInProfilePicture : AppCompatActivity() {
             Log.d("ITM","Final  여기부터 시작")
             val google_access_token = sharedPreferences.getString(LoginMainpage.google_access_token, "access").toString()
 
-            //memeberid를 받는다
+            //memeberid를 받는다// 수정필요
             val memberId = intent.getStringExtra("memberId")
             Log.d("ITM", "번호 $memberId")
             //여기서 사진을 보낸다
@@ -296,6 +293,7 @@ class LoginSignInProfilePicture : AppCompatActivity() {
         return true
     }
 
+
     // 카메라 촬영 - 권한 처리
     fun CallCamera(){
         if(checkPermission(CAMERA, CAMERA_CODE) && checkPermission(
@@ -408,6 +406,8 @@ class LoginSignInProfilePicture : AppCompatActivity() {
                 dialog.dismiss()
             }.show()
     }
+
+
 
 
 
