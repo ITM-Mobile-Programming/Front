@@ -54,6 +54,7 @@ class LoginMainpage : AppCompatActivity() {
     // 회원 등록 완료 시에 encyted를 요청해서 방아온다
 
     // sharepreference에  서버 토큰 저장하는것은 맞다
+    //object class로 변환필요하다
     val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlias = MasterKey
             .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
