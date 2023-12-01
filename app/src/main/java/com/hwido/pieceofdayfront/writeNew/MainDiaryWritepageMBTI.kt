@@ -1,10 +1,9 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.writeNew
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
-import com.hwido.pieceofdayfront.databinding.MainDiarywritepageGetimageBinding
+import com.hwido.pieceofdayfront.MainDiaryWritepage
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageMbtiBinding
 
 class MainDiaryWritepageMBTI : AppCompatActivity() {

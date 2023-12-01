@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainDiaryWritepageMBTI"
+    tools:context=".writeNew.MainDiaryWritepageMBTI"
     android:orientation="vertical">
 
     <TextView

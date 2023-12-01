@@ -31,14 +31,14 @@ data class SignUpRequest(
 
 //첫번쨰 json,, http 폼으로 받아온다 T는 2가지 상황을 대처할 수 있도록 제너릭으로 설정
 //Any => object 모든객체 가능
-@Serializable
+
 data class BaseResponse(
     @SerializedName("statusCode")  val status: Int?,
     @SerializedName("message") val message: String?,
     @SerializedName("data") val data: Any? //수정 필요 특정 코드로 명시적이게,, 에러를 잡을 수 있게끔
 )
 
-@Serializable
+
 data class BaseResponse2(
     @SerializedName("statusCode")  val status: Int?,
     @SerializedName("message") val message: String?,
