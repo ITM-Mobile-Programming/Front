@@ -8,6 +8,7 @@ android {
     namespace = "com.hwido.pieceofdayfront"
     compileSdk = 34
 
+
     buildFeatures {
         viewBinding = true
         dataBinding = true
@@ -17,6 +18,7 @@ android {
         applicationId = "com.hwido.pieceofdayfront"
         minSdk = 24
         targetSdk = 33
+
         versionCode = 1
         versionName = "1.0"
 
@@ -39,9 +41,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
     buildFeatures{
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -50,6 +54,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
     implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -76,9 +81,18 @@ dependencies {
 
 
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // fragment commit
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    //location library
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
+
+//    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 
 }

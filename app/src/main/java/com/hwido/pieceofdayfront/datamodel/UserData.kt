@@ -1,6 +1,7 @@
 package com.hwido.pieceofdayfront.datamodel
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 //Field => requestform
 //SerializedName => responseform
@@ -30,13 +31,22 @@ data class SignUpRequest(
 
 //첫번쨰 json,, http 폼으로 받아온다 T는 2가지 상황을 대처할 수 있도록 제너릭으로 설정
 //Any => object 모든객체 가능
+
 data class BaseResponse(
     @SerializedName("statusCode")  val status: Int?,
     @SerializedName("message") val message: String?,
-    @SerializedName("data") val data: Any? // 이 부분이 문제인데...
+    @SerializedName("data") val data: Any? //수정 필요 특정 코드로 명시적이게,, 에러를 잡을 수 있게끔
 )
 
-// 회원가입 핑요
+
+data class BaseResponse2(
+    @SerializedName("statusCode")  val status: Int?,
+    @SerializedName("message") val message: String?,
+    @SerializedName("data") val data: DiarySendSuccessResponse?
+
+)
+
+// 회원가입 필요
 data class SignupNeededResponse(
     @SerializedName("email") val email: String?,
     @SerializedName("password") val password: String?

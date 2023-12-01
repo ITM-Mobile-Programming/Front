@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainDiaryWritepageThirdFragment"
+    tools:context=".writeNew.MainDiaryWritepageMBTI"
     android:orientation="vertical">
 
     <TextView
@@ -414,7 +414,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/main_diarywritepage_thirdfragment_saveBtn"
+        android:id="@+id/main_diarywritepage_MBTI_saveBtn"
         android:text="다이어리 저장"
         android:layout_margin="10dp"
         android:layout_gravity="center"/>

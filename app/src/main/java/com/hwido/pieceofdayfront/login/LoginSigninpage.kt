@@ -1,38 +1,25 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.login
 
-import android.content.ContentValues
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
+import com.hwido.pieceofdayfront.ServerApiService
 import com.hwido.pieceofdayfront.databinding.LoginSigninpageBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.SignUpRequest
 import com.hwido.pieceofdayfront.datamodel.SignUpResponse
-import com.hwido.pieceofdayfront.datamodel.SignupNeededResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
 
 
 class LoginSigninpage : AppCompatActivity() {
@@ -83,8 +70,6 @@ class LoginSigninpage : AppCompatActivity() {
             // email로 일단, password, introduce, nickname 보낸다
             // signUp() + profile 엑티비티로 넘어가기
 //            signUpToSpringServer(email, password, intro, nickname)
-
-
             var nickname = binding.loginSigninpageNickNameSigninArea.text.toString()
             var intro = binding.loginSigninpageSelfShortIntroSigninArea.text.toString()
 
@@ -101,12 +86,7 @@ class LoginSigninpage : AppCompatActivity() {
 
 
         }
-
-
-
     }
-
-
 
     fun signUpToSpringServer(email : String?, password: String?, intro: String?, nickname: String?){
         Log.d("ITM", "서버 레트로 핏 설정")

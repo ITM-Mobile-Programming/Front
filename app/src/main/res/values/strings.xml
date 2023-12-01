@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">PieceofDayFront</string>
+
     <string name="gcp_client_id">348919961549-rkupfnefm941q6vo5oal60clqtu03uoh.apps.googleusercontent.com</string>
     <string name="gcp_client_secret">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</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kaKaoApi">KakaoAK eabb6ec316f5f1e94981063f92efd94e</string>
 </resources>

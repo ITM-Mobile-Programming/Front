@@ -1,9 +1,13 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.myPage
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.hwido.pieceofdayfront.MainDiarySharepage
+import com.hwido.pieceofdayfront.MainDiaryWritepage
+import com.hwido.pieceofdayfront.MainMainpage
+import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.databinding.MainMypageBinding
 
 class MainMypage : AppCompatActivity() {
