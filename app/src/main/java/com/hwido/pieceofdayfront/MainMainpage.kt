@@ -24,6 +24,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.commit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.android.gms.location.LocationServices
@@ -57,29 +58,14 @@ class MainMainpage : AppCompatActivity() {
         binding = MainMainpageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 객체 생성
-        val dayText: TextView = binding.mainMainpageDay
-        val calendarView: CalendarView = binding.mainMainpageCalendar
-
-        // 날짜 형태
-        val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-        // date 타입
-        val date = Date(calendarView.date)
-
-        // 현재 날짜
-        dayText.text = dateFormat.format(date)
-        Log.d("mainpage","${dayText.text}")
-
-        // 날짜 변환
-        calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
-
-            // 날짜 변수에 담기
-            val day  = "${year}년 ${month+1}월 ${dayOfMonth}일"
-
-            // 변수를 텍스트뷰에 담아준다
-            dayText.text = day
+        val firstFragment = MainListpageFragment()
+        val fManager = supportFragmentManager
+        fManager.commit {
+            setReorderingAllowed(true)
+            addToBackStack(null)
+            add(binding.mainMainpageBaseframe.id, firstFragment)
         }
+
 
         // 하단 버튼 통한 페이지 변경
         binding.mainButtonDiaryWrite.setOnClickListener {

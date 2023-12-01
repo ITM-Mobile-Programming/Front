@@ -5,27 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hwido.pieceofdayfront.MainMainpage"
+    tools:context=".MainDiaryWritepage"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="Piece of Day"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        />
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main_mainpage_baseframe"
-        android:layout_weight="1">
 
-    </FrameLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,5 +52,6 @@
             />
 
     </LinearLayout>
+
 
 </LinearLayout>
