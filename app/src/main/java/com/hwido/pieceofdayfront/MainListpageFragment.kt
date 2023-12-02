@@ -29,7 +29,6 @@ class MainListpageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: MainListpageBinding
-    private lateinit var mainbinding: MainMainpageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +36,14 @@ class MainListpageFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = MainListpageBinding.inflate(inflater, container, false)
 
         // 객체 생성
         val dayText: TextView = binding.mainMainpageDay
@@ -61,14 +68,7 @@ class MainListpageFragment : Fragment() {
             // 변수를 텍스트뷰에 담아준다
             dayText.text = day
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = MainListpageBinding.inflate(inflater, container, false)
         return binding.root
     }
 

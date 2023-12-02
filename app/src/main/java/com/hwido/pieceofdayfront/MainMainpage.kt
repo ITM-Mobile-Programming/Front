@@ -1,35 +1,14 @@
 package com.hwido.pieceofdayfront
 
-import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.CalendarView
-import android.widget.TextView
-import androidx.core.app.ActivityCompat
 import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
-import com.hwido.pieceofdayfront.myPage.MainMypage
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.SharedPreferences
-import android.location.Location
-import android.net.Uri
-import android.os.Build
-import android.provider.Settings
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.commit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.google.android.gms.location.LocationServices
 import com.hwido.pieceofdayfront.login.LoginMainpage
-import kotlin.properties.Delegates
+import com.hwido.pieceofdayfront.myPage.MainMypageFragment
 
 class MainMainpage : AppCompatActivity() {
 
@@ -59,6 +38,10 @@ class MainMainpage : AppCompatActivity() {
         setContentView(binding.root)
 
         val firstFragment = MainListpageFragment()
+        val secondFragment = MainDiaryWritepageFragment()
+        val thridFragment = MainDiarySharepageFragment()
+        val fourthFragment = MainMypageFragment()
+
         val fManager = supportFragmentManager
         fManager.commit {
             setReorderingAllowed(true)
@@ -68,20 +51,29 @@ class MainMainpage : AppCompatActivity() {
 
 
         // 하단 버튼 통한 페이지 변경
-        binding.mainButtonDiaryWrite.setOnClickListener {
+        binding.mainButtonDiaryList.setOnClickListener {
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,firstFragment)
+            }
+        }
 
-            val intent = Intent(baseContext, MainDiaryWritepage::class.java)
-            startActivity(intent)
+
+        binding.mainButtonDiaryWrite.setOnClickListener {
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,secondFragment)
+            }
         }
 
         binding.mainButtonDiaryShare.setOnClickListener {
-            val intent = Intent(baseContext, MainDiarySharepage::class.java)
-            startActivity(intent)
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,thridFragment)
+            }
         }
 
         binding.mainButtonMyPage.setOnClickListener {
-            val intent = Intent(baseContext, MainMypage::class.java)
-            startActivity(intent)
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,fourthFragment)
+            }
         }
 
 

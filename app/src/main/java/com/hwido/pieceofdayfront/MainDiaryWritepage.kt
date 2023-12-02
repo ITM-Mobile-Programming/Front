@@ -5,14 +5,12 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
 import com.hwido.pieceofdayfront.datamodel.ListResponse
 import com.hwido.pieceofdayfront.login.LoginMainpage
-import com.hwido.pieceofdayfront.myPage.MainMypage
 import com.hwido.pieceofdayfront.writeNew.MainDiaryWritepageContent
 import retrofit2.Call
 import retrofit2.Callback
@@ -106,31 +104,6 @@ class MainDiaryWritepage : AppCompatActivity() {
             var intent = Intent(this, MainDiaryWritepageContent::class.java)
             startActivity(intent)
         }
-
-
-        // 하단 버튼 통한 페이지 변경
-        val mainBtnMain = findViewById<Button>(R.id.main_button_diaryList)
-        val mainBtnShare = findViewById<Button>(R.id.main_button_diaryShare)
-        val mainBtnMyPage = findViewById<Button>(R.id.main_button_myPage)
-
-
-        mainBtnMain.setOnClickListener {
-            val intent = Intent(baseContext, MainMainpage::class.java)
-            startActivity(intent)
-        }
-
-        mainBtnShare.setOnClickListener {
-            val intent = Intent(baseContext, MainDiarySharepage::class.java)
-            startActivity(intent)
-        }
-
-        mainBtnMyPage.setOnClickListener {
-            val intent = Intent(baseContext, MainMypage::class.java)
-            startActivity(intent)
-        }
-
-
-
     }
 
 
