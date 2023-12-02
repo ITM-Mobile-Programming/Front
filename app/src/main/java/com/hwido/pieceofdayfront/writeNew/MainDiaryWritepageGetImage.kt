@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.hwido.pieceofdayfront.ServerResponseCallback
 import com.hwido.pieceofdayfront.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageGetimageBinding
+import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.datamodel.reloadDairy
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import kotlin.properties.Delegates
@@ -37,8 +38,6 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
     }
 
 
-
-
     override fun onResume() {
         super.onResume()
         retryCount = 0
@@ -48,7 +47,7 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
     override fun onSuccessSpring(ouPutData: String) {
         Glide.with(this)
                     .load(ouPutData)
-                    .centerCrop()
+                    .fitCenter()
                     .into(binding.mainDiarywritepageSecondShowImage)
     }
 
@@ -59,6 +58,10 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
     override fun onErrorSpring(error: Throwable) {
 
     }
+
+    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +77,7 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
 
         Glide.with(this)
             .load(imageUrl)
-            .centerCrop()
+            .fitCenter()
             .into(binding.mainDiarywritepageSecondShowImage)
 
         binding.mainDiarywritepageGetImageShowHashtag.text = hashTags

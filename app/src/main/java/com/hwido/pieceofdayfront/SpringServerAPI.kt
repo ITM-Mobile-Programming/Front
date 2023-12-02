@@ -143,21 +143,26 @@ class SpringServerAPI {
 
 
     fun getDiaryList(accessToken :String, callback:ServerResponseCallback) {
+        Log.d("ITM", "리스트 함수 들어옴1 ")
         writeRequest.getDiaryList("Bearer $accessToken").enqueue(object :
             Callback<getDiaryResponse> {
             override fun onResponse(call: Call<getDiaryResponse>, response: Response<getDiaryResponse>) {
+                Log.d("ITM", "리스트 함수 들어옴2 ")
+
                 if (response.isSuccessful) {
+                    Log.d("ITM", "리스트 함수 들어옴3 ")
                     val baseResponse  = response.body()
+
 
                     when (baseResponse?.statusCode) {
                         200 -> {
+                            Log.d("ITM","${baseResponse.data.toString()}")
                             try {
-
-                                //가져왔으면 일단 Callback으로 보내고
-                                // 리사이클 뷰에 넣어준다
-
                                 //받은 데이터을 받은 폼으로 리스트로 넘겨준다
                                 //바로 변수로 받고 리사이클러 뷰에 넣는다
+
+                                val dairyList = baseResponse.data
+                                callback.onSuccessSpringDiaryList(dairyList)
 
                             }catch (e: JsonSyntaxException) {
                                 Log.e("ITM", "JSON 파싱 오류: ", e)
@@ -166,11 +171,12 @@ class SpringServerAPI {
                         }
                     }
                 } else
-                {Log.d("ITM", "${response}")}
+                { Log.d("ITM", "리스트 함수 들어옴4 ")
+                    Log.d("ITM", "$response")}
             }
             // onFailure 구현...
             override fun onFailure(call: Call<getDiaryResponse>, t: Throwable) {
-                Log.d("ITM", "뺵엔드 연결실패 ${t.message}")
+                Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
             }
         })
     }

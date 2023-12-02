@@ -37,9 +37,6 @@ class WriteNewPageRetrofitClient {
     fun getWeather(apikey:String, baseDate : String, baseTime:String, latitude: Short, longitude: Short, callback: WeatherCallback) {
         Log.d("ITM", "Weather 함수 입성")
 
-//        WeatherAPI.getWeather(apikey, 24,1, "JSON", baseDate, baseTime, latitude, longitude)
-//        WeatherAPI.getWeather2()
-//
         WeatherAPI.getWeather(apikey,24,1, "JSON", baseDate, baseTime, latitude, longitude).enqueue(object :
             Callback<WeatherTotalResponse> {
             override fun onResponse(call: Call<WeatherTotalResponse>, response: Response<WeatherTotalResponse>) {
@@ -65,6 +62,7 @@ class WriteNewPageRetrofitClient {
                     //    category, FcstTime 가져와서 확인후 fcstValue를 체크한다
                     // 만약 0이면 sky -> 1 -> 맑음,2 -> 흐림 ,3 -> 구름 많음
                     // 만약 1,2,5,6 이면  -> 비
+
                     // 이외에 것들은 눈으로 한다
                     val pty = responseBody?.response?.body?.items?.item?.get(6)
                     val sky = responseBody?.response?.body?.items?.item?.get(18)

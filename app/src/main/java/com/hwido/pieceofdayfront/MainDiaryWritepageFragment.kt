@@ -1,18 +1,15 @@
 package com.hwido.pieceofdayfront
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
-import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
-import com.hwido.pieceofdayfront.login.LoginMainpage
-import com.hwido.pieceofdayfront.myPage.MainMypageSharelist
+import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.writeNew.MainDiaryWritepageContent
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,10 +22,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MainDiaryWritepageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainDiaryWritepageFragment : Fragment() {
+class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
     // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var param2: String? = null
     private lateinit var binding: MainDiarywritepageBinding
     private lateinit var diaryAdapter: DiaryAdapter
     private val springServer = SpringServerAPI()
@@ -37,22 +33,24 @@ class MainDiaryWritepageFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
-    //    getDiaryList//리썸에 넣어준다
-
-    //    onSuccess 가져와야함
-
-    override fun onResume() {
-        super.onResume()
-        // 프래그먼트가 다시 활성화될 때 수행할 작업
-
-        //엑세스 토큰 넣어주고
-        //프레그 먼트 만들어줄떄 param1에 access token 넣어준다
-//        springServer.getDiaryList()
+    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
+        Log.d("ITM", "리스트 콜백 ")
+        diaryAdapter.updateData(diaryList)
+        // adapter를 recyclerview에 설정
     }
+    override fun onSuccessSpring(ouPutData: String) {
+    }
+
+    override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
+    }
+
+    override fun onErrorSpring(error: Throwable) {
+        Log.e("ITM", "Error: ${error.message}")
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,17 +59,24 @@ class MainDiaryWritepageFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = MainDiarywritepageBinding.inflate(inflater, container, false)
 
-
         // adapter 빈 list로 기본 설정
-        diaryAdapter = DiaryAdapter(emptyList())
+        param1?.let {
+            Log.d("ITM","들어옴")
+            springServer.getDiaryList(it, this)
+            Log.d("ITM","나감")
+        }
 
-        // adapter를 recyclerview에 설정
-        binding.mainDiarywritepageDiary.adapter = diaryAdapter
+        diaryAdapter = DiaryAdapter(emptyList())
+        binding.mainDiarywritepageDiary.apply {
+            layoutManager = LinearLayoutManager(context) // 여기에서 LinearLayoutManager를 설정합니다.
+            adapter = diaryAdapter
+        }
+
+
 
         binding.mainDiarywritepageWriteDiary.setOnClickListener {
             navigateToContent()
         }
-
 
 
         return binding.root
@@ -93,11 +98,10 @@ class MainDiaryWritepageFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String) =
             MainDiaryWritepageFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }

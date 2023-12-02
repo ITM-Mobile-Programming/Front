@@ -25,6 +25,7 @@ import com.hwido.pieceofdayfront.ServerResponseCallback
 import com.hwido.pieceofdayfront.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
+import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import com.karumi.dexter.Dexter
@@ -223,6 +224,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
                     //12부분 수정 필요
 
                     // 로그에 출력 또는 화면에 표시
+                    // 무조건 30으로 맞춰소
                     Log.d("ITM", "날짜 :${currentDate}")
                     Log.d("ITM", "시간  :${currentTime}")
 
@@ -230,6 +232,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
 
                     Log.d("ITM","${location.longitude}, ${location.latitude}")
                     kakaoAPI.getAddressFromCoordinates(kaKaoApikey, location.longitude, location.latitude, this)
+
 
 
                     val (latToGrid,longToGrid) = conConverter.convertLatLonToXY(location.latitude, location.longitude)
@@ -243,6 +246,9 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             }
 
 
+    }
+
+    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
     }
 
     //위치 날씨 콜백함수 구현
