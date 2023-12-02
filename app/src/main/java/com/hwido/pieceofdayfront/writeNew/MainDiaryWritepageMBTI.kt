@@ -13,8 +13,6 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         binding = MainDiarywritepageMbtiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         // 엄청난 MBTI 검사의 향연
         // 내부 로직을 통해 만든 후에  서버로 MBTI만 보내면된다
         binding.mainDiarywritepageMBTISaveBtn.setOnClickListener {

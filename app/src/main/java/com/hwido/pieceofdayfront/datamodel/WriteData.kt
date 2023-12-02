@@ -53,3 +53,6 @@ data class KaKaoAddress(
     @SerializedName("x") val log :String?,
     @SerializedName("y") val lat :String?,
 )
+
+
+

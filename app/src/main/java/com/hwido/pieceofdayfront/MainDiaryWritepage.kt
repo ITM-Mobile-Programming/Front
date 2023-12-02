@@ -50,7 +50,7 @@ class MainDiaryWritepage : AppCompatActivity() {
     //목록 가져오는 파일 만들어야 된다
     //수정필요
     private fun getDiaryList() {
-        val writeRequest = retrofit.create(SeverMemberRequestAPI::class.java)
+        val writeRequest = retrofit.create(ServerApiService::class.java)
         val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
 //        Log.d("ITM","$accessToken")

@@ -2,8 +2,11 @@ package com.hwido.pieceofdayfront
 
 
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
+import com.hwido.pieceofdayfront.datamodel.BaseResponse2
+import com.hwido.pieceofdayfront.datamodel.ListResponse
 import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
 import com.hwido.pieceofdayfront.datamodel.SignUpRequest
+import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -31,6 +34,13 @@ interface ServerApiService {
     fun postProfileSignUp(@Path("id") memberId: String, @Part file: MultipartBody.Part) : Call<BaseResponse>
 
 
+    @GET("diary/")
+    fun getMemeberDiary(@Header("Authorization") authToken: String?): Call<ListResponse> // 수정 해야됨
+
+
+    //Call과 CallBack 차이 정리 필요
+    @POST("diary/write")
+    fun postMemberDairy(@Header("Authorization") authToken: String?, @Body requestData: WriteDataRequest): Call<BaseResponse2>
 
 
 }
