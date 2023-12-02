@@ -36,9 +36,18 @@ class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        param1?.let {
+            Log.d("ITM","들어옴")
+            springServer.getDiaryList(it, this)
+            Log.d("ITM","나감")
+        }
+    }
+
     override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
         Log.d("ITM", "리스트 콜백 ")
-        diaryAdapter.updateData(diaryList)
+        diaryAdapter.updateData(diaryList.reversed())
         // adapter를 recyclerview에 설정
     }
     override fun onSuccessSpring(ouPutData: String) {
@@ -60,11 +69,7 @@ class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
         binding = MainDiarywritepageBinding.inflate(inflater, container, false)
 
         // adapter 빈 list로 기본 설정
-        param1?.let {
-            Log.d("ITM","들어옴")
-            springServer.getDiaryList(it, this)
-            Log.d("ITM","나감")
-        }
+
 
         diaryAdapter = DiaryAdapter(emptyList())
         binding.mainDiarywritepageDiary.apply {

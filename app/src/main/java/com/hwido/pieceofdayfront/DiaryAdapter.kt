@@ -48,7 +48,12 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
                 mainDiaryformatDiaryName.text = diaryItem.title
 
 
-                mainDiaryformatHastag.text = "${diaryItem.hashTagList[0].hashTag}, ${diaryItem.hashTagList[1].hashTag},${diaryItem.hashTagList[2].hashTag}"
+                var hashTag : String = ""
+                for ( i in 0..<diaryItem.hashTagList.size){
+                    hashTag += diaryItem.hashTagList[i].hashTag
+                }
+
+                mainDiaryformatHastag.text = hashTag
 
                 // 날짜 관련 data 필요
                 //mainDiaryformatDate.text = diaryItem.
