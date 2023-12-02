@@ -26,6 +26,7 @@ class MainDiaryWritepageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: MainDiarywritepageBinding
+    private lateinit var diaryAdapter: DiaryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +43,12 @@ class MainDiaryWritepageFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = MainDiarywritepageBinding.inflate(inflater, container, false)
 
+        // adapter 빈 list로 기본 설정
+        diaryAdapter = DiaryAdapter(emptyList())
+
+        // adapter를 recyclerview에 설정
+        binding.mainDiarywritepageDiary.adapter = diaryAdapter
+
         binding.mainDiarywritepageWriteDiary.setOnClickListener {
             navigateToContent()
         }
@@ -53,8 +60,6 @@ class MainDiaryWritepageFragment : Fragment() {
         val intent = Intent(activity, MainDiaryWritepageContent::class.java)
         startActivity(intent)
     }
-    
-    // 여기에 다이어리 작성 버튼 누르면, MainDiaryWritepageContent로 activty intent 이루어져야 한다
 
     companion object {
         /**
