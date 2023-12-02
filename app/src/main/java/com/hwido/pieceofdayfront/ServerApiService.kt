@@ -3,10 +3,14 @@ package com.hwido.pieceofdayfront
 
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
+import com.hwido.pieceofdayfront.datamodel.BasicResponse
 import com.hwido.pieceofdayfront.datamodel.ListResponse
+import com.hwido.pieceofdayfront.datamodel.SendMBTI
 import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
 import com.hwido.pieceofdayfront.datamodel.SignUpRequest
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
+import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
+import com.hwido.pieceofdayfront.datamodel.reloadDairy
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -43,4 +47,22 @@ interface ServerApiService {
     fun postMemberDairy(@Header("Authorization") authToken: String?, @Body requestData: WriteDataRequest): Call<BaseResponse2>
 
 
+    @POST("diary/image")
+    fun reloadMemberDairy(@Header("Authorization") authToken: String?, @Body  request: reloadDairy): Call<BaseResponse2>
+
+
+    @POST("diary/update/mbti")
+    fun sendDiaryWithMBTI(@Header("Authorization") authToken: String?, @Body  request: SendMBTI):Call<BasicResponse>
+
+
+    //다이어리 목록
+    @GET("diary/")
+    fun getDiaryList(@Header("Authorization") authToken: String?) : Call<getDiaryResponse>
+
+
+    //중복작성
+//    @GET("/diary/verification")
+//    fun checkDouble(@Header("Authorization") authToken: String?) :
+    //다이어리 수정
+    //다이어리 삭제
 }

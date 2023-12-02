@@ -43,8 +43,13 @@ data class BaseResponse2(
     @SerializedName("statusCode")  val status: Int?,
     @SerializedName("message") val message: String?,
     @SerializedName("data") val data: DiarySendSuccessResponse?
-
 )
+data class BasicResponse(
+    @SerializedName("statusCode")  val status: Int?,
+    @SerializedName("message") val message: String?,
+    @SerializedName("data") val data: String?
+)
+
 
 // 회원가입 필요
 data class SignupNeededResponse(

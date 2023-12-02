@@ -31,7 +31,7 @@ class KakaoRetrofitClient {
         .build()
 
 
-    private val kakaoAPI = retrofit.create(LocationWeatherAPI::class.java)
+    private val kakaoAPI = retrofit.create(WeatherLocationAPI::class.java)
 
 
     fun getAddressFromCoordinates(apikey:String, longitude: Double, latitude: Double,callback: KakaoResponseCallback) {

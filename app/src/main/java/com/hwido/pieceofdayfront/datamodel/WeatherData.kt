@@ -20,7 +20,6 @@ data class WeatherTotalResponse(
     data class WeatherResponseBody(
         @SerializedName("dataType") val dataType : String,
         @SerializedName("items") val items : WeatherItems,
-
         @SerializedName("numOfRows") val numberRow : Int,
         @SerializedName("pageNo") val pageNo : Int,
         @SerializedName("totalCount") val totalCount: Int,
@@ -32,12 +31,13 @@ data class WeatherTotalResponse(
         val item: List<WeatherItem>
     )
 
+
     data class WeatherItem(
-        @SerializedName("baseDate") val baseDate: Int,
-        @SerializedName("baseTime") val baseTime: Int,
+        @SerializedName("baseDate") val baseDate: String,
+        @SerializedName("baseTime") val baseTime: String,
         @SerializedName("category") val category: String,
-        @SerializedName("fcstDate") val fcstDate: Int,
-        @SerializedName("fcstTime") val fcstTime :Int,
+        @SerializedName("fcstDate") val fcstDate: String,
+        @SerializedName("fcstTime") val fcstTime :String,
         @SerializedName("fcstValue") val fcstValue : String,
         @SerializedName("nx") val nx :Int,
         @SerializedName("ny") val ny :Int

@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-interface LocationWeatherAPI {
+interface WeatherLocationAPI {
     @GET("coord2regioncode.json")
     fun getAddress(
         @Header("Authorization")  apiKey: String,
@@ -21,8 +21,8 @@ interface LocationWeatherAPI {
         @Query("numOfRows") numOfRows: Int, // 타입을 Int로 변경
         @Query("pageNo") pageNo: Int, // 타입을 Int로 변경
         @Query("dataType") dataType: String, // dataType 추가
-        @Query("base_date") baseDate: Int, // 타입을 Int로 변경
-        @Query("base_time") baseTime: Int, // 타입을 Int로 변경
+        @Query("base_date") baseDate: String, // 타입을 Int로 변경
+        @Query("base_time") baseTime: String, // 타입을 Int로 변경
         @Query("nx") latitude: Short, // 타입을 Double로 변경
         @Query("ny") longitude: Short // 타입을 Double로 변경
     ): Call<WeatherTotalResponse>

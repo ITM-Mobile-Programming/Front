@@ -18,44 +18,14 @@
         android:textStyle="bold"
         />
 
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:id="@+id/main_mainpage_baseframe"
+        android:layout_weight="1">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="15dp"
-            android:orientation="vertical">
-
-            <CalendarView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/main_mainpage_calendar"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/main_mainpage_day"
-                android:textSize="25dp"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="400dp"
-            android:layout_height="200dp"
-            android:id="@+id/main_mainpage_diaryView"
-            android:layout_marginStart="5dp"
-            android:gravity="center">
-            <include layout="@layout/main_diaryformat_modify" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

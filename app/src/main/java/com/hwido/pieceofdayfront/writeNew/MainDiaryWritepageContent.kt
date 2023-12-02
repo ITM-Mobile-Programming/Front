@@ -21,6 +21,8 @@ import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.ServerApiService
+import com.hwido.pieceofdayfront.ServerResponseCallback
+import com.hwido.pieceofdayfront.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
@@ -40,12 +42,14 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback {
+class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback, ServerResponseCallback {
 
     private lateinit var binding : MainDiarywritepageContentBinding
     private val kakaoAPI = KakaoRetrofitClient()
-    private val weatherAPI = WeatherRetrofitClient()
+    private val weatherAPI = WriteNewPageRetrofitClient()
     private val conConverter = CoordinateTransformer()
+    private val  SpringServerCall= SpringServerAPI()
+
     //공유 sharedPreference
     // 이거  object class로 만들어서 뺼거임
     val sharedPreferences: SharedPreferences by lazy {
@@ -66,64 +70,26 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
     //back 해도 돌아가게 해야됨
     override fun onResume() {
         super.onResume()
-
         requestLocation()
     }
 
-    val okHttpClient = OkHttpClient.Builder()
-        .readTimeout(100, TimeUnit.SECONDS)
-        .writeTimeout(100, TimeUnit.SECONDS)
-        .connectTimeout(100, TimeUnit.SECONDS)
-        .build()
+    override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
+        val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
+        intent.putExtra("numberPost", "$diaryId")
+        intent.putExtra("url","$hashTags")
+        intent.putExtra("hashTags","$imageUrl")
 
-
-    //레트로핏 설정
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://3.20.166.136/") // 서버의 기본 URL
-        .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create()) // JSON 변환을 위한 GsonConverterFactory 사용//이건 갈떄
-        .build()
-
-
-    private fun sendDiaryToGetImage(firstRequest : WriteDataRequest) {
-        val writeRequest = retrofit.create(ServerApiService ::class.java)
-        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
-
-        writeRequest.postMemberDairy("Bearer $accessToken", firstRequest).enqueue(object :
-            Callback<BaseResponse2> {
-            override fun onResponse(call: Call<BaseResponse2>, response: Response<BaseResponse2>) {
-                if (response.isSuccessful) {
-                    val baseResponse  = response.body()
-
-                    Log.d("ITM","${baseResponse?.data?.hashTags.toString()}")
-                    Log.d("ITM","${baseResponse?.data.toString().substring(20,30)}")
-
-                    when (baseResponse?.status) {
-                        200 -> {
-                            try {
-                                val longToInt =baseResponse.data?.diaryId?.toInt()
-                                val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
-                                intent.putExtra("numberPost", "$longToInt")
-                                intent.putExtra("url","${baseResponse.data?.imageUrl}")
-                                intent.putExtra("hashTags","${baseResponse.data?.hashTags}")
-
-                                startActivity(intent)
-                            }catch (e: JsonSyntaxException) {
-                                Log.e("ITM", "JSON 파싱 오류: ", e)
-                            }
-
-                        }
-                    }
-                } else
-                {Log.d("ITM", "${response}")}
-            }
-            // onFailure 구현...
-            override fun onFailure(call: Call<BaseResponse2>, t: Throwable) {
-                Log.d("ITM", "뺵엔드 연결실패 ${t.message}")
-
-            }
-        })
+        startActivity(intent)
     }
+
+    override fun onSuccessSpring(ouPutData: String) {
+        //방치
+    }
+
+    override fun onErrorSpring(error: Throwable) {
+        Log.d("ITM","Content 가져올 수 없음 ")
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +98,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
         setContentView(binding.root)
 
 
-
+        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
         //여기 인스턴스  전역으로 만들고
         binding.mainDiarywritepageContentBtn.setOnClickListener {
             val title = binding.writeTitle.text.toString()
@@ -143,10 +109,12 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             var writeRequestForm  = WriteDataRequest(title, content, location, "good")
             Log.d("ITM", "$writeRequestForm")
 
-            sendDiaryToGetImage(writeRequestForm)
+            SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
         }
 
     }
+
+
 
 
     // 수정 필요
@@ -250,15 +218,9 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
 
                     // 현재 날짜와 시간 가져오기
                     val currentDateTime = sdf.format(Date())
-                    val currentDate = currentDateTime.substring(0,8).toInt()
-                    var currentTime = currentDateTime.substring(8,12).toInt()
+                    var currentDate = currentDateTime.substring(0,8)
+                    var currentTime = currentDateTime.substring(8,12)
                     //12부분 수정 필요
-
-                    val currentMinute = currentTime%100
-                    //100으로 나눈 나머지가
-                    if(currentMinute< 30){
-                        currentTime -= 100
-                    }
 
                     // 로그에 출력 또는 화면에 표시
                     Log.d("ITM", "날짜 :${currentDate}")
@@ -267,7 +229,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
                     Log.d("ITM","$kaKaoApikey")
 
                     Log.d("ITM","${location.longitude}, ${location.latitude}")
-                    //x, y 좌표까지 나옴
                     kakaoAPI.getAddressFromCoordinates(kaKaoApikey, location.longitude, location.latitude, this)
 
 
@@ -330,10 +291,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
                 dialog.dismiss()
             }.show()
     }
-
-
-
-
 
 
 

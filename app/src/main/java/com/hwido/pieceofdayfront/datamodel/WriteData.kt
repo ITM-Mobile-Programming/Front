@@ -1,7 +1,6 @@
 package com.hwido.pieceofdayfront.datamodel
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 data class WriteDataRequest(
     @SerializedName("title") val title: String,
@@ -23,12 +22,12 @@ data class ListResponse(
 
 )
 data class DiaryListLoad(
-    @SerializedName("title") val title :String?,
-    @SerializedName("context") val context :String?,
+    @SerializedName("title") val title:String?,
+    @SerializedName("context") val context:String?,
     @SerializedName("location") val location: String?,
-    @SerializedName("weatherCode") val weatherCode :String?,
+    @SerializedName("weatherCode") val weatherCode:String?,
     @SerializedName("thumbnailUrl") val thumbnailUrl:String?,
-    @SerializedName("hashTagList") val hashTags: List<List<String>>?,
+    @SerializedName("hashTagList") val hashTags: List<String>,
 )
 
 
@@ -54,5 +53,12 @@ data class KaKaoAddress(
     @SerializedName("y") val lat :String?,
 )
 
+data class reloadDairy(
+    @SerializedName("diaryId") val diaryId : Int
+)
 
+data class SendMBTI(
+    @SerializedName("diaryId") val diaryId : Int,
+    @SerializedName("mbtiCode") val mbtiCode : String
+)
 

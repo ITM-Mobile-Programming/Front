@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class WeatherRetrofitClient {
+class WriteNewPageRetrofitClient {
 
         private val okHttpClient by lazy {
         val logging = HttpLoggingInterceptor().apply {
@@ -33,10 +33,8 @@ class WeatherRetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val WeatherAPI = retrofit.create(LocationWeatherAPI::class.java)
-
-
-    fun getWeather(apikey:String, baseDate : Int, baseTime:Int, latitude: Short, longitude: Short, callback: WeatherCallback) {
+    private val WeatherAPI = retrofit.create(WeatherLocationAPI::class.java)
+    fun getWeather(apikey:String, baseDate : String, baseTime:String, latitude: Short, longitude: Short, callback: WeatherCallback) {
         Log.d("ITM", "Weather 함수 입성")
 
 //        WeatherAPI.getWeather(apikey, 24,1, "JSON", baseDate, baseTime, latitude, longitude)
@@ -64,20 +62,45 @@ class WeatherRetrofitClient {
 
                     //가져오면  if pty가 0이고 1이 맑, 2가 흐림, 3. 구름 많음,, 1256이라면 비, 3,7이면 눈
 
+                    //    category, FcstTime 가져와서 확인후 fcstValue를 체크한다
+                    // 만약 0이면 sky -> 1 -> 맑음,2 -> 흐림 ,3 -> 구름 많음
+                    // 만약 1,2,5,6 이면  -> 비
+                    // 이외에 것들은 눈으로 한다
+                    val pty = responseBody?.response?.body?.items?.item?.get(6)
+                    val sky = responseBody?.response?.body?.items?.item?.get(18)
+                    //2340 들어오면  0000 나온다  근데 나누면 2300 이여서 틀렸다고 나온다
+                    //0010 들어오면  0000나온다  그러면 +100 한값이 들어가도록
 
+                    val weatherCategory = if((pty?.category?.equals("PTY") == true )&& (sky?.category.equals("SKY"))){
+                        when(pty.fcstValue){
+                            "0"-> {
+                                when(sky?.fcstValue){
+                                    "1"-> { "Sunny"}
+                                    "2" -> {"LittleCloud"}
+                                    else->{
+                                        "Cloud"
+                                    }
 
+                                }
+                            }
+                            "1", "2","5","6" -> {"Rain"}
+                            else -> {
+                                "Snow"
+                            }
+                        }
+                    }else{
+                         "해당하는 시간, 정보가 아닙니다"
+                    }
 
 //                    1) Sunny 2) LittleCloud 3)Cloud 4)Rain 5) Snow
-//                    val weatherCategory  = "Sunny"
-//
-//                    callback.onSuccessWeather(weatherCategory)
+                    Log.d("ITM", "$weatherCategory")
+                    callback.onSuccessWeather(weatherCategory)
 
                 }else{
                     Log.d("ITM", "${response}")
                     callback.onErrorWeather(Exception("Response not successful"))
                 }
             }
-
 
             override fun onFailure(call: Call<WeatherTotalResponse>, t: Throwable) {
                 // 오류 처리
