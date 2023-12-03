@@ -47,6 +47,57 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
                 mainDiaryformatLocation.text = diaryItem.location
                 mainDiaryformatDiaryName.text = diaryItem.title
 
+//                1) Sunny 2) LittleCloud 3)Cloud 4)Rain 5) Snow
+
+
+                val ee = diaryItem.weatherCode
+                Log.d("ITM" , "날씨 $ee") // 폼 고처야함 good으로 나온다
+                when(diaryItem.weatherCode){
+                    "Sunny" -> {
+                        mainDiaryformatWeather.setImageResource(R.drawable.sunny)
+                    }
+                    "LittleCloud" ->{
+                        mainDiaryformatWeather.setImageResource(R.drawable.littlecloud)
+                    }
+                    "Cloud" ->{
+                        mainDiaryformatWeather.setImageResource(R.drawable.cloud)
+                    }
+                    "Rain" ->{
+                        mainDiaryformatWeather.setImageResource(R.drawable.rain)
+                    }
+                    "Snow" ->{
+                        mainDiaryformatWeather.setImageResource(R.drawable.snow)
+                    }
+                    else-> {
+                        mainDiaryformatWeather.setImageResource(R.drawable.none)
+                    }
+
+                }
+
+
+//                val weatherCategory = if((pty?.category?.equals("PTY") == true )&& (sky?.category.equals("SKY"))){
+//                    when(pty.fcstValue){
+//                        "0"-> {
+//                            when(sky?.fcstValue){
+//                                "1"-> { "Sunny"}
+//                                "2" -> {"LittleCloud"}
+//                                else->{
+//                                    "Cloud"
+//                                }
+//
+//                            }
+//                        }
+//                        "1", "2","5","6" -> {"Rain"}
+//                        else -> {
+//                            "Snow"
+//                        }
+//                    }
+//                }else{
+//                    "해당하는 시간, 정보가 아닙니다"
+//                }
+
+
+
 
                 var hashTag : String = ""
                 for ( i in 0..<diaryItem.hashTagList.size){

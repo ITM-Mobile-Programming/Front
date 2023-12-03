@@ -21,10 +21,11 @@
             android:id="@+id/main_diaryformat_mbti"/>
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:gravity="center"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:id="@+id/main_diaryformat_weather"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp" />
 
         <View
             android:layout_width="0dp"

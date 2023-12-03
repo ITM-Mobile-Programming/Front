@@ -221,10 +221,29 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
                     val currentDateTime = sdf.format(Date())
                     var currentDate = currentDateTime.substring(0,8)
                     var currentTime = currentDateTime.substring(8,12)
-                    //12부분 수정 필요
+                    //12부분 수정 필요 30이 안넘으면 -1하자  31부터는 그대로
 
+                    val minute = currentTime.substring(2,4)
+                    var hour = currentTime.substring(0,2).toInt()
+                    if(minute.toInt()<31){
+                        when (hour){
+                            0 ->{
+                                hour = 23
+                            }
+                            else -> {
+                                hour -= 1
+                            }
+                        }
+                        //만약 hour 이 10보다 작으면 앞에 0 추가
+                        //만약 hour이 1보다 크면 그냥 유지
+                        if(hour < 10){
+                            currentTime = "0$hour$minute"
+                        }else{
+                            currentTime = "$hour$minute"
+                        }
+
+                    }
                     // 로그에 출력 또는 화면에 표시
-                    // 무조건 30으로 맞춰소
                     Log.d("ITM", "날짜 :${currentDate}")
                     Log.d("ITM", "시간  :${currentTime}")
 
