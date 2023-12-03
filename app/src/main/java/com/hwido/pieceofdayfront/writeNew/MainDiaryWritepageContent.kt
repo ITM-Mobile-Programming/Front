@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -21,9 +20,12 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.R
-import com.hwido.pieceofdayfront.SeverMemberRequestAPI
+import com.hwido.pieceofdayfront.ServerApiService
+import com.hwido.pieceofdayfront.ServerResponseCallback
+import com.hwido.pieceofdayfront.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
+import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import com.karumi.dexter.Dexter
@@ -36,12 +38,19 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-class MainDiaryWritepageContent : AppCompatActivity() , KakaoResponseCallback{
+class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback, ServerResponseCallback {
 
     private lateinit var binding : MainDiarywritepageContentBinding
     private val kakaoAPI = KakaoRetrofitClient()
+    private val weatherAPI = WriteNewPageRetrofitClient()
+    private val conConverter = CoordinateTransformer()
+    private val  SpringServerCall= SpringServerAPI()
+
     //공유 sharedPreference
     // 이거  object class로 만들어서 뺼거임
     val sharedPreferences: SharedPreferences by lazy {
@@ -65,60 +74,23 @@ class MainDiaryWritepageContent : AppCompatActivity() , KakaoResponseCallback{
         requestLocation()
     }
 
-    val okHttpClient = OkHttpClient.Builder()
-        .readTimeout(100, TimeUnit.SECONDS)
-        .writeTimeout(100, TimeUnit.SECONDS)
-        .connectTimeout(100, TimeUnit.SECONDS)
-        .build()
+    override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
+        val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
+        intent.putExtra("numberPost", "$diaryId")
+        intent.putExtra("url","$hashTags")
+        intent.putExtra("hashTags","$imageUrl")
 
-
-    //레트로핏 설정
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("http://3.20.166.136/") // 서버의 기본 URL
-        .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create()) // JSON 변환을 위한 GsonConverterFactory 사용//이건 갈떄
-        .build()
-
-
-    private fun sendDiaryToGetImage(firstRequest : WriteDataRequest) {
-        val writeRequest = retrofit.create(SeverMemberRequestAPI::class.java)
-        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
-
-        writeRequest.postMemberDairy("Bearer $accessToken", firstRequest).enqueue(object :
-            Callback<BaseResponse2> {
-            override fun onResponse(call: Call<BaseResponse2>, response: Response<BaseResponse2>) {
-                if (response.isSuccessful) {
-                    val baseResponse  = response.body()
-
-                    Log.d("ITM","${baseResponse?.data?.hashTags.toString()}")
-                    Log.d("ITM","${baseResponse?.data.toString().substring(20,30)}")
-
-                    when (baseResponse?.status) {
-                        200 -> {
-                            try {
-                                val longToInt =baseResponse?.data?.diaryId?.toInt()
-                                val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
-                                intent.putExtra("numberPost", "$longToInt")
-                                intent.putExtra("url","${baseResponse?.data?.imageUrl}")
-                                intent.putExtra("hashTags","${baseResponse?.data?.hashTags}")
-
-                                startActivity(intent)
-                            }catch (e: JsonSyntaxException) {
-                                Log.e("ITM", "JSON 파싱 오류: ", e)
-                            }
-
-                        }
-                    }
-                } else
-                {Log.d("ITM", "${response}")}
-            }
-            // onFailure 구현...
-            override fun onFailure(call: Call<BaseResponse2>, t: Throwable) {
-                Log.d("ITM", "뺵엔드 연결실패 ${t.message}")
-
-            }
-        })
+        startActivity(intent)
     }
+
+    override fun onSuccessSpring(ouPutData: String) {
+        //방치
+    }
+
+    override fun onErrorSpring(error: Throwable) {
+        Log.d("ITM","Content 가져올 수 없음 ")
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,20 +99,23 @@ class MainDiaryWritepageContent : AppCompatActivity() , KakaoResponseCallback{
         setContentView(binding.root)
 
 
-
+        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
         //여기 인스턴스  전역으로 만들고
         binding.mainDiarywritepageContentBtn.setOnClickListener {
             val title = binding.writeTitle.text.toString()
             val content = binding.writeContent.text.toString()
             val location = binding.mainWriteLocation.text.toString()
 
+
             var writeRequestForm  = WriteDataRequest(title, content, location, "good")
             Log.d("ITM", "$writeRequestForm")
 
-            sendDiaryToGetImage(writeRequestForm)
+            SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
         }
 
     }
+
+
 
 
     // 수정 필요
@@ -237,15 +212,52 @@ class MainDiaryWritepageContent : AppCompatActivity() , KakaoResponseCallback{
         fusedLocationProviderClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null)
             .addOnSuccessListener { success: Location? ->
                 success?.let { location ->
-                    val apikey = getString(R.string.kaKaoApi)
+                    val kaKaoApikey = getString(R.string.kaKaoApi)
+                    val weatherAPIKey = getString(R.string.weatherAPI)
+                    // SimpleDateFormat을 사용하여 현재 날짜와 시간 형식 지정
+                    val sdf = SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault())
 
-                    Log.d("ITM","$apikey")
+                    // 현재 날짜와 시간 가져오기
+                    val currentDateTime = sdf.format(Date())
+                    var currentDate = currentDateTime.substring(0,8)
+                    var currentTime = currentDateTime.substring(8,12)
+                    //12부분 수정 필요 30이 안넘으면 -1하자  31부터는 그대로
+
+                    val minute = currentTime.substring(2,4)
+                    var hour = currentTime.substring(0,2).toInt()
+                    if(minute.toInt()<31){
+                        when (hour){
+                            0 ->{
+                                hour = 23
+                            }
+                            else -> {
+                                hour -= 1
+                            }
+                        }
+                        //만약 hour 이 10보다 작으면 앞에 0 추가
+                        //만약 hour이 1보다 크면 그냥 유지
+                        if(hour < 10){
+                            currentTime = "0$hour$minute"
+                        }else{
+                            currentTime = "$hour$minute"
+                        }
+
+                    }
+                    // 로그에 출력 또는 화면에 표시
+                    Log.d("ITM", "날짜 :${currentDate}")
+                    Log.d("ITM", "시간  :${currentTime}")
+
+                    Log.d("ITM","$kaKaoApikey")
 
                     Log.d("ITM","${location.longitude}, ${location.latitude}")
-                    //x, y 좌표까지 나옴
-                    kakaoAPI.getAddressFromCoordinates(apikey, location.longitude, location.latitude, this)
-//                    textView.text = kakaoAPI.location
+                    kakaoAPI.getAddressFromCoordinates(kaKaoApikey, location.longitude, location.latitude, this)
 
+
+
+                    val (latToGrid,longToGrid) = conConverter.convertLatLonToXY(location.latitude, location.longitude)
+//                    apikey:String, baseDate :String, baseTime:String, latitude: Double, longitude: Double, callback: ResponseCallback
+                    Log.d("ITM", " 경도 위도 ${latToGrid}, ${longToGrid}")
+                    weatherAPI.getWeather(weatherAPIKey, currentDate, currentTime, latToGrid.toShort(), longToGrid.toShort(), this)
                 }
             }
             .addOnFailureListener { fail ->
@@ -255,19 +267,27 @@ class MainDiaryWritepageContent : AppCompatActivity() , KakaoResponseCallback{
 
     }
 
-    override fun onSuccess(addressName: String) {
-
-        binding.mainWriteLocation.text = addressName
-
+    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
     }
 
-    override fun onError(error: Throwable) {
+    //위치 날씨 콜백함수 구현
+    override fun onSuccessLocation(ouPutData: String) {
+        binding.mainWriteLocation.text = ouPutData
+    }
 
+    override fun onErrorLocation(error: Throwable) {
         binding.mainWriteLocation.text = error.toString()
     }
 
 
+    override fun onSuccessWeather(weatherCategory: String) {
+        binding.weatherText.text = weatherCategory
+    }
 
+    override fun onErrorWeather(weatherError: Throwable) {
+        binding.weatherText.text = weatherError.toString()
+    }
+    ///
 
 
     //거절했는데 다시 누르면 설정가서 바꾸라

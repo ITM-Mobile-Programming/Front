@@ -1,17 +1,12 @@
 package com.hwido.pieceofdayfront.writeNew
 
-import android.content.Intent
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import com.hwido.pieceofdayfront.datamodel.KaKaoResponse
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 
 //콜백 구현으로 클래스와 엑티비티 소통
@@ -30,16 +25,13 @@ class KakaoRetrofitClient {
 //            .build()
 //    }
 
-
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://dapi.kakao.com/v2/local/geo/")
-//        .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
 
-    private val kakaoAPI = retrofit.create(KakaoAPI::class.java)
-//    lateinit var location : String
+    private val kakaoAPI = retrofit.create(WeatherLocationAPI::class.java)
 
 
     fun getAddressFromCoordinates(apikey:String, longitude: Double, latitude: Double,callback: KakaoResponseCallback) {
@@ -54,13 +46,13 @@ class KakaoRetrofitClient {
 //                    location = "군산"
 //                    location =
                     val addressName = responseBody?.documents?.get(0)?.address_name.toString()
-                    callback.onSuccess(addressName)
+                    callback.onSuccessLocation(addressName)
                     // 여기에서 regionName과 dongName을 사용하세요.
 //                    Log.d("ITM", "$location")
 
                 }else{
                     Log.d("ITM", "${response}")
-                    callback.onError(Exception("Response not successful"))
+                    callback.onErrorLocation(Exception("Response not successful"))
                 }
             }
 
@@ -68,7 +60,7 @@ class KakaoRetrofitClient {
             override fun onFailure(call: Call<KaKaoResponse>, t: Throwable) {
                 // 오류 처리
                 Log.d("ITM", "카카오 연결실패 ${t.message}")
-                callback.onError(t)
+                callback.onErrorLocation(t)
             }
         })
     }

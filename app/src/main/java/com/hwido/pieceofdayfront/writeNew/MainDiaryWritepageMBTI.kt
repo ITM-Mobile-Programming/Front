@@ -1,14 +1,39 @@
 package com.hwido.pieceofdayfront.writeNew
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.SeekBar
-import com.hwido.pieceofdayfront.MainDiaryWritepage
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import com.hwido.pieceofdayfront.MainMainpage
+import com.hwido.pieceofdayfront.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageMbtiBinding
+import com.hwido.pieceofdayfront.datamodel.SendMBTI
+import com.hwido.pieceofdayfront.datamodel.reloadDairy
+import com.hwido.pieceofdayfront.login.LoginMainpage
 
 class MainDiaryWritepageMBTI : AppCompatActivity() {
+    val sharedPreferences: SharedPreferences by lazy {
+        val masterKeyAlias = MasterKey
+            .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        EncryptedSharedPreferences.create(
+            applicationContext,
+            LoginMainpage.FILE_NAME,
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+
     private lateinit var binding : MainDiarywritepageMbtiBinding
+    private val springServer = SpringServerAPI()
     private var iScore = 0
     private var eScore = 0
     private var sScore = 0
@@ -23,6 +48,8 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         binding = MainDiarywritepageMbtiBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 엄청난 MBTI 검사의 향연
+        // 내부 로직을 통해 만든 후에  서버로 MBTI만 보내면된다
         // I vs E
         // 1번
         binding.mainDiarywritepageThirdfragmentCheckbox1.setOnClickListener {
@@ -88,7 +115,6 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
                     nScore++
                 }
             }
-
             override fun onStartTrackingTouch(p0: SeekBar?) {
             }
 
@@ -142,11 +168,25 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
             onCheckBoxClicked("F")
         }
 
+        val diaryId = intent.getStringExtra("numberPost")?.toInt()!!
+        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
+
+
+
+        //MainActivity로 intent를 보내서 intent를 Extras 해서 있으면 두번째 fragment로 이동하게 한다
         binding.mainDiarywritepageMBTISaveBtn.setOnClickListener {
             val result = determineResult()
-            val intent = Intent(this, MainDiaryWritepage::class.java)
-            startActivity(intent)
+            Log.d("ITM" ,"$result, $diaryId, $accessToken")
+            val diaryMBTIForm = SendMBTI(diaryId, result)
+            // result를 일단 보낸다 // id 가져와야됨
+            springServer.sendDiaryWithMBTI(diaryMBTIForm, accessToken)
 
+            // 그리고 프레트 먼드로 간다
+            // MainActivity로 이동하는 인텐트 생성
+            val intent = Intent(this, MainMainpage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            intent.putExtra("FRAGMENT_NAME", "MainWriteFragment")
+            startActivity(intent)
         }
     }
 

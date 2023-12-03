@@ -52,3 +52,13 @@ data class KaKaoAddress(
     @SerializedName("x") val log :String?,
     @SerializedName("y") val lat :String?,
 )
+
+data class reloadDairy(
+    @SerializedName("diaryId") val diaryId : Int
+)
+
+data class SendMBTI(
+    @SerializedName("diaryId") val diaryId : Int,
+    @SerializedName("mbtiCode") val mbtiCode : String
+)
+

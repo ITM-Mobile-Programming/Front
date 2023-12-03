@@ -1,9 +1,11 @@
 package com.hwido.pieceofdayfront
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
 import android.content.SharedPreferences
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
@@ -14,8 +16,8 @@ class MainMainpage : AppCompatActivity() {
 
 
     private lateinit var binding: MainMainpageBinding
+    private lateinit var secondFragment : Fragment
 
-    // sharepreference에  서버 토큰 저장하는것은 맞다
     val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlias = MasterKey
             .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
@@ -32,15 +34,33 @@ class MainMainpage : AppCompatActivity() {
         )
     }
 
+
+    // 누르면 여기로 바로 이졷
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.getStringExtra("FRAGMENT_NAME") == "MainWriteFragment") {
+            displaySecondFragment()
+        }
+    }
+
+    private fun displaySecondFragment() {
+        // SecondFragment를 표시하는 코드
+        supportFragmentManager.beginTransaction()
+            .replace(binding.mainMainpageBaseframe.id, secondFragment)
+            .commit()
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainMainpageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
-        val firstFragment = MainListpageFragment()
-        val secondFragment = MainDiaryWritepageFragment()
-        val thridFragment = MainDiarySharepageFragment()
-        val fourthFragment = MainMypageFragment()
+        val firstFragment = MainListpageFragment.newInstance(accessToken)
+        secondFragment = MainDiaryWritepageFragment.newInstance(accessToken)
+        val thridFragment = MainDiarySharepageFragment.newInstance(accessToken)
+        val fourthFragment = MainMypageFragment.newInstance(accessToken)
 
         val fManager = supportFragmentManager
         fManager.commit {
@@ -58,13 +78,16 @@ class MainMainpage : AppCompatActivity() {
         }
 
 
+        // 여기 부분 넘겨주면 Fragment에서
         binding.mainButtonDiaryWrite.setOnClickListener {
             fManager.commit{
+//                getDiaryList()
                 replace(binding.mainMainpageBaseframe.id,secondFragment)
             }
         }
 
         binding.mainButtonDiaryShare.setOnClickListener {
+
             fManager.commit{
                 replace(binding.mainMainpageBaseframe.id,thridFragment)
             }

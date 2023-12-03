@@ -21,6 +21,7 @@ class DiaryShareAdapter(private val diaryItems: List<DiaryListLoad>) : RecyclerV
         holder.bind(diaryItem)
     }
 
+
     override fun getItemCount(): Int {
         return diaryItems.size
     }

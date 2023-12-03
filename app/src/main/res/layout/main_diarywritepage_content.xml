@@ -34,7 +34,7 @@
             android:gravity="center"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="위치 설정 중 입니다..."
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"/>
@@ -55,18 +55,16 @@
             android:layout_marginLeft="10dp"/>
 
         <TextView
+            android:id="@+id/weatherText"
             android:gravity="center"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="날씨를 불러오고 있습니다..."
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
-
-
-
 
 
 
