@@ -1,6 +1,5 @@
 package com.hwido.pieceofdayfront.writeNew
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -8,40 +7,28 @@ import android.content.SharedPreferences
 import android.location.Location
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
-import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.R
-import com.hwido.pieceofdayfront.ServerApiService
 import com.hwido.pieceofdayfront.ServerResponseCallback
 import com.hwido.pieceofdayfront.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
-import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.login.LoginMainpage
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.concurrent.TimeUnit
+
 
 class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback, ServerResponseCallback {
 
@@ -67,6 +54,31 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
     }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private val permissions29 = arrayOf(
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+//        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    )
+
+    private val permissions28 = arrayOf(
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+    )
+
+    private val requestMultiplePermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            // Handle the permissions result
+            val allPermissionsGranted = permissions.entries.all { it.value }
+            if (allPermissionsGranted) {
+                // All permissions are granted
+                getLocation()
+            } else {
+                showRotationalDialogForPermission()
+            }
+        }
+
 
     //back 해도 돌아가게 해야됨
     override fun onResume() {
@@ -105,10 +117,11 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             val title = binding.writeTitle.text.toString()
             val content = binding.writeContent.text.toString()
             val location = binding.mainWriteLocation.text.toString()
+            val weather = binding.weatherText.text.toString()
 
-
-            var writeRequestForm  = WriteDataRequest(title, content, location, "good")
-            Log.d("ITM", "$writeRequestForm")
+            //수정필요
+            var writeRequestForm  = WriteDataRequest(title, content, location, weather)
+//            Log.d("ITM", "$writeRequestForm")
 
             SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
         }
@@ -116,94 +129,25 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
     }
 
 
-
-
     // 수정 필요
     private fun requestLocation() {
         Log.d("ITM","위치권한요청")
         if (Build.VERSION.SDK_INT >= 29) {
-            Dexter.withContext(this)
-                .withPermissions(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                ).withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        report.let {
-
-                            if (report!!.areAllPermissionsGranted()) {
-                                //여기를 못들어옴
-                                Toast.makeText(
-                                    this@MainDiaryWritepageContent,
-                                    "Permission Granted",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                getLocation()
-                            }//여쪽으로 못들어오는것 같은데
-                            else {
-                                Toast.makeText(
-                                    this@MainDiaryWritepageContent,
-                                    "onePermission notGranted",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                        }
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                        p0: MutableList<com.karumi.dexter.listener.PermissionRequest>?,
-                        p1: PermissionToken?
-                    ) {
-                        showRotationalDialogForPermission()
-
-                    }
-                }
-                ).onSameThread().check()
-
+            // PermissionSupport.java 클래스 객체 생성
+            requestMultiplePermissions.launch(
+                permissions29
+            )
         }else {
-            Dexter.withContext(this)
-                .withPermissions(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                ).withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        report.let {
-                            //카메라 허락 받으면 카메라 킨다
-                            //처음 허락 받았을때말고 다음에는 허락 없이가나 그럼?
-                            //암튼 버튼 눌렀을떄 어떤 기능이 지금 실행이 안여기
-                            if (report!!.areAllPermissionsGranted()) {
-                                //여기를 못들어옴
-                                Toast.makeText(
-                                    this@MainDiaryWritepageContent,
-                                    "Permission Granted",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                getLocation()
-                            }//여쪽으로 못들어오는것 같은데
-                            else {
-                                Toast.makeText(
-                                    this@MainDiaryWritepageContent,
-                                    "onePermission notGranted",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+            requestMultiplePermissions.launch(
+                permissions28
+            )
 
-                        }
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(
-                        p0: MutableList<com.karumi.dexter.listener.PermissionRequest>?,
-                        p1: PermissionToken?
-                    ) {
-                        showRotationalDialogForPermission()
-
-                    }
-                }
-                ).onSameThread().check()
 
         }
     }
+
+
+
 
     @SuppressLint("MissingPermission")//경고 무시해~~
     private fun getLocation() {

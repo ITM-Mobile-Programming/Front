@@ -176,7 +176,7 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         //MainActivity로 intent를 보내서 intent를 Extras 해서 있으면 두번째 fragment로 이동하게 한다
         binding.mainDiarywritepageMBTISaveBtn.setOnClickListener {
             val result = determineResult()
-            Log.d("ITM" ,"$result, $diaryId, $accessToken")
+//            Log.d("ITM" ,"$result, $diaryId, $accessToken")
             val diaryMBTIForm = SendMBTI(diaryId, result)
             // result를 일단 보낸다 // id 가져와야됨
             springServer.sendDiaryWithMBTI(diaryMBTIForm, accessToken)
@@ -189,7 +189,6 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     // score update 해주기
     private fun onCheckBoxClicked(type: String) {
         when (type) {

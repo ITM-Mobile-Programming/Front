@@ -61,7 +61,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //dexter
-    implementation("com.karumi:dexter:6.2.3")
+    implementation ("com.karumi:dexter:6.2.3")
 
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
@@ -94,5 +94,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation ("androidx.activity:activity-ktx:1.4.0")
+
 
 }

@@ -52,7 +52,6 @@ class SpringServerAPI {
                         200 -> {
                             try {
                                 val longToInt =baseResponse.data?.diaryId?.toInt()!!
-
                                 val hashTag = baseResponse.data?.hashTags.toString()
                                 val url = baseResponse.data?.imageUrl!!
 
@@ -156,7 +155,7 @@ class SpringServerAPI {
 
                     when (baseResponse?.statusCode) {
                         200 -> {
-                            Log.d("ITM","${baseResponse.data.toString()}")
+//                            Log.d("ITM","${baseResponse.data.toString()}")
                             try {
                                 //받은 데이터을 받은 폼으로 리스트로 넘겨준다
                                 //바로 변수로 받고 리사이클러 뷰에 넣는다

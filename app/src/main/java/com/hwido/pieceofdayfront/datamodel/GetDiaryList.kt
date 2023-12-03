@@ -13,6 +13,7 @@ data class DiaryEntry(
     val weatherCode: String,
     val thumbnailUrl: String,
     val hashTagList: List<HashTag>
+    //MBTI가 있는지?
 )
 
 data class HashTag(
