@@ -23,7 +23,7 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.hwido.pieceofdayfront.R
-import com.hwido.pieceofdayfront.ServerApiService
+import com.hwido.pieceofdayfront.ServerAPI.ServerApiService
 import com.hwido.pieceofdayfront.databinding.LoginSignInProfilePictureBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.LoginSuccessResponse
@@ -143,11 +143,6 @@ class LoginSignInProfilePicture : AppCompatActivity() {
         val requestFile = RequestBody.create("image/*".toMediaTypeOrNull(), byteArray)
         val filePart = MultipartBody.Part.createFormData("file", "filename${memberId}.png", requestFile)
 
-//        val filePath = fileUri.path
-//        val file = File(filePath)
-
-
-//        Log.d("ITM","이미지 파일 담기 완료 ${body}")
 
         //여기서 리퀘스트 실패 한거임
             Server_service.postProfileSignUp(memberId!!, filePart).enqueue(object : Callback<BaseResponse> {

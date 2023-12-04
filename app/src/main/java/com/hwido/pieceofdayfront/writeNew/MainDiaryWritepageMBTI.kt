@@ -9,10 +9,9 @@ import android.widget.SeekBar
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.hwido.pieceofdayfront.MainMainpage
-import com.hwido.pieceofdayfront.SpringServerAPI
+import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageMbtiBinding
 import com.hwido.pieceofdayfront.datamodel.SendMBTI
-import com.hwido.pieceofdayfront.datamodel.reloadDairy
 import com.hwido.pieceofdayfront.login.LoginMainpage
 
 class MainDiaryWritepageMBTI : AppCompatActivity() {
@@ -42,6 +41,8 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
     private var fScore = 0
     private var jScore = 0
     private var pScore = 0
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +82,11 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         binding.mainDiarywritepageThirdfragmentCheckBox4.setOnClickListener {
             onCheckBoxClicked("E")
         }
+
+
+
+
+
         
         // S vs N
         // 4번
@@ -90,6 +96,7 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         binding.mainDiarywritepageThirdfragmentCheckBox6.setOnClickListener {
             onCheckBoxClicked("N")
         }
+
         // 5번
         binding.mainDiarywritepageThirdfragmentSeekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -148,24 +155,24 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         // J vs P
         // 10번
         binding.mainDiarywritepageThirdfragmentCheckbox13.setOnClickListener {
-            onCheckBoxClicked("T")
+            onCheckBoxClicked("J")
         }
         binding.mainDiarywritepageThirdfragmentCheckBox14.setOnClickListener {
-            onCheckBoxClicked("F")
+            onCheckBoxClicked("P")
         }
         // 11번
         binding.mainDiarywritepageThirdfragmentCheckbox15.setOnClickListener {
-            onCheckBoxClicked("T")
+            onCheckBoxClicked("J")
         }
         binding.mainDiarywritepageThirdfragmentCheckBox16.setOnClickListener {
-            onCheckBoxClicked("F")
+            onCheckBoxClicked("P")
         }
         // 12번
         binding.mainDiarywritepageThirdfragmentCheckbox17.setOnClickListener {
-            onCheckBoxClicked("T")
+            onCheckBoxClicked("J")
         }
         binding.mainDiarywritepageThirdfragmentCheckBox18.setOnClickListener {
-            onCheckBoxClicked("F")
+            onCheckBoxClicked("P")
         }
 
         val diaryId = intent.getStringExtra("numberPost")?.toInt()!!
@@ -176,7 +183,7 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         //MainActivity로 intent를 보내서 intent를 Extras 해서 있으면 두번째 fragment로 이동하게 한다
         binding.mainDiarywritepageMBTISaveBtn.setOnClickListener {
             val result = determineResult()
-//            Log.d("ITM" ,"$result, $diaryId, $accessToken")
+            Log.d("MBTI" ,"MBTI : $result")
             val diaryMBTIForm = SendMBTI(diaryId, result)
             // result를 일단 보낸다 // id 가져와야됨
             springServer.sendDiaryWithMBTI(diaryMBTIForm, accessToken)
@@ -205,8 +212,18 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
 
     // 결과값 정해주기. 3개 질문 중, 더 많은 대답 나온 쪽으로 결정된다
     private fun determineResult(): String {
+
+        Log.d("MBTI","$iScore")
+        Log.d("MBTI","$eScore")
+        Log.d("MBTI","$sScore")
+        Log.d("MBTI","$nScore")
+        Log.d("MBTI","$tScore")
+        Log.d("MBTI","$fScore")
+        Log.d("MBTI","$jScore")
+        Log.d("MBTI","$pScore")
+
         return when {
-            iScore > eScore -> "I"
+            iScore > eScore ->"I"
             eScore > iScore -> "E"
             sScore > nScore -> "S"
             nScore > sScore -> "N"
@@ -216,5 +233,9 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
             pScore > jScore -> "P"
             else -> "Wrong"
         }
+
     }
+
+
+
 }

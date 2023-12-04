@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.ServerAPI
 
 
 import com.hwido.pieceofdayfront.datamodel.BaseResponse

@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.ServerAPI
 
 import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import org.jetbrains.annotations.ApiStatus.OverrideOnly

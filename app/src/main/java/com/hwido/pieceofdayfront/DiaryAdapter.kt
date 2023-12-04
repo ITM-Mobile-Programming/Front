@@ -2,6 +2,7 @@ package com.hwido.pieceofdayfront
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,6 +18,16 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
         return DiaryViewHolder(binding)
     }
 
+    interface ItemClick{
+        fun onClick(view: View, position: Int)
+    }
+
+    fun getItem(position: Int): DiaryEntry {
+        return diaryItems[position]
+    }
+
+    var itemClick : ItemClick? = null
+
     fun updateData(newDiaryList: List<DiaryEntry>) {
         diaryItems = newDiaryList
         notifyDataSetChanged()
@@ -24,12 +35,22 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
 
     override fun onBindViewHolder(holder: DiaryViewHolder, position: Int) {
         val diaryItem = diaryItems[position]
+
+        if(itemClick != null){
+            holder?.itemView!!.setOnClickListener { v->
+                itemClick!!.onClick(v,position)
+            }
+        }
+
         holder.bind(diaryItem)
     }
 
     override fun getItemCount(): Int {
         return diaryItems.size
     }
+
+
+
 
 
     inner class DiaryViewHolder(private val binding: MainDiaryformatBinding) :

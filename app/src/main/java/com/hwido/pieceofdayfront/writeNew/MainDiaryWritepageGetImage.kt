@@ -5,19 +5,21 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.bumptech.glide.Glide
-import com.hwido.pieceofdayfront.ServerResponseCallback
-import com.hwido.pieceofdayfront.SpringServerAPI
+import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
+import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageGetimageBinding
 import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.datamodel.reloadDairy
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import kotlin.properties.Delegates
 
-class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
+class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback {
     private lateinit var binding : MainDiarywritepageGetimageBinding
     private var retryCount by Delegates.notNull<Int>()
     private val springServer = SpringServerAPI()
@@ -49,6 +51,7 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
                     .load(ouPutData)
                     .fitCenter()
                     .into(binding.mainDiarywritepageSecondShowImage)
+        hideProgressBar()
     }
 
     override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
@@ -91,6 +94,7 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
 
             }else{
                 //api  호출
+                showProgressBar()
                 springServer.reloadDiaryToGetImage(diaryForm,accessToken,this)
             }
             retryCount+=1
@@ -107,6 +111,29 @@ class MainDiaryWritepageGetImage : AppCompatActivity(), ServerResponseCallback{
         }
 
     }
+    private fun showProgressBar() {
+        val pBar = binding.mainDiarywritepageGetImageProgressBar
+        blockLayoutTouch()
+        pBar.isVisible = true
+    }
+
+    // 프로그레스바 숨기기
+    private fun hideProgressBar() {
+        val pBar = binding.mainDiarywritepageGetImageProgressBar
+        clearBlockLayoutTouch()
+        pBar.isVisible = false
+    }
+
+    // 화면 터치 막기
+    private fun blockLayoutTouch() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    // 화면 터치 풀기
+    private fun clearBlockLayoutTouch() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
 
 
 }

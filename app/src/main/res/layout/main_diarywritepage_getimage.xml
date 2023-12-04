@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".writeNew.MainDiaryWritepageGetImage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".writeNew.MainDiaryWritepageGetImage"
+
     android:orientation="vertical">
+
 
     <TextView
         android:layout_width="match_parent"
@@ -15,15 +22,6 @@
         android:textSize="20dp"
         android:gravity="center"
         android:layout_margin="10dp"/>
-
-
-
-    <ProgressBar
-        android:id="@+id/main_diarywritepage_GetImage_progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,6 +56,10 @@
         android:layout_marginRight="20dp"
         android:hint="여기에 해시태그가 표시됩니다." />
 
+
+
+
+
     <ImageView
         android:layout_gravity="center"
         android:layout_width="350dp"
@@ -75,5 +77,13 @@
         android:id="@+id/main_diarywritepage_secondfragment_btn"/>
 
 
-
 </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/main_diarywritepage_GetImage_progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+</FrameLayout>
