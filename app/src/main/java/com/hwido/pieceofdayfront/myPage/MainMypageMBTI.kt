@@ -1,11 +1,12 @@
-package com.example.mobileprogramming
+package com.hwido.pieceofdayfront.myPage
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.hwido.pieceofdayfront.R
 
-class MainActivity : AppCompatActivity() {
+class MainMypageMBTI : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.main_mypage_mbti)
     }
 }

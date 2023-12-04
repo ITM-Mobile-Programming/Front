@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".writeNew.MainDiaryWritepageGetImage"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이미지 생성"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_margin="10dp"/>
+
+
+
+    <ProgressBar
+        android:id="@+id/main_diarywritepage_GetImage_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="설정된 해시태그"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/writeImageReload"
+            android:layout_marginStart="60dp"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="이미지 재생성"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:gravity="center"
+        android:textSize="20dp"
+        android:id="@+id/main_diarywritepageGetImage_showHashtag"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:hint="여기에 해시태그가 표시됩니다." />
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_width="350dp"
+        android:layout_height="370dp"
+        android:layout_margin="20dp"
+        android:background="#BDB8B8"
+        android:id="@+id/main_diarywritepage_second_showImage"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘 당신의 기분을 알려주세요"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/main_diarywritepage_secondfragment_btn"/>
+
+
+
+</LinearLayout>
