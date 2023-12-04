@@ -36,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.google.firebase.auth.GoogleAuthProvider
 import com.hwido.pieceofdayfront.MainMainpage
 import com.hwido.pieceofdayfront.R
-import com.hwido.pieceofdayfront.ServerApiService
+import com.hwido.pieceofdayfront.ServerAPI.ServerApiService
 
 // 제대로 안나오는거 해결해야된다
 class LoginMainpage : AppCompatActivity() {

@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
-import com.hwido.pieceofdayfront.ServerApiService
+import com.hwido.pieceofdayfront.ServerAPI.ServerApiService
 import com.hwido.pieceofdayfront.databinding.LoginSigninpageBinding
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.SignUpRequest
