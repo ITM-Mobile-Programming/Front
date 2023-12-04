@@ -1,9 +1,6 @@
-package com.hwido.pieceofdayfront;
+package com.hwido.pieceofdayfront.ServerAPI;
 
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.BasicResponse
@@ -38,7 +35,10 @@ class SpringServerAPI {
     val writeRequest = retrofit.create(ServerApiService ::class.java)
 
     //콜백으로 받아온다 그후 intent 한다
-    fun sendDiaryToGetImage(firstRequest : WriteDataRequest, accessToken :String, callback:ServerResponseCallback) {
+    fun sendDiaryToGetImage(firstRequest : WriteDataRequest, accessToken :String, callback: ServerResponseCallback) {
+
+
+        
         writeRequest.postMemberDairy("Bearer $accessToken", firstRequest).enqueue(object :
             Callback<BaseResponse2> {
             override fun onResponse(call: Call<BaseResponse2>, response: Response<BaseResponse2>) {
@@ -77,7 +77,7 @@ class SpringServerAPI {
 
 
 
-    fun reloadDiaryToGetImage(firstRequest : reloadDairy, accessToken :String, callback:ServerResponseCallback) {
+    fun reloadDiaryToGetImage(firstRequest : reloadDairy, accessToken :String, callback: ServerResponseCallback) {
         writeRequest.reloadMemberDairy("Bearer $accessToken",firstRequest).enqueue(object :
             Callback<BaseResponse2> {
             override fun onResponse(call: Call<BaseResponse2>, response: Response<BaseResponse2>) {
@@ -141,7 +141,7 @@ class SpringServerAPI {
     }
 
 
-    fun getDiaryList(accessToken :String, callback:ServerResponseCallback) {
+    fun getDiaryList(accessToken :String, callback: ServerResponseCallback) {
         Log.d("ITM", "리스트 함수 들어옴1 ")
         writeRequest.getDiaryList("Bearer $accessToken").enqueue(object :
             Callback<getDiaryResponse> {

@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
+import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
 import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.writeNew.MainDiaryWritepageContent
@@ -22,7 +25,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MainDiaryWritepageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
+class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private lateinit var binding: MainDiarywritepageBinding
@@ -77,6 +80,65 @@ class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
             layoutManager = LinearLayoutManager(context) // 여기에서 LinearLayoutManager를 설정합니다.
             adapter = diaryAdapter
         }
+
+        diaryAdapter.itemClick = object: DiaryAdapter.ItemClick{
+            override fun onClick(view: View, position: Int) {
+
+                val clickedItem = diaryAdapter.getItem(position)
+
+                val location = clickedItem.location
+                val weatherCode = clickedItem.weatherCode
+                val content = clickedItem.context
+                val hashTags = clickedItem.hashTagList.toString()
+                val imageUrl = clickedItem.thumbnailUrl.toString()
+                val title = clickedItem.title
+
+                //아이템 데이터 가져와서 여기 레이아웃에 넣어주고 돌린다
+
+
+
+
+                val detailPage = binding.mainShowDetailContents
+                binding.mainDiaryformatPopupDiaryName.text = title
+                binding.mainDiaryformatPopupDiaryImage
+//                binding.mainDiaryformatPopupDate.text =
+                binding.mainDiaryformatPopupLocation.text = location
+                binding.mainDiaryformatPopupDetail.text = content
+
+
+                when(weatherCode){
+                    "Sunny" -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.sunny)
+                    }
+                    "LittleCloud" ->{
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.littlecloud)
+                    }
+                    "Cloud" ->{
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.cloud)
+                    }
+                    "Rain" ->{
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.rain)
+                    }
+                    "Snow" ->{
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.snow)
+                    }
+                    else-> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.none)
+                    }
+
+                }
+//                binding.mainDiaryformatPopupHastag.text = hashTags
+
+                detailPage.isVisible = true
+//
+            }
+        }
+
+        binding.backToLinearpage.setOnClickListener {
+            val detailPage = binding.mainShowDetailContents
+            detailPage.isVisible = false
+        }
+
 
 
         binding.mainDiarywritepageWriteDiary.setOnClickListener {
