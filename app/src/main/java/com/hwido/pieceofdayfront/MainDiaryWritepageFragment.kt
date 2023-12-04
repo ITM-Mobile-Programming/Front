@@ -46,8 +46,9 @@ class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
     }
 
     override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
-        Log.d("ITM", "리스트 콜백 ")
+        Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
         diaryAdapter.updateData(diaryList.reversed())
+
         // adapter를 recyclerview에 설정
     }
     override fun onSuccessSpring(ouPutData: String) {
@@ -76,7 +77,6 @@ class MainDiaryWritepageFragment : Fragment() ,ServerResponseCallback{
             layoutManager = LinearLayoutManager(context) // 여기에서 LinearLayoutManager를 설정합니다.
             adapter = diaryAdapter
         }
-
 
 
         binding.mainDiarywritepageWriteDiary.setOnClickListener {

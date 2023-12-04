@@ -34,7 +34,6 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
 
     inner class DiaryViewHolder(private val binding: MainDiaryformatBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(diaryItem: DiaryEntry) {
             binding.apply {
                 // mbti 관련 data 있어야 함
@@ -75,32 +74,10 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
                 }
 
 
-//                val weatherCategory = if((pty?.category?.equals("PTY") == true )&& (sky?.category.equals("SKY"))){
-//                    when(pty.fcstValue){
-//                        "0"-> {
-//                            when(sky?.fcstValue){
-//                                "1"-> { "Sunny"}
-//                                "2" -> {"LittleCloud"}
-//                                else->{
-//                                    "Cloud"
-//                                }
-//
-//                            }
-//                        }
-//                        "1", "2","5","6" -> {"Rain"}
-//                        else -> {
-//                            "Snow"
-//                        }
-//                    }
-//                }else{
-//                    "해당하는 시간, 정보가 아닙니다"
-//                }
-
-
 
 
                 var hashTag : String = ""
-                for ( i in 0..<diaryItem.hashTagList.size){
+                for ( i in 0..< diaryItem.hashTagList.size){
                     hashTag += diaryItem.hashTagList[i].hashTag
                 }
 
@@ -109,7 +86,7 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
                 // 날짜 관련 data 필요
                 //mainDiaryformatDate.text = diaryItem.
 
-                Log.d("ITM","${diaryItem.thumbnailUrl}")
+//                Log.d("ITM","${diaryItem.thumbnailUrl}")
                 Glide.with(root.context)
                     .load(diaryItem.thumbnailUrl)
                     .fitCenter()
