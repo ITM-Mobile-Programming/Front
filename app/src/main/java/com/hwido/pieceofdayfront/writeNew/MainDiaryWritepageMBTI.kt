@@ -148,24 +148,24 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         // J vs P
         // 10번
         binding.mainDiarywritepageThirdfragmentCheckbox13.setOnClickListener {
-            onCheckBoxClicked("T")
+            onCheckBoxClicked("J")
         }
         binding.mainDiarywritepageThirdfragmentCheckBox14.setOnClickListener {
-            onCheckBoxClicked("F")
+            onCheckBoxClicked("P")
         }
         // 11번
         binding.mainDiarywritepageThirdfragmentCheckbox15.setOnClickListener {
-            onCheckBoxClicked("T")
+            onCheckBoxClicked("J")
         }
         binding.mainDiarywritepageThirdfragmentCheckBox16.setOnClickListener {
-            onCheckBoxClicked("F")
+            onCheckBoxClicked("P")
         }
         // 12번
         binding.mainDiarywritepageThirdfragmentCheckbox17.setOnClickListener {
-            onCheckBoxClicked("T")
+            onCheckBoxClicked("J")
         }
         binding.mainDiarywritepageThirdfragmentCheckBox18.setOnClickListener {
-            onCheckBoxClicked("F")
+            onCheckBoxClicked("P")
         }
 
         val diaryId = intent.getStringExtra("numberPost")?.toInt()!!
