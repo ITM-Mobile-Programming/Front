@@ -10,10 +10,12 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.android.gms.location.LocationServices
@@ -30,7 +32,8 @@ import java.util.Date
 import java.util.Locale
 
 
-class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback, ServerResponseCallback {
+class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback,
+    ServerResponseCallback {
 
     private lateinit var binding : MainDiarywritepageContentBinding
     private val kakaoAPI = KakaoRetrofitClient()
@@ -92,6 +95,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
         intent.putExtra("url","$hashTags")
         intent.putExtra("hashTags","$imageUrl")
 
+//        hideProgressBar()
         startActivity(intent)
     }
 
@@ -124,7 +128,9 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
 //            Log.d("ITM", "$writeRequestForm")
 
             SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
+//            showProgressBar()
         }
+
 
     }
 
@@ -261,6 +267,29 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             }.show()
     }
 
+    // 프로그레스바 보이기
+//    private fun showProgressBar() {
+//        val pBar = binding.mainDiarywritepageContentProgressBar
+//        blockLayoutTouch()
+//        pBar.isVisible = true
+//    }
+//
+//    // 프로그레스바 숨기기
+//    private fun hideProgressBar() {
+//        val pBar = binding.mainDiarywritepageContentProgressBar
+//        clearBlockLayoutTouch()
+//        pBar.isVisible = false
+//    }
+
+    // 화면 터치 막기
+    private fun blockLayoutTouch() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    // 화면 터치 풀기
+    private fun clearBlockLayoutTouch() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
 
 
 }

@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "348919961549-220q1tjjn4vtfidc0h8jbcj6uq0uvtar.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwido.pieceofdayfront",
+            "certificate_hash": "9889da9409a2b0cfd71ddc9de4ad3980a099626c"
+          }
+        },
+        {
           "client_id": "348919961549-e2vssjlge0tp5g2v57hc11trr5hsomhj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hwido.pieceofdayfront",
             "certificate_hash": "2bb70d2678d987e52f8e329ddad517b98a46cdb1"
+          }
+        },
+        {
+          "client_id": "348919961549-k2u2f2se1jkr6nbai4ku6e5beftv2l9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwido.pieceofdayfront",
+            "certificate_hash": "409da3b6d9b4f4b636a0afcb30f4365206e5f10a"
           }
         },
         {
