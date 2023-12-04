@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainMypage"
+    tools:context=".myPage.MainMypageFragment"
     android:orientation="vertical">
 
     <LinearLayout
@@ -79,41 +79,59 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="내가 공유한 글"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/main_mypage_shareNumber"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/main_mypage_sharepageBtn"
+            android:src="@drawable/pagemove"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="4">
+        android:layout_margin="10dp">
 
-        <Button
-            android:id="@+id/main_button_diaryList"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="일기 목록"
-            android:textSize="12sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MBTI 상세 통계"
+            android:layout_gravity="center"
+            android:textSize="20sp"/>
 
-        <Button
-            android:id="@+id/main_button_diaryWrite"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="일기 작성"
-            android:textSize="12sp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/main_button_diaryShare"
-            android:layout_width="100dp"
+        <ImageButton
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="친구와 공유"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/main_button_myPage"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:text="마이 페이지"
-            android:textSize="12sp" />
+            android:id="@+id/main_mypage_mbtipageBtn"
+            android:src="@drawable/pagemove"/>
 
     </LinearLayout>
 

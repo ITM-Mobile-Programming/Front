@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "348919961549",
+    "project_id": "pieceofday-5d466",
+    "storage_bucket": "pieceofday-5d466.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348919961549:android:e7de9bb0865ac780989684",
+        "android_client_info": {
+          "package_name": "com.hwido.pieceofdayfront"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348919961549-e2vssjlge0tp5g2v57hc11trr5hsomhj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwido.pieceofdayfront",
+            "certificate_hash": "2bb70d2678d987e52f8e329ddad517b98a46cdb1"
+          }
+        },
+        {
+          "client_id": "348919961549-q41k1adg20l997d5i5rgderv4aiem44l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hwido.pieceofdayfront",
+            "certificate_hash": "c7787eca0591ef0d4af16a1ef0101c2d527c493b"
+          }
+        },
+        {
+          "client_id": "348919961549-rkupfnefm941q6vo5oal60clqtu03uoh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbm0bJc6FOqbVmPhNsnkPUvUHHmmgDqz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348919961549-rkupfnefm941q6vo5oal60clqtu03uoh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

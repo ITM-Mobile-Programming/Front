@@ -3,61 +3,106 @@ package com.hwido.pieceofdayfront
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CalendarView
-import android.widget.TextView
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
+import android.content.SharedPreferences
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import com.hwido.pieceofdayfront.login.LoginMainpage
+import com.hwido.pieceofdayfront.myPage.MainMypageFragment
 
 class MainMainpage : AppCompatActivity() {
+
+
+    private lateinit var binding: MainMainpageBinding
+    private lateinit var secondFragment : Fragment
+
+    val sharedPreferences: SharedPreferences by lazy {
+        val masterKeyAlias = MasterKey
+            .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+
+        EncryptedSharedPreferences.create(
+            applicationContext,
+            LoginMainpage.FILE_NAME,
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+
+    // 누르면 여기로 바로 이졷
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.getStringExtra("FRAGMENT_NAME") == "MainWriteFragment") {
+            displaySecondFragment()
+        }
+    }
+
+    private fun displaySecondFragment() {
+        // SecondFragment를 표시하는 코드
+        supportFragmentManager.beginTransaction()
+            .replace(binding.mainMainpageBaseframe.id, secondFragment)
+            .commit()
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_mainpage)
+        binding = MainMainpageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
-        // 객체 생성
-        val dayText: TextView = findViewById(R.id.main_mainpage_day)
-        val calendarView: CalendarView = findViewById(R.id.main_mainpage_calendar)
+        val firstFragment = MainListpageFragment.newInstance(accessToken)
+        secondFragment = MainDiaryWritepageFragment.newInstance(accessToken)
+        val thridFragment = MainDiarySharepageFragment.newInstance(accessToken)
+        val fourthFragment = MainMypageFragment.newInstance(accessToken)
 
-        // 날짜 형태
-        val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
-
-        // date 타입
-        val date = Date(calendarView.date)
-
-        // 현재 날짜
-        dayText.text = dateFormat.format(date)
-
-        // 날짜 변환
-        calendarView.setOnDateChangeListener { calendarView, year, month, dayOfMonth ->
-
-            // 날짜 변수에 담기
-            val day: String = "${year}년 ${month+1}월 ${dayOfMonth}일"
-
-            // 변수를 텍스트뷰에 담아준다
-            dayText.text = day
+        val fManager = supportFragmentManager
+        fManager.commit {
+            setReorderingAllowed(true)
+            addToBackStack(null)
+            add(binding.mainMainpageBaseframe.id, firstFragment)
         }
+
 
         // 하단 버튼 통한 페이지 변경
-        val mainBtnWrite = findViewById<Button>(R.id.main_button_diaryWrite)
-        val mainBtnShare = findViewById<Button>(R.id.main_button_diaryShare)
-        val mainBtnMyPage = findViewById<Button>(R.id.main_button_myPage)
-
-        mainBtnWrite.setOnClickListener {
-            val intent = Intent(baseContext, MainDiaryWritepage::class.java)
-            startActivity(intent)
+        binding.mainButtonDiaryList.setOnClickListener {
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,firstFragment)
+            }
         }
 
-        mainBtnShare.setOnClickListener {
-            val intent = Intent(baseContext, MainDiarySharepage::class.java)
-            startActivity(intent)
+
+        // 여기 부분 넘겨주면 Fragment에서
+        binding.mainButtonDiaryWrite.setOnClickListener {
+            fManager.commit{
+//                getDiaryList()
+                replace(binding.mainMainpageBaseframe.id,secondFragment)
+            }
         }
 
-        mainBtnMyPage.setOnClickListener {
-            val intent = Intent(baseContext, MainMypage::class.java)
-            startActivity(intent)
+        binding.mainButtonDiaryShare.setOnClickListener {
+
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,thridFragment)
+            }
         }
 
-        // 이후 달력 하단에 위치할 일기들의 목록을 구현해야 한다
+        binding.mainButtonMyPage.setOnClickListener {
+            fManager.commit{
+                replace(binding.mainMainpageBaseframe.id,fourthFragment)
+            }
+        }
+
+
     }
+
+
+
+
 }

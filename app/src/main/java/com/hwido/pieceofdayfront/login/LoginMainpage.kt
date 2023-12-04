@@ -1,6 +1,5 @@
-package com.hwido.pieceofdayfront
+package com.hwido.pieceofdayfront.login
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +34,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.firebase.auth.GoogleAuthProvider
+import com.hwido.pieceofdayfront.MainMainpage
+import com.hwido.pieceofdayfront.R
+import com.hwido.pieceofdayfront.ServerApiService
 
 // 제대로 안나오는거 해결해야된다
 class LoginMainpage : AppCompatActivity() {
@@ -52,6 +54,7 @@ class LoginMainpage : AppCompatActivity() {
     // 회원 등록 완료 시에 encyted를 요청해서 방아온다
 
     // sharepreference에  서버 토큰 저장하는것은 맞다
+    //object class로 변환필요하다
     val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlias = MasterKey
             .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
@@ -275,7 +278,6 @@ class LoginMainpage : AppCompatActivity() {
         editor.apply()//shared Preference에 저장
         Toast.makeText(this, "email, password 정보저장.", Toast.LENGTH_SHORT).show()
     }
-
 
 
     companion object{
