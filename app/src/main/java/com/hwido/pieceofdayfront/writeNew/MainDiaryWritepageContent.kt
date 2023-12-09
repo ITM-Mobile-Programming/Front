@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -27,6 +28,9 @@ import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
 import com.hwido.pieceofdayfront.datamodel.DiaryEntry
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.login.LoginMainpage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -108,6 +112,16 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
         Log.d("ITM","Content 가져올 수 없음 ")
     }
 
+    //내부에 임시저장
+    private fun saveDiaryLocally(title: String, content: String) {
+        val diaryDao = MyApplication.database.diaryDao()
+        val diaryEntry = DiaryEntry(title = title, content = content)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            diaryDao.insert(diaryEntry)
+        }
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,6 +147,17 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             showProgressBar()
         }
 
+        // 임시저장 버튼 누르면 임시저장한다.
+        binding.mainDiarywritepageContentTempSave.setOnClickListener {
+            val title = binding.writeTitle.text.toString()
+            val content = binding.writeContent.text.toString()
+
+            if (title.isNotEmpty() && content.isNotEmpty()) {
+                saveDiaryLocally(title, content)
+            } else {
+                Toast.makeText(this, "제목과 내용을 입력하세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     }
 
@@ -291,6 +316,27 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
     // 화면 터치 풀기
     private fun clearBlockLayoutTouch() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    // 임시저장한 오늘 날짜의 저장 내용 불러오기
+    private fun loadTemporaryDiary() {
+        val today = getCurrentDate() // 현재 날짜 가져오기 (함수 구현 필요)
+
+        // Room 데이터베이스에서 오늘 날짜의 다이어리 항목 불러오기
+        MyApplication.database.diaryDao().getDiaryByDate(today).observe(this) { diaryList ->
+            if (diaryList.isNotEmpty()) {
+                val latestDiary = diaryList.last() // 가장 최근에 저장된 다이어리 가져오기
+                binding.writeTitle.setText(latestDiary.title)
+                binding.writeContent.setText(latestDiary.content)
+            }
+        }
+    }
+
+    // 현재 날짜를 가져오는 함수
+    private fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = Date()
+        return dateFormat.format(currentDate)
     }
 
 
