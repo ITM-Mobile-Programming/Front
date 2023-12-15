@@ -5,6 +5,7 @@ import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.BasicResponse
 import com.hwido.pieceofdayfront.datamodel.ListResponse
+import com.hwido.pieceofdayfront.datamodel.OneDayCheck
 import com.hwido.pieceofdayfront.datamodel.SendMBTI
 import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
 import com.hwido.pieceofdayfront.datamodel.SignUpRequest
@@ -60,6 +61,10 @@ interface ServerApiService {
     fun getDiaryList(@Header("Authorization") authToken: String?) : Call<getDiaryResponse>
 
 
+    @GET("diary/verification")
+    fun checkVerification(@Header("Authorization") authToken: String?) : Call<OneDayCheck>
+
+//    OneDayCheck
     //중복작성
 //    @GET("/diary/verification")
 //    fun checkDouble(@Header("Authorization") authToken: String?) :

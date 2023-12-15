@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.BasicResponse
+import com.hwido.pieceofdayfront.datamodel.OneDayCheck
 import com.hwido.pieceofdayfront.datamodel.SendMBTI
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
@@ -176,6 +177,76 @@ class SpringServerAPI {
             // onFailure 구현...
             override fun onFailure(call: Call<getDiaryResponse>, t: Throwable) {
                 Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+            }
+        })
+    }
+
+
+
+    fun  checkOneDay(accessToken :String , onSuccess: (String) -> Unit,
+                     onFailure: () -> Unit) {
+        Log.d("ITM", "리스트 함수 들어옴1 ")
+        writeRequest.checkVerification("Bearer $accessToken").enqueue(object :
+            Callback<OneDayCheck> {
+            override fun onResponse(call: Call<OneDayCheck>, response: Response<OneDayCheck>) {
+                Log.d("ITM", "리스트 함수 들어옴2 ")
+
+                Log.d("ITM", "JSON 파싱 오류: ${accessToken}" )
+                if (response.isSuccessful) {
+                    Log.d("ITM", "리스트 함수 들어옴3 ")
+                    val baseResponse  = response.body()
+                    when (baseResponse?.statusCode) {
+                        200 -> {
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+                                //writeForm
+                                //accesstoken 넣어주기
+                                Log.e("ITM", "JSON 파싱 오류: ${accessToken}" )
+                                //일기작성
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+                                //일기
+                                onFailure()
+                            }
+                        }
+
+
+
+                    }
+                } else { Log.d("ITM", "리스트 함수 들어옴4 ")
+                    Log.d("ITM_verification", "${response.code()}")}
+
+                val baseResponseCode  = response.code()
+                when (baseResponseCode) {
+                    404 -> {
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                        try {
+                            //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                            //바로 변수로 받고 리사이클러 뷰에 넣는다
+                            //writeForm
+                            //accesstoken 넣어주기
+                            Log.e("ITM", "JSON 파싱 오류: ${accessToken}")
+                            onSuccess(accessToken)
+                            //일기작성
+                        } catch (e: JsonSyntaxException) {
+                            Log.e("ITM", "JSON 파싱 오류: ", e)
+                            //일기
+                            onFailure()
+                        }
+                    }
+                    else ->{
+                        onFailure()
+                    }
+                }
+
+
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<OneDayCheck>, t: Throwable) {
+                Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+                onFailure()
             }
         })
     }

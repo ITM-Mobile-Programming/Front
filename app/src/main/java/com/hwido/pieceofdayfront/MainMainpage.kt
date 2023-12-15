@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -57,6 +58,7 @@ class MainMainpage : AppCompatActivity() {
         setContentView(binding.root)
         val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
+        Log.d("ITM"," $accessToken")
         val firstFragment = MainListpageFragment.newInstance(accessToken)
         secondFragment = MainDiaryWritepageFragment.newInstance(accessToken)
         val thridFragment = MainDiarySharepageFragment.newInstance(accessToken)

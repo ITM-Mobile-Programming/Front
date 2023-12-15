@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
@@ -31,6 +32,7 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
     private lateinit var binding: MainDiarywritepageBinding
     private lateinit var diaryAdapter: DiaryAdapter
     private val springServer = SpringServerAPI()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,8 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
     }
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -94,9 +98,6 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
                 val title = clickedItem.title
 
                 //아이템 데이터 가져와서 여기 레이아웃에 넣어주고 돌린다
-
-
-
 
                 val detailPage = binding.mainShowDetailContents
                 binding.mainDiaryformatPopupDiaryName.text = title
@@ -132,6 +133,8 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
                 detailPage.isVisible = true
 //
             }
+
+
         }
 
         binding.backToLinearpage.setOnClickListener {
@@ -142,7 +145,18 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
 
 
         binding.mainDiarywritepageWriteDiary.setOnClickListener {
-            navigateToContent()
+
+
+            param1?.let { it1 ->
+                springServer.checkOneDay(it1,  onSuccess = { token ->
+                    // 성공 시 실행될 코드
+                    navigateToContent()
+                }, onFailure = {
+                    // 실패 시 실행될 코드
+                    Toast.makeText(activity, "Just one is allowed", Toast.LENGTH_SHORT).show()
+                })
+            }
+
         }
 
 
@@ -150,6 +164,11 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
     }
 
     private fun navigateToContent() {
+
+
+        //여기서
+
+
         val intent = Intent(activity, MainDiaryWritepageContent::class.java)
         startActivity(intent)
     }

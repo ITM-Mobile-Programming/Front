@@ -68,7 +68,11 @@ data class SignUpResponse(
     @SerializedName("memberId") val memberId : String?
 )
 
-
+data class OneDayCheck(
+    @SerializedName("statusCode")  val statusCode: Int?,
+    @SerializedName("message") val message: String?,
+    @SerializedName("status") val status: String?
+)
 
 
 

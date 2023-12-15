@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -33,7 +34,7 @@ import java.util.Locale
 
 
 class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback,
-    ServerResponseCallback {
+    ServerResponseCallback{
 
     private lateinit var binding : MainDiarywritepageContentBinding
     private val kakaoAPI = KakaoRetrofitClient()
@@ -82,13 +83,14 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             }
         }
 
-
     //back 해도 돌아가게 해야됨
     override fun onResume() {
         super.onResume()
         requestLocation()
     }
 
+
+    //
     override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
         val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
         intent.putExtra("numberPost", "$diaryId")
@@ -106,8 +108,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
     override fun onErrorSpring(error: Throwable) {
         Log.d("ITM","Content 가져올 수 없음 ")
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,7 +127,14 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             var writeRequestForm  = WriteDataRequest(title, content, location, weather)
 //            Log.d("ITM", "$writeRequestForm")
 
-            SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
+
+
+            SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken, this)
+
+
+//            SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
+
+
             showProgressBar()
         }
 
