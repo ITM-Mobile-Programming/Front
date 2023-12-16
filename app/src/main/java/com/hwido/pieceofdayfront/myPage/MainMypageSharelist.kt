@@ -29,7 +29,7 @@ class MainMypageSharelist : AppCompatActivity() {
         // 여기에 데이터 가져올 것들 수정할 필요 존재
         // 우선은 DiaryListLoad에서 가져오는 것으로 정의해둠
         return listOf(
-            DiaryListLoad("Title", "Context", "Location", "Weather Code", "Thumbnail URL", listOf("Tag1", "Tag2", "Tag3"))
+            DiaryListLoad(1,"Title", "Context", "Location", "Weather Code", "Thumbnail URL", listOf("Tag1", "Tag2", "Tag3"))
         )
     }
 }

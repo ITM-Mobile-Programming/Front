@@ -99,7 +99,7 @@
             android:name=".MainMainpage"
             android:exported="false" />
         <activity
-            android:name=".Bluetooth.MainActivity"
+            android:name=".Bluetooth.BluetoothMainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
 

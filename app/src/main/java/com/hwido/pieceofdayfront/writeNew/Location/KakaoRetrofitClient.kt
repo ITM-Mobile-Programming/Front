@@ -1,7 +1,8 @@
-package com.hwido.pieceofdayfront.writeNew
+package com.hwido.pieceofdayfront.writeNew.Location
 
 import android.util.Log
 import com.hwido.pieceofdayfront.DT.KaKaoResponse
+import com.hwido.pieceofdayfront.writeNew.WeatherLocationAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -10,5 +10,4 @@ interface ServerResponseCallback {
     fun onSuccessSpring(diaryId :Int, hashTags :String, imageUrl:String)
 
     fun onErrorSpring(error: Throwable)
-
 }

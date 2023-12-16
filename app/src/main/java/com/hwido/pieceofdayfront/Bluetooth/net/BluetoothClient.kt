@@ -89,14 +89,44 @@ class BluetoothClient {
 
         override fun run() {
             btAdapter.cancelDiscovery()
-            try {
-                onLogPrint("Try to connect to server..")
-                socket?.connect()
-            } catch (e: Exception) {
-                onError(e)
+//            try {
+//                onLogPrint("Try to connect to server..")
+//                socket?.connect()
+//            } catch (e: Exception) {
+//                onError(e)
+//
+//                e.printStackTrace()
+//                disconnectFromServer()
+//            }
 
-                e.printStackTrace()
-                disconnectFromServer()
+            var attempts = 0
+            val maxAttempts = 3 // 연결 시도 횟수
+            val delayBetweenAttempts = 5000L // 연결 시도 사이의 지연 시간 (밀리초)
+
+            while (attempts < maxAttempts) {
+                try {
+                    onLogPrint("Try to connect to server. Attempt ${attempts + 1}")
+                    socket?.connect()
+                    onConnect()
+                    commThread = CommThread(socket)
+                    commThread?.start()
+                    return // 연결 성공 시 루프 종료
+                } catch (e: Exception) {
+                    onError(e)
+                    e.printStackTrace()
+                    attempts++
+                    if (attempts >= maxAttempts) {
+                        onLogPrint("Failed to connect after $maxAttempts attempts")
+                        disconnectFromServer()
+                        return // 연결 실패 시 루프 종료
+                    }
+                    // 재시도 전에 딜레이
+                    try {
+                        sleep(delayBetweenAttempts)
+                    } catch (ie: InterruptedException) {
+                        ie.printStackTrace()
+                    }
+                }
             }
 
             if (socket != null) {

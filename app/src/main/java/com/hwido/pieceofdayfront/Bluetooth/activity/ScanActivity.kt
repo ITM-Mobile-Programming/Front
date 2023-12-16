@@ -125,11 +125,6 @@ class ScanActivity : AppCompatActivity() {
 
 
 
-
-
-//        updateData
-
-
         val recyclerView = findViewById<RecyclerView>(R.id.searchDevices)
         rvAdapter = PairingAdapter(foundDevices,baseContext)
         recyclerView.adapter = rvAdapter
@@ -192,6 +187,7 @@ class ScanActivity : AppCompatActivity() {
             Log.d("ITM","pairing")
             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED == intent.action) {
 
+                // 이거 괜찮나?
                 val device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                 Log.d("ITM","pairing check ${device.toString()}")
                 when (device?.bondState) {
@@ -205,6 +201,7 @@ class ScanActivity : AppCompatActivity() {
                             Log.d("ITM","연결까지는 실패")
                         }
                     }
+
                     BluetoothDevice.BOND_BONDING -> {
                         // 페어링 진행 중 처리
                     }
@@ -229,8 +226,6 @@ class ScanActivity : AppCompatActivity() {
 //    }
 
 
-
-
     interface OnConnectListener {
         fun connectToServer(device: BluetoothDevice)
     }
@@ -241,8 +236,6 @@ class ScanActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
 
     companion object {
         fun startForResult(context: Activity, requestCode: Int) =

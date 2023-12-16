@@ -4,6 +4,7 @@ package com.hwido.pieceofdayfront.ServerAPI
 import com.hwido.pieceofdayfront.DT.BaseResponse
 import com.hwido.pieceofdayfront.DT.BaseResponse2
 import com.hwido.pieceofdayfront.DT.BasicResponse
+import com.hwido.pieceofdayfront.DT.FriendCode
 import com.hwido.pieceofdayfront.DT.ListResponse
 import com.hwido.pieceofdayfront.DT.OneDayCheck
 import com.hwido.pieceofdayfront.DT.SendMBTI
@@ -11,6 +12,7 @@ import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
 import com.hwido.pieceofdayfront.DT.SignUpRequest
 import com.hwido.pieceofdayfront.DT.WriteDataRequest
 import com.hwido.pieceofdayfront.DT.getDiaryResponse
+import com.hwido.pieceofdayfront.DT.myPageBaseData
 import com.hwido.pieceofdayfront.DT.reloadDairy
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -64,10 +66,12 @@ interface ServerApiService {
     @GET("diary/verification")
     fun checkVerification(@Header("Authorization") authToken: String?) : Call<OneDayCheck>
 
-//    OneDayCheck
-    //중복작성
-//    @GET("/diary/verification")
-//    fun checkDouble(@Header("Authorization") authToken: String?) :
-    //다이어리 수정
-    //다이어리 삭제
+
+    //마이페이지
+    @GET("member/")
+    fun getMyPage(@Header("Authorization") authToken: String?) : Call<myPageBaseData>
+
+    @POST("friend/check")
+    fun checkIfFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+
 }

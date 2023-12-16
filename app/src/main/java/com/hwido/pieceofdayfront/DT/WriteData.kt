@@ -15,6 +15,8 @@ data class DiarySendSuccessResponse(
     @SerializedName("imageUrl") val imageUrl: String?,
 )
 
+
+
 data class ListResponse(
     @SerializedName("statusCode")  val status: Int?,
     @SerializedName("message") val message: String?,
@@ -22,6 +24,7 @@ data class ListResponse(
 
 )
 data class DiaryListLoad(
+    @SerializedName("diaryId") val diaryId:Int?,
     @SerializedName("title") val title:String?,
     @SerializedName("context") val context:String?,
     @SerializedName("location") val location: String?,
@@ -29,6 +32,7 @@ data class DiaryListLoad(
     @SerializedName("thumbnailUrl") val thumbnailUrl:String?,
     @SerializedName("hashTagList") val hashTags: List<String>,
 )
+
 
 
 data class KaKaoResponse(

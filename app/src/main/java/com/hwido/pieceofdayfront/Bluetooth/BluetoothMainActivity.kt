@@ -4,25 +4,34 @@ package com.hwido.pieceofdayfront.Bluetooth
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.hwido.pieceofdayfront.Bluetooth.activity.ScanActivity
 import com.hwido.pieceofdayfront.Bluetooth.net.BTConstant.BT_REQUEST_ENABLE
 import com.hwido.pieceofdayfront.Bluetooth.net.BluetoothClient
 import com.hwido.pieceofdayfront.Bluetooth.net.BluetoothServer
 import com.hwido.pieceofdayfront.Bluetooth.net.SocketListener
+import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
 import com.hwido.pieceofdayfront.R
+import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
+import com.hwido.pieceofdayfront.login.LoginMainpage
 
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
-
+class BluetoothMainActivity : AppCompatActivity() {
+    private val  SpringServerCall= SpringServerAPI()
+    private var BluetoothFreindCode = ""
+    private var BluetoothMYCode = ""
     private var sbLog = StringBuilder()
     private var btClient: BluetoothClient = BluetoothClient()
     private var btServer: BluetoothServer = BluetoothServer()
@@ -33,6 +42,21 @@ class MainActivity : AppCompatActivity() {
 
     private var handler: Handler = Handler()
 
+
+    val sharedPreferences: SharedPreferences by lazy {
+        val masterKeyAlias = MasterKey
+            .Builder(applicationContext, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        EncryptedSharedPreferences.create(
+            applicationContext,
+            LoginMainpage.FILE_NAME,
+            masterKeyAlias,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
 
     /** 위치 권한 SDK 버전 29 이상**/
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -80,9 +104,16 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val accessToken =
+            sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
+
+//        val accessToken =
+//            sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
         requestPermissionsBasedOnVersion()
 //        requestPermission()
@@ -94,10 +125,34 @@ class MainActivity : AppCompatActivity() {
         setListener()
 
         btClient.setOnSocketListener(mOnSocketListener)
-
         //서버
         btServer.setOnSocketListener(mOnSocketListener)
-        btServer.accept()
+//        btServer.accept()
+
+        //버튼누르면 permission 체크하고
+        //"codeAndContent", transferData
+//        val transferData =
+//            WriteDataRequestTransfer(longToInt, mycode, title, content, location, weather)
+
+        val sharedData = intent.getSerializableExtra("codeAndContent") as WriteDataRequestTransfer
+
+        //코드를 다른 사용자한테 보낸다 보내고 친구 확인하고
+        //확인 후에 친구 추가
+
+        Log.d("ITM", "공유전 데이터 ${sharedData.code}, ${sharedData.title}") // 본인 코드가 아니라 친구 코드여야한다
+
+        BluetoothMYCode = sharedData.code
+//        sharedData.code
+        // 공유 데이터가 온다면 code 받아서 확인하고 확인되면
+
+
+        // 공유데이터을 기반으로 받은데이터를 전송한다
+        // 이건 친구 코드 받아오면ㅋ 콜백으로 처리해야 된다
+//        SpringServerCall.checkIfFriend(accessToken, BluetoothFreindCode)
+
+        //시작하면 다이어로그 보여준다
+
+
     }
 
     // 여기서 아마 UI 가 겹칠거임
@@ -117,7 +172,7 @@ class MainActivity : AppCompatActivity() {
             btServer.stop()
         }
 
-
+        //버튼을 누르면 보낸다는 생각인데
         findViewById<Button>(R.id.btnSendData).setOnClickListener {
             if (etMessage.text.toString().isNotEmpty()) {
                 btClient.sendData(etMessage.text.toString())
@@ -135,6 +190,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 텍스트 뷰에 post 한다
+    // 곧있으면 날릴예정
     private fun log(message: String) {
         sbLog.append(message.trimIndent() + "\n")
         handler.post {
@@ -145,8 +201,10 @@ class MainActivity : AppCompatActivity() {
 
     private val mOnSocketListener: SocketListener = object : SocketListener {
         override fun onConnect() {
-            //연결 됬을
             log("Connect!\n")
+            Log.d("ITM", "블루투스 연결완료")
+            //바로 연결 됬을떄 내 코드를 친구 한테 보내 준다
+            btClient.sendData(BluetoothMYCode)
         }
 
         override fun onDisconnect() {
@@ -158,8 +216,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onReceive(msg: String?) {
-
+            //바로 연결 됬을떄 내코드를 친구 한테 보내준다 친구한테 받은 코드로
+//            SpringServerCall.checkIfFriend(accessToken, BluetoothFreindCode)
             msg?.let { log("Receive : $it\n") }
+
         }
 
         override fun onSend(msg: String?) {
@@ -181,79 +241,6 @@ class MainActivity : AppCompatActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
-
-
-//    private fun requestPermission() {
-//
-//        if (Build.VERSION.SDK_INT >= 29) {
-//            Log.d("ITM","29이상권한요청")
-//            // PermissionSupport.java 클래스 객체 생성
-//            requestMultiplePermissions.launch(
-//                permissionsUpApi29Impl
-//            )
-//        }else {
-//            Log.d("ITM", "29이하권한요청")
-//            var shouldRequestPermissions = false
-//            for (permission in permissionsDownApi29Impl) {
-//                val chk = checkCallingOrSelfPermission(permission)
-//                if (chk == PackageManager.PERMISSION_DENIED) {
-//                    Log.d("ITM", "29이하권한요청 체크중")
-//                    shouldRequestPermissions = true
-//                    break
-//                }
-//            }
-//            if (shouldRequestPermissions) {
-//                Log.d("ITM", "29이하권한요청 하러감")
-//                requestPermissions(permissionsDownApi29Impl, 0)
-//            }
-//
-//        }
-//    }
-
-
-
-
-
-
-
-//    //permission 해결 필요
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == 0) {
-//            Log.d("ITM", "29이하권한 수락 진행중 ")
-//            for (element in grantResults) {
-//                if (element == PackageManager.PERMISSION_GRANTED) {
-//                } else {
-//                    TedPermission.create()
-//                        .setPermissionListener(object : PermissionListener {
-//                            override fun onPermissionGranted() {
-//                                Log.d("ITM", "29이하권한 가지고 있다면 ")
-//                                //업으면 다이어로그 띄운다
-//                            }
-//
-//                            override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-//                                Log.d("ITM", "29이하권한 거절 ")
-//                            }
-//                        })
-//                        .setDeniedMessage("You have permission to set up.")
-//                        .setPermissions(
-//                            Manifest.permission.BLUETOOTH,
-//                            Manifest.permission.BLUETOOTH_ADMIN,
-//                            Manifest.permission.ACCESS_FINE_LOCATION
-//                        )
-//                        .setGotoSettingButton(true)
-//                        .check();
-//                }
-//            }
-//        }
-//    }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
