@@ -11,8 +11,45 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is diary share page"/>
+        android:text="친구와 공유"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:text="공유받은 글 목록"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:id="@+id/main_diarysharepage_diarylistbtn"
+            android:background="@drawable/rectangle_button"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:text="친구 목록"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:id="@+id/main_diarysharepage_friendlistbtn"
+            android:background="@drawable/rectangle_button"
+            android:layout_margin="10dp"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_diarysharepage_baseframe"
+        android:layout_weight="1">
+
+    </FrameLayout>
 
 
 </LinearLayout>

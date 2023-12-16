@@ -30,7 +30,7 @@
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
-            android:text="nick_name"
+            android:text="아이디"
             android:textSize="20dp" />
 
         <EditText
@@ -56,7 +56,7 @@
             android:layout_width="100dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
-            android:text="Self_ShortIntro"
+            android:text="주소"
             android:textSize="20dp" />
 
         <EditText
@@ -73,6 +73,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:text="이미지 등록" />
+        android:text="이미지 등록"
+        android:background="@drawable/rectangle_button"/>
 
 </LinearLayout>

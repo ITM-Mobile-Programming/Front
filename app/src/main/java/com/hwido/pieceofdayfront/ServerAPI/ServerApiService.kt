@@ -4,6 +4,8 @@ package com.hwido.pieceofdayfront.ServerAPI
 import com.hwido.pieceofdayfront.datamodel.BaseResponse
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.BasicResponse
+import com.hwido.pieceofdayfront.datamodel.DateDiary
+import com.hwido.pieceofdayfront.datamodel.FriendResponse
 import com.hwido.pieceofdayfront.datamodel.ListResponse
 import com.hwido.pieceofdayfront.datamodel.SendMBTI
 import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
@@ -65,4 +67,12 @@ interface ServerApiService {
 //    fun checkDouble(@Header("Authorization") authToken: String?) :
     //다이어리 수정
     //다이어리 삭제
+
+    // 친구 목록
+    @GET("friend/")
+    fun getFriendList(@Header("Authorization") authToken: String?) : Call<FriendResponse>
+
+    // 날짜별 다이어리
+    @GET("diary/dateSearch")
+    fun getDateDiary(@Header("Authorization") authToken: String?) : Call<DateDiary>
 }

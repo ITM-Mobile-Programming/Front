@@ -4,12 +4,13 @@ import android.util.Log
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.BasicResponse
+import com.hwido.pieceofdayfront.datamodel.DateDiary
+import com.hwido.pieceofdayfront.datamodel.FriendResponse
 import com.hwido.pieceofdayfront.datamodel.SendMBTI
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
 import com.hwido.pieceofdayfront.datamodel.reloadDairy
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Call
 import retrofit2.Callback
@@ -180,5 +181,85 @@ class SpringServerAPI {
         })
     }
 
+    fun getFriendList(accessToken :String, onSuccess: (String) -> Unit, onFailure: () -> Unit) {
+        Log.d("ITM", "친구 리스트 함수 들어옴1 ")
+        writeRequest.getFriendList("Bearer $accessToken").enqueue(object :
+            Callback<FriendResponse> {
+            override fun onResponse(call: Call<FriendResponse>, response: Response<FriendResponse>) {
+                Log.d("ITM", "친구 리스트 함수 들어옴2 ")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "친구 리스트 함수 들어옴3 ")
+                    val baseResponse  = response.body()
+
+
+                    when (baseResponse?.statusCode) {
+                        200 -> {
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+
+                                val friendList = baseResponse.data
+
+                                onSuccess(accessToken)
+
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+                                onFailure()
+                            }
+
+                        }
+                    }
+                } else
+                { Log.d("ITM", "친구 리스트 함수 들어옴4 ")
+                    Log.d("ITM", "$response")}
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<FriendResponse>, t: Throwable) {
+                Log.d("ITM", "친구 리스트 가져오기 실패 ${t.message}")
+                onFailure()
+            }
+        })
+    }
+
+    fun getDateDiary(accessToken :String, onSuccess: (String) -> Unit, onFailure: () -> Unit) {
+        Log.d("ITM", "일별 다이어리 함수 들어옴1 ")
+        writeRequest.getDateDiary("Bearer $accessToken").enqueue(object :
+            Callback<DateDiary> {
+            override fun onResponse(call: Call<DateDiary>, response: Response<DateDiary>) {
+                Log.d("ITM", "일별 다이어리 함수 들어옴2 ")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "일별 다이어리 함수 들어옴3 ")
+                    val baseResponse  = response.body()
+
+
+                    when (baseResponse?.writtenDate) {
+                        "2023년12월16일" -> {
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                val dateDiary = DateDiary(baseResponse.writtenDate)
+
+                                onSuccess(accessToken)
+
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+                                onFailure()
+                            }
+
+                        }
+                    }
+                } else
+                { Log.d("ITM", "일별 다이어리 함수 들어옴4 ")
+                    Log.d("ITM", "$response")}
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<DateDiary>, t: Throwable) {
+                Log.d("ITM", "일별 다이어로 가져오기 실패 ${t.message}")
+                onFailure()
+            }
+        })
+    }
 
 }
