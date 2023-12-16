@@ -1,7 +1,7 @@
 package com.hwido.pieceofdayfront.writeNew
 
-import com.hwido.pieceofdayfront.datamodel.KaKaoResponse
-import com.hwido.pieceofdayfront.datamodel.WeatherTotalResponse
+import com.hwido.pieceofdayfront.DT.KaKaoResponse
+import com.hwido.pieceofdayfront.DT.WeatherTotalResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

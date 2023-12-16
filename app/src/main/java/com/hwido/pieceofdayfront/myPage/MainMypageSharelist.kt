@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hwido.pieceofdayfront.DiaryShareAdapter
 import com.hwido.pieceofdayfront.databinding.MainMypageSharelistBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
+import com.hwido.pieceofdayfront.DT.DiaryListLoad
 
 class MainMypageSharelist : AppCompatActivity() {
     private lateinit var binding : MainMypageSharelistBinding

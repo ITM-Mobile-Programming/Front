@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.datamodel
+package com.hwido.pieceofdayfront.DT
 
 import com.google.gson.annotations.SerializedName
 

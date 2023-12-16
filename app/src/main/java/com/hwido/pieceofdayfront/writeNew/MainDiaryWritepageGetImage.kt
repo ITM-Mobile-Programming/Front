@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageGetimageBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.reloadDairy
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.reloadDairy
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import kotlin.properties.Delegates
 

@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.hwido.pieceofdayfront.databinding.MainDiaryformatBinding
 import com.hwido.pieceofdayfront.databinding.MainSharediaryformatBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
+import com.hwido.pieceofdayfront.DT.DiaryListLoad
 
 class DiaryShareAdapter(private val diaryItems: List<DiaryListLoad>) : RecyclerView.Adapter<DiaryShareAdapter.DiaryViewHolder>() {
 

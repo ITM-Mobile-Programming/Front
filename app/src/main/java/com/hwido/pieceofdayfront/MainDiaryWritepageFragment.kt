@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
+import com.hwido.pieceofdayfront.DT.DiaryEntry
 import com.hwido.pieceofdayfront.writeNew.MainDiaryWritepageContent
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MainDiaryWritepageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
+class MainDiaryWritepageFragment : Fragment()  {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private lateinit var binding: MainDiarywritepageBinding
@@ -45,25 +45,18 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
         super.onResume()
         param1?.let {
             Log.d("ITM","들어옴")
-            springServer.getDiaryList(it, this)
+            param1?.let { it1 ->
+                springServer.getDiaryList(it1,  onSuccess = { diaryList ->
+                    // 성공 시 실행될 코드
+                    Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+                    diaryAdapter.updateData(diaryList.reversed())
+                }, onFailure = {
+                    // 실패 시 실행될 코드
+                    Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+                })
+            }
             Log.d("ITM","나감")
         }
-    }
-
-    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
-        Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
-        diaryAdapter.updateData(diaryList.reversed())
-
-        // adapter를 recyclerview에 설정
-    }
-    override fun onSuccessSpring(ouPutData: String) {
-    }
-
-    override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
-    }
-
-    override fun onErrorSpring(error: Throwable) {
-        Log.e("ITM", "Error: ${error.message}")
     }
 
 
@@ -146,16 +139,17 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
 
         binding.mainDiarywritepageWriteDiary.setOnClickListener {
 
+            navigateToContent()
 
-            param1?.let { it1 ->
-                springServer.checkOneDay(it1,  onSuccess = { token ->
-                    // 성공 시 실행될 코드
-                    navigateToContent()
-                }, onFailure = {
-                    // 실패 시 실행될 코드
-                    Toast.makeText(activity, "Just one is allowed", Toast.LENGTH_SHORT).show()
-                })
-            }
+//            param1?.let { it1 ->
+//                springServer.checkOneDay(it1,  onSuccess = { token ->
+//                    // 성공 시 실행될 코드
+//                    navigateToContent()
+//                }, onFailure = {
+//                    // 실패 시 실행될 코드
+//                    Toast.makeText(activity, "Just one is allowed", Toast.LENGTH_SHORT).show()
+//                })
+//            }
 
         }
 
@@ -165,10 +159,7 @@ class MainDiaryWritepageFragment : Fragment() , ServerResponseCallback {
 
     private fun navigateToContent() {
 
-
         //여기서
-
-
         val intent = Intent(activity, MainDiaryWritepageContent::class.java)
         startActivity(intent)
     }

@@ -1,7 +1,7 @@
 package com.hwido.pieceofdayfront.writeNew
 
 import android.util.Log
-import com.hwido.pieceofdayfront.datamodel.KaKaoResponse
+import com.hwido.pieceofdayfront.DT.KaKaoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

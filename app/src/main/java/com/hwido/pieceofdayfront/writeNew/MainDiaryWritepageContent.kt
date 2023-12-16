@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -25,8 +24,8 @@ import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.WriteDataRequest
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -133,7 +132,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
 
 
 //            SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
-
 
             showProgressBar()
         }

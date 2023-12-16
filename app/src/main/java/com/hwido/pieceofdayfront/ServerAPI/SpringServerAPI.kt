@@ -2,13 +2,14 @@ package com.hwido.pieceofdayfront.ServerAPI;
 
 import android.util.Log
 import com.google.gson.JsonSyntaxException
-import com.hwido.pieceofdayfront.datamodel.BaseResponse2
-import com.hwido.pieceofdayfront.datamodel.BasicResponse
-import com.hwido.pieceofdayfront.datamodel.OneDayCheck
-import com.hwido.pieceofdayfront.datamodel.SendMBTI
-import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
-import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
-import com.hwido.pieceofdayfront.datamodel.reloadDairy
+import com.hwido.pieceofdayfront.DT.BaseResponse2
+import com.hwido.pieceofdayfront.DT.BasicResponse
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.OneDayCheck
+import com.hwido.pieceofdayfront.DT.SendMBTI
+import com.hwido.pieceofdayfront.DT.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.getDiaryResponse
+import com.hwido.pieceofdayfront.DT.reloadDairy
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -142,7 +143,8 @@ class SpringServerAPI {
     }
 
 
-    fun getDiaryList(accessToken :String, callback: ServerResponseCallback) {
+    fun getDiaryList(accessToken :String, onSuccess: (List<DiaryEntry>) -> Unit,
+                     onFailure: () -> Unit) {
         Log.d("ITM", "리스트 함수 들어옴1 ")
         writeRequest.getDiaryList("Bearer $accessToken").enqueue(object :
             Callback<getDiaryResponse> {
@@ -162,10 +164,12 @@ class SpringServerAPI {
                                 //바로 변수로 받고 리사이클러 뷰에 넣는다
 
                                 val dairyList = baseResponse.data
-                                callback.onSuccessSpringDiaryList(dairyList)
+//                                callback.onSuccessSpringDiaryList(dairyList)
+                                onSuccess(dairyList)
 
                             }catch (e: JsonSyntaxException) {
                                 Log.e("ITM", "JSON 파싱 오류: ", e)
+                                onFailure
                             }
 
                         }
@@ -173,16 +177,18 @@ class SpringServerAPI {
                 } else
                 { Log.d("ITM", "리스트 함수 들어옴4 ")
                     Log.d("ITM", "$response")}
+                onFailure
             }
             // onFailure 구현...
             override fun onFailure(call: Call<getDiaryResponse>, t: Throwable) {
                 Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+                onFailure
             }
         })
     }
 
 
-
+//500 /404 수정 필요
     fun  checkOneDay(accessToken :String , onSuccess: (String) -> Unit,
                      onFailure: () -> Unit) {
         Log.d("ITM", "리스트 함수 들어옴1 ")

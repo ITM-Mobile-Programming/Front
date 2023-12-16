@@ -1,7 +1,6 @@
 package com.hwido.pieceofdayfront.ServerAPI
 
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import org.jetbrains.annotations.ApiStatus.OverrideOnly
+import com.hwido.pieceofdayfront.DT.DiaryEntry
 
 interface ServerResponseCallback {
     fun onSuccessSpring(ouPutData: String)

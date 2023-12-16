@@ -1,6 +1,6 @@
 package com.hwido.pieceofdayfront.login
 
-import com.hwido.pieceofdayfront.datamodel.GoogleApiAccessTokenResponse
+import com.hwido.pieceofdayfront.DT.GoogleApiAccessTokenResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST

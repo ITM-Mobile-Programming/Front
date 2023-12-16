@@ -1,17 +1,17 @@
 package com.hwido.pieceofdayfront.ServerAPI
 
 
-import com.hwido.pieceofdayfront.datamodel.BaseResponse
-import com.hwido.pieceofdayfront.datamodel.BaseResponse2
-import com.hwido.pieceofdayfront.datamodel.BasicResponse
-import com.hwido.pieceofdayfront.datamodel.ListResponse
-import com.hwido.pieceofdayfront.datamodel.OneDayCheck
-import com.hwido.pieceofdayfront.datamodel.SendMBTI
-import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
-import com.hwido.pieceofdayfront.datamodel.SignUpRequest
-import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
-import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
-import com.hwido.pieceofdayfront.datamodel.reloadDairy
+import com.hwido.pieceofdayfront.DT.BaseResponse
+import com.hwido.pieceofdayfront.DT.BaseResponse2
+import com.hwido.pieceofdayfront.DT.BasicResponse
+import com.hwido.pieceofdayfront.DT.ListResponse
+import com.hwido.pieceofdayfront.DT.OneDayCheck
+import com.hwido.pieceofdayfront.DT.SendMBTI
+import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
+import com.hwido.pieceofdayfront.DT.SignUpRequest
+import com.hwido.pieceofdayfront.DT.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.getDiaryResponse
+import com.hwido.pieceofdayfront.DT.reloadDairy
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
