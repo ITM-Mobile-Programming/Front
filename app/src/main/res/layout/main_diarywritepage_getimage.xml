@@ -35,12 +35,18 @@
             android:text="설정된 해시태그"
             android:textSize="20dp"/>
 
-        <Button
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageButton
             android:id="@+id/writeImageReload"
-            android:layout_marginStart="60dp"
-            android:layout_width="150dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="이미지 재생성"/>
+            android:background="@drawable/oval_button"
+            android:src="@drawable/remake"/>
 
     </LinearLayout>
 
@@ -54,7 +60,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
-        android:hint="여기에 해시태그가 표시됩니다." />
+        android:hint="여기에 해시태그가 표시됩니다."
+        android:background="@drawable/outline"/>
 
 
 
@@ -74,7 +81,8 @@
         android:text="오늘 당신의 기분을 알려주세요"
         android:textSize="20dp"
         android:layout_gravity="center"
-        android:id="@+id/main_diarywritepage_secondfragment_btn"/>
+        android:id="@+id/main_diarywritepage_secondfragment_btn"
+        android:background="@drawable/rectangle_button"/>
 
 
 </LinearLayout>

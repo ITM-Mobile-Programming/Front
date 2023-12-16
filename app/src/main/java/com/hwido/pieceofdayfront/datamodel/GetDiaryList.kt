@@ -7,6 +7,7 @@ data class getDiaryResponse(
 )
 
 data class DiaryEntry(
+    val diaryId: Int,
     val title: String,
     val context: String,
     val location: String,
@@ -21,4 +22,8 @@ data class HashTag(
     val updatedDate: Long,
     val diaryToHashTagId: Int,
     val hashTag: String
+)
+
+data class DateDiary(
+    val writtenDate: String
 )

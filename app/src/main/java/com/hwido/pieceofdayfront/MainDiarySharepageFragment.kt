@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.hwido.pieceofdayfront.databinding.MainDiarysharepageBinding
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
 
@@ -34,8 +35,40 @@ class MainDiarySharepageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = MainDiarysharepageBinding.inflate(inflater, container, false)
+
+        // Replace the content of main_diarysharepage_baseframe with MainDiarySharepageDiaryListFragment by default
+        if (savedInstanceState == null) {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_diarysharepage_baseframe, MainDiarySharepageDiaryListFragment.newInstance("arg1", "arg2"))
+            transaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
+            transaction.commit()
+        }
+
+        // Find the button in your layout
+        val diaryListButton: Button = binding.mainDiarysharepageDiarylistbtn
+
+        // Set a click listener for the button
+        diaryListButton.setOnClickListener {
+            // Replace the content of main_diarysharepage_baseframe with MainDiarySharepageDiaryListFragment
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_diarysharepage_baseframe, MainDiarySharepageDiaryListFragment.newInstance("arg1", "arg2"))
+            transaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
+            transaction.commit()
+        }
+
+        // Find the button in your layout
+        val friendListButton: Button = binding.mainDiarysharepageFriendlistbtn
+
+        // Set a click listener for the button
+        friendListButton.setOnClickListener {
+            // Replace the content of main_diarysharepage_baseframe with MainDiarySharepageFriendListFragment
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_diarysharepage_baseframe, MainDiarySharepageFriendListFragment.newInstance("arg1", "arg2"))
+            transaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
+            transaction.commit()
+        }
+
         return binding.root
     }
 
