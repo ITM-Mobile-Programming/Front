@@ -5,7 +5,10 @@ import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.datamodel.BaseResponse2
 import com.hwido.pieceofdayfront.datamodel.BasicResponse
 import com.hwido.pieceofdayfront.datamodel.DateDiary
+import com.hwido.pieceofdayfront.datamodel.DiaryEntry
+import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
 import com.hwido.pieceofdayfront.datamodel.FriendResponse
+import com.hwido.pieceofdayfront.datamodel.ListResponse
 import com.hwido.pieceofdayfront.datamodel.SendMBTI
 import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
 import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
@@ -223,25 +226,31 @@ class SpringServerAPI {
         })
     }
 
-    fun getDateDiary(accessToken :String, onSuccess: (String) -> Unit, onFailure: () -> Unit) {
-        Log.d("ITM", "일별 다이어리 함수 들어옴1 ")
-        writeRequest.getDateDiary("Bearer $accessToken").enqueue(object :
-            Callback<DateDiary> {
-            override fun onResponse(call: Call<DateDiary>, response: Response<DateDiary>) {
-                Log.d("ITM", "일별 다이어리 함수 들어옴2 ")
+    //response form 확인 해야함
+    fun getDateDiary(accessToken: String, selectedDate: String, onSuccess: (DiaryListLoad) -> Unit, onFailure: () -> Unit) {
+        Log.d("ITM", "Daily diary function entered1 ")
+        val selectDate =  DateDiary(selectedDate)
+        writeRequest.getDateDiary("Bearer $accessToken", selectDate).enqueue(object :
+            Callback<ListResponse> {
+            override fun onResponse(call: Call<ListResponse>, response: Response<ListResponse>) {
+                Log.d("ITM", "Daily diary function entered2 ")
 
                 if (response.isSuccessful) {
-                    Log.d("ITM", "일별 다이어리 함수 들어옴3 ")
+                    Log.d("ITM", "Daily diary function entered3 ")
+
                     val baseResponse  = response.body()
-
-
-                    when (baseResponse?.writtenDate) {
-                        "2023년12월16일" -> {
+                    when (baseResponse?.statusCode) {
+                        200 -> {
 //                            Log.d("ITM","${baseResponse.data.toString()}")
                             try {
-                                val dateDiary = DateDiary(baseResponse.writtenDate)
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
 
-                                onSuccess(accessToken)
+                                val diaryEntries = baseResponse.data
+
+                                if (diaryEntries != null) {
+                                    onSuccess(diaryEntries)
+                                }
 
                             }catch (e: JsonSyntaxException) {
                                 Log.e("ITM", "JSON 파싱 오류: ", e)
@@ -250,16 +259,18 @@ class SpringServerAPI {
 
                         }
                     }
-                } else
-                { Log.d("ITM", "일별 다이어리 함수 들어옴4 ")
-                    Log.d("ITM", "$response")}
+
+                } else {
+                    Log.d("ITM", "Daily diary function entered4 ")
+                    Log.d("ITM", "$response")
+                    onFailure()
+                }
             }
-            // onFailure 구현...
-            override fun onFailure(call: Call<DateDiary>, t: Throwable) {
-                Log.d("ITM", "일별 다이어로 가져오기 실패 ${t.message}")
+
+            override fun onFailure(call: Call<ListResponse>, t: Throwable) {
+                Log.d("ITM", "Failed to import ${t.message} into daily diary")
                 onFailure()
             }
         })
     }
-
 }

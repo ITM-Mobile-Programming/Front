@@ -58,7 +58,7 @@ class MainDiarySharepageFragment : Fragment() {
         }
 
         // Find the button in your layout
-        val friendListButton: Button = binding.mainDiarysharepageFriendlistbtn
+        val friendListButton: Button = binding.mainDiarysharepageDiarylistbtn
 
         // Set a click listener for the button
         friendListButton.setOnClickListener {
