@@ -98,7 +98,4 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation ("androidx.activity:activity-ktx:1.4.0")
-
-    // pie chart
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
