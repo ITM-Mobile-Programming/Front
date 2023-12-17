@@ -15,6 +15,7 @@ enum class AppControllerClient {
 
     lateinit var mainActivityC: Activity
 
+
     lateinit var bluetoothClient: BluetoothClient
     private val btAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 

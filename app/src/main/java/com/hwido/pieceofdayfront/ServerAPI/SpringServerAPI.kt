@@ -1,12 +1,16 @@
 package com.hwido.pieceofdayfront.ServerAPI;
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.gson.JsonSyntaxException
 import com.hwido.pieceofdayfront.DT.BaseResponse2
 import com.hwido.pieceofdayfront.DT.BasicResponse
+import com.hwido.pieceofdayfront.DT.CheckResponse
 import com.hwido.pieceofdayfront.DT.DiaryEntry
 import com.hwido.pieceofdayfront.DT.FriendCode
 import com.hwido.pieceofdayfront.DT.OneDayCheck
+import com.hwido.pieceofdayfront.DT.RelayDataRequest
 import com.hwido.pieceofdayfront.DT.SendMBTI
 import com.hwido.pieceofdayfront.DT.WriteDataRequest
 import com.hwido.pieceofdayfront.DT.diaryID
@@ -17,14 +21,12 @@ import com.hwido.pieceofdayfront.DT.reloadDairy
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
 
 class SpringServerAPI {
     // 그림하는지 아닌지 아닌지 구분하고 그림이면 이부분으로 한다
@@ -268,7 +270,7 @@ class SpringServerAPI {
 
     //마이페이지 를 넘길떄 writeform으로 넘긴다
     //   fun getMyPage(@Header("Authorization") authToken: String?) : Call<getMyData>
-    fun getMyPage(accessToken :String, onSuccess: (String) -> Unit,
+    fun getMyPage(accessToken :String, onSuccess: (getMyData) -> Unit,
                      onFailure: () -> Unit) {
         Log.d("ITM", "마이페이지함수 들어옴1 ")
         writeRequest.getMyPage("Bearer $accessToken").enqueue(object :
@@ -288,10 +290,12 @@ class SpringServerAPI {
                                 //받은 데이터을 받은 폼으로 리스트로 넘겨준다
                                 //바로 변수로 받고 리사이클러 뷰에 넣는다
 
-                                val friendCode = baseResponse?.data?.code!!
+                                val MyData = baseResponse?.data
 //                                callback.onSuccessSpringDiaryList(dairyList)
-                                Log.d("ITM", "$friendCode")
-                                onSuccess(friendCode)
+                                Log.d("ITM", "$MyData")
+                                if (MyData != null) {
+                                    onSuccess(MyData)
+                                }
 
                             }catch (e: JsonSyntaxException) {
                                 Log.e("ITM", "JSON 파싱 오류: ", e)
@@ -318,8 +322,8 @@ class SpringServerAPI {
         Log.d("ITM", "찬구체크 들어옴1")
         val freindCode = FriendCode(code)
         writeRequest.checkIfFriend("Bearer $accessToken", freindCode).enqueue(object :
-            Callback<BasicResponse> {
-            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+            Callback<CheckResponse> {
+            override fun onResponse(call: Call<CheckResponse>, response: Response<CheckResponse>) {
                 Log.d("ITM", "찬구체크 들어옴 2")
 
                 if (response.isSuccessful) {
@@ -334,14 +338,16 @@ class SpringServerAPI {
                                 //받은 데이터을 받은 폼으로 리스트로 넘겨준다
                                 //바로 변수로 받고 리사이클러 뷰에 넣는다
 
-                                val whetherFriend = baseResponse?.data
+                                val whetherFriend = baseResponse?.data!!
 //                                callback.onSuccessSpringDiaryList(dairyList)
                                 Log.d("ITM", "$whetherFriend")
                                 //친구면 0 친구아니면 1
 
-                                if(whetherFriend.equals("true")){
+                                if(whetherFriend){
+                                    //친구면 0
                                     onSuccess(0)
                                 }else{
+                                    //친구 아니면 1
                                     onSuccess(1)
                                 }
 
@@ -358,7 +364,7 @@ class SpringServerAPI {
                 onFailure
             }
             // onFailure 구현...
-            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+            override fun onFailure(call: Call<CheckResponse>, t: Throwable) {
                 Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
                 onFailure
             }
@@ -460,4 +466,149 @@ class SpringServerAPI {
         })
     }
 
+
+    fun getImagePage(memberID :Int, onSuccess: (Bitmap) -> Unit,
+                     onFailure: () -> Unit) {
+        Log.d("ITM", "리스트 함수 들어옴1 ")
+        writeRequest.getImagePage(memberID).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("ITM", "리스트 함수 들어옴2 ")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "리스트 함수 들어옴3 ")
+                    val baseResponse  = response.body()
+
+
+                    //받아와서 사진 스트림처리
+                    val inputStream = response.body()?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    onSuccess(bitmap)
+
+
+//                    val dairyList = baseResponse
+//                                callback.onSuccessSpringDiaryList(dairyList)
+
+
+//                    when (baseResponse?.statusCode) {
+//                        200 -> {
+////                            Log.d("ITM","${baseResponse.data.toString()}")
+//                            try {
+//                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+//                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+//
+//                                val dairyList = baseResponse
+////                                callback.onSuccessSpringDiaryList(dairyList)
+//                                onSuccess(dairyList)
+//
+//                            }catch (e: JsonSyntaxException) {
+//                                Log.e("ITM", "JSON 파싱 오류: ", e)
+//                                onFailure
+//                            }
+//
+//                        }
+//                    }
+                } else
+                { Log.d("ITM", "리스트 함수 들어옴4 ")
+                    Log.d("ITM", "$response")}
+                onFailure
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+                onFailure
+            }
+        })
+    }
+
+
+
+
+    fun AddFriend(accessToken :String, code: String) {
+        Log.d("ITM", "마이페이지함수 들어옴1 ")
+
+        val friendcode = FriendCode(code)
+        writeRequest. AddFriend("Bearer $accessToken",  friendcode).enqueue(object :
+            Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                Log.d("ITM", "마이페이지함수 들어옴2 ")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "마이페이지함수 들어옴3 ")
+                    val baseResponse  = response.body()
+
+                    when (baseResponse?.status) {
+                        200 -> {
+                            Log.d("ITM", "마이페이지함수 들어옴4 ")
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+
+                                    Log.d("ITM","친구추가 성공")
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+                            }
+                        }
+                    }
+                } else
+                { Log.d("ITM", "리스트 함수 들어옴4 ")
+                    Log.d("ITM", "$response")}
+
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+
+            }
+        })
+    }
+
+
+    //릴레이 함수
+
+    //여기서 왜?
+    fun relayWrite(accessToken :String, diaryID: Int, friendCode:String, updateContext: String,
+                   onSuccess: () -> Unit,
+                   onFailure: () -> Unit) {
+        Log.d("ITM", "마이페이지함수 들어옴1 ")
+
+        val relayform = RelayDataRequest(diaryID, friendCode, updateContext)
+        writeRequest.relayWrite("Bearer $accessToken",  relayform).enqueue(object :
+            Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                Log.d("ITM", "마이페이지함수 들어옴2 ")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "마이페이지함수 들어옴3 ")
+                    val baseResponse  = response.body()
+
+                    when (baseResponse?.status) {
+                        200 -> {
+                            Log.d("ITM", "공유성공 ")
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+                                onSuccess()
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+                                onFailure()
+                            }
+                        }
+                    }
+                } else
+                { Log.d("ITM", "리스트 함수 들어옴4 ")
+                    Log.d("ITM", "$response")
+                    onFailure()}
+
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+                onFailure()
+
+            }
+        })
+    }
 }

@@ -4,9 +4,11 @@ package com.hwido.pieceofdayfront.ServerAPI
 import com.hwido.pieceofdayfront.DT.BaseResponse
 import com.hwido.pieceofdayfront.DT.BaseResponse2
 import com.hwido.pieceofdayfront.DT.BasicResponse
+import com.hwido.pieceofdayfront.DT.CheckResponse
 import com.hwido.pieceofdayfront.DT.FriendCode
 import com.hwido.pieceofdayfront.DT.ListResponse
 import com.hwido.pieceofdayfront.DT.OneDayCheck
+import com.hwido.pieceofdayfront.DT.RelayDataRequest
 import com.hwido.pieceofdayfront.DT.SendMBTI
 import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
 import com.hwido.pieceofdayfront.DT.SignUpRequest
@@ -16,6 +18,7 @@ import com.hwido.pieceofdayfront.DT.getDiaryResponse
 import com.hwido.pieceofdayfront.DT.myPageBaseData
 import com.hwido.pieceofdayfront.DT.reloadDairy
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -73,7 +76,7 @@ interface ServerApiService {
     fun getMyPage(@Header("Authorization") authToken: String?) : Call<myPageBaseData>
 
     @POST("friend/check")
-    fun checkIfFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+    fun checkIfFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<CheckResponse>
 
     @POST("diary/delete")
     fun deleteDiary(@Header("Authorization") authToken: String?, @Body request : diaryID) : Call<BasicResponse>
@@ -84,7 +87,16 @@ interface ServerApiService {
 //    @POST("diary/delete")
 //    fun deleteDiary(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
 
+    @GET("profile/read/{id}")
+    fun getImagePage(@Path("id") memberId: Int) : Call<ResponseBody>
 
 
+    @POST("friend/request")
+    fun AddFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+
+
+
+    @POST("share/write")
+    fun relayWrite(@Header("Authorization") authToken: String?, @Body request : RelayDataRequest) : Call<BasicResponse>
 
 }

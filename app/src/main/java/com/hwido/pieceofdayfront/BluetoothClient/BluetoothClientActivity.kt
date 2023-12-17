@@ -18,11 +18,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.gson.Gson
 import com.hwido.pieceofdayfront.BluetoothClient.activity.ScanActivity
 import com.hwido.pieceofdayfront.BluetoothClient.net.BTConstantServer
 import com.hwido.pieceofdayfront.BluetoothClient.net.BluetoothClient
 import com.hwido.pieceofdayfront.BluetoothClient.net.SocketListener
 import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
+import com.hwido.pieceofdayfront.MainMainpage
 import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.ActivityBluetoothClientBinding
@@ -137,45 +139,30 @@ class BluetoothClientActivity : AppCompatActivity() {
 //            WriteDataRequestTransfer(longToInt, mycode, title, content, location, weather)
 
         val share = intent.getSerializableExtra("codeAndContent") as WriteDataRequestTransfer
+//        Share = share.toString()
+        val gson = Gson()
+        Share = gson.toJson(share)
 
-        Share = share.toString()
-        //코드를 다른 사용자한테 보낸다 보내고 친구 확인하고
-        //확인 후에 친구 추가
-
-        Log.d("ITM", "공유전 데이터 ${share?.code}, ${share?.title}") // 본인 코드가 아니라 친구 코드여야한다
-
-
-//        sharedData.code
-        // 공유 데이터가 온다면 code 받아서 확인하고 확인되면
-
-
+        Log.d("ITTTTM", "공유전 데이터 ${share.diaryId}, ${share?.title}") // 본인 코드가 아니라 친구 코드여야한다
         // 공유데이터을 기반으로 받은데이터를 전송한다
         // 이건 친구 코드 받아오면ㅋ 콜백으로 처리해야 된다
 //        SpringServerCall.checkIfFriend(accessToken, BluetoothFreindCode)
-
-        //시작하면 다이어로그 보여준다
-
-
     }
 
     // 여기서 아마 UI 가 겹칠거임
     private fun initUI() {
         svLogView = binding.svLogView //데이터 전송
         tvLogView = binding.tvLogView // 스크롤뷰 안에 textView 있다
-        etMessage = binding.etMessage// 메시지 입력 edit
+//        etMessage = binding.etMessage// 메시지 입력 edit
     }
 
     private fun setListener() {
         //이 부분 어떻게 할 건지 결정해야한다
-
-
         //버튼을 누르면 보낸다는 생각인데
         binding.btnSendData.setOnClickListener {
-//            if (etMessage.text.toString().isNotEmpty()) {
-//                btClient.sendData(etMessage.text.toString())
-//            }
+            //코드를 보낸다
+            btClient.sendData(Share)
 
-            btClient.sendData(Share)//코드를 보낸다
         }
 
         binding.PairedDevicesCheck.setOnClickListener {
@@ -184,6 +171,13 @@ class BluetoothClientActivity : AppCompatActivity() {
 
         binding.btnDisconnect.setOnClickListener {
             btClient.disconnectFromServer()
+        }
+
+        binding.btnfirm.setOnClickListener {
+            val intent = Intent(this, MainMainpage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            intent.putExtra("FRAGMENT_NAME", "MainShareFragment")
+            startActivity(intent)
         }
 
     }
@@ -240,9 +234,16 @@ class BluetoothClientActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        AppControllerServer.Instance.bluetoothOff()
+//    }
+
     override fun onDestroy() {
+            // mainActivity가 초기화된 경우에만 실행
+            AppControllerServer.Instance.bluetoothOff()
+
         super.onDestroy()
-        AppControllerServer.Instance.bluetoothOff()
     }
 
 

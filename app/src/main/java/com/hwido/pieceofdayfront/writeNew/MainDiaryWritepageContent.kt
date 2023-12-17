@@ -104,8 +104,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
 
-
-
         //여기 인스턴스  전역으로 만들고
         binding.mainDiarywritepageContentBtn.setOnClickListener {
             val title = binding.writeTitle.text.toString()
@@ -114,6 +112,22 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             val weather = binding.weatherText.text.toString()
 
 
+            var writeRequestForm = WriteDataRequest(title, content, location, weather)
+            showProgressBar()
+            SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken, onSuccess =
+            { longToInt, url,  hashTag ->
+                // 성공 시 실행될 코드
+                val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
+                intent.putExtra("numberPost", "$longToInt")
+                intent.putExtra("url","$url")
+                intent.putExtra("hashTags","$hashTag")
+
+                hideProgressBar()
+                startActivity(intent)
+            }, onFailure = {
+                // 실패 시 실행될 코드
+                Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+            })
 //            springServer.getDiaryList(it1,  onSuccess = { diaryList ->
 //                // 성공 시 실행될 코드
 //                Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
@@ -128,82 +142,64 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             //처음 다이어리 등록할때 yes  no에 따라서 이미지를 띄울지 아니면 다른 멤버한테 보낼지 정해야됨
 
 
-            AlertDialog.Builder(this)
-                .setMessage(
-                    "Do you want Share?"
-                )
-                .setPositiveButton("Share") { dialog, _ ->
-
-                    var writeRequestForm = WriteDataRequest(title, content, location, weather)
-                    SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken,  onSuccess =
-                    { longToInt, url,  hashTag->
-                        // 성공 시 실행될 코드
-
-                        SpringServerCall.getMyPage(accessToken, onSuccess = { mycode ->
-                            // 성공 시 실행될 코드
-                            //데이터 클래스에 넣어 둔다
-                            val transferData =
-                                WriteDataRequestTransfer(longToInt, mycode, title, content, location, weather)
-                            val intent = Intent(this, BluetoothClientActivity::class.java)
-
-                            //데이터 클래스로 보낸
-                            intent.putExtra("codeAndContent", transferData)
-                            Log.d("ITMM","${transferData.toString()}")
-                            //위치
-                            hideProgressBar()
-                            startActivity(intent)
-
-                        }, onFailure = {
-                            // 실패 시 실행될 코드
-                            Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
-                        })
-
-
-                    }, onFailure = {
-                        // 실패 시 실행될 코드
-                        Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
-                    })
-
-
-                    showProgressBar()
-                    dialog.dismiss()
-                }
-                //_-> 이게 뭐야
-                .setNegativeButton("Just for me") { dialog, _ ->
-
-                    var writeRequestForm = WriteDataRequest(title, content, location, weather)
-                    SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken, onSuccess =
-                    { longToInt, url,  hashTag ->
-                        // 성공 시 실행될 코드
-
-                        val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
-                        intent.putExtra("numberPost", "$longToInt")
-                        intent.putExtra("url","$url")
-                        intent.putExtra("hashTags","$hashTag")
-
-                        hideProgressBar()
-                        startActivity(intent)
-
-
-                    }, onFailure = {
-                        // 실패 시 실행될 코드
-                        Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
-                    })
-
-
-                    dialog.dismiss()
-                    showProgressBar()
-                }.show()
+//            AlertDialog.Builder(this)
+//                .setMessage(
+//                    "Do you want Share?"
+//                )
+//                .setPositiveButton("Share") { dialog, _ ->
+//
+//                    var writeRequestForm = WriteDataRequest(title, content, location, weather)
+//                    SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken,  onSuccess =
+//                    { longToInt, url,  hashTag->
+//                        // 성공 시 실행될 코드
+//
+//                        SpringServerCall.getMyPage(accessToken, onSuccess = { myData ->
+//                            // 성공 시 실행될 코드
+//                            //데이터 클래스에 넣어 둔다
+//
+//
+//                            val transferData =
+//                                myData!!.code?.let { it1 ->
+//                                    WriteDataRequestTransfer(longToInt,
+//                                        it1, title, content, location, weather)
+//                                }
+//                            val intent = Intent(this, BluetoothClientActivity::class.java)
+//
+//                            //데이터 클래스로 보낸
+//                            intent.putExtra("codeAndContent", transferData)
+//                            Log.d("ITMM","${transferData.toString()}")
+//                            //위치
+//                            hideProgressBar()
+//                            startActivity(intent)
+//
+//                        }, onFailure = {
+//                            // 실패 시 실행될 코드
+//                            Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+//                        })
+//
+//
+//                    }, onFailure = {
+//                        // 실패 시 실행될 코드
+//                        Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+//                    })
+//
+//
+//                    showProgressBar()
+//                    dialog.dismiss()
+//                }
+//                //_-> 이게 뭐야
+//                .setNegativeButton("Just for me") { dialog, _ ->
+//
+//
+//
+//
+//                    dialog.dismiss()
+//                    showProgressBar()
+//                }.show()
 
 
         }
-
-
     }
-
-
-
-
 
 
     // 수정 필요
@@ -287,8 +283,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
 
 
     }
-
-
 
     //위치 날씨 콜백함수 구현
     override fun onSuccessLocation(ouPutData: String) {

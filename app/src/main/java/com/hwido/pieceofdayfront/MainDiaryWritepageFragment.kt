@@ -12,10 +12,12 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.hwido.pieceofdayfront.BluetoothClient.BluetoothClientActivity
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
 import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
 import com.hwido.pieceofdayfront.writeNew.MainDiaryWritepageContent
 
 // TODO: Rename parameter arguments, choose names that match
@@ -128,6 +130,35 @@ class MainDiaryWritepageFragment : Fragment()  {
                 val title = clickedItem.title
                 id = clickedItem.diaryId
 
+                binding.mainDiaryformatPopupShare.setOnClickListener {
+                    param1?.let { it1 ->
+                        springServer.getMyPage(it1, onSuccess = { myData ->
+                            // 성공 시 실행될 코드
+                            //데이터 클래스에 넣어 둔다
+                            val transferData =
+                                myData!!.code?.let { it1 ->
+                                    id?.let { it2 ->
+                                        WriteDataRequestTransfer(
+                                            it2,
+                                            it1, title, content, location, weatherCode)
+                                    }
+                                }
+
+                            val intent = Intent(activity, BluetoothClientActivity::class.java)
+
+                            //데이터 클래스로 보낸
+                            intent.putExtra("codeAndContent", transferData)
+                            Log.d("ITMM","${transferData.toString()}")
+                            //위치
+                            startActivity(intent)
+
+                        }, onFailure = {
+                            // 실패 시 실행될 코드
+                            Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+                        })
+                    }
+                }
+
 
 
                 //아이템 데이터 가져와서 여기 레이아웃에 넣어주고 돌린다
@@ -178,8 +209,6 @@ class MainDiaryWritepageFragment : Fragment()  {
             val detailPage = binding.mainShowDetailContents
             detailPage.isVisible = false
         }
-
-
 
 
 

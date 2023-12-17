@@ -2,12 +2,15 @@ package com.hwido.pieceofdayfront.BluetoothServer
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -16,13 +19,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.gson.Gson
 import com.hwido.pieceofdayfront.BluetoothClient.AppControllerServer
 import com.hwido.pieceofdayfront.BluetoothClient.net.BTConstantServer
 import com.hwido.pieceofdayfront.BluetoothClient.net.BluetoothServer
 import com.hwido.pieceofdayfront.BluetoothClient.net.SocketListenerServer
 import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
+import com.hwido.pieceofdayfront.MainMainpage
 import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.ActivityBluetoothServerBinding
@@ -36,12 +42,12 @@ class BluetoothServerActivity : AppCompatActivity() {
     private var btServer: BluetoothServer = BluetoothServer()
     private var accessToken :String = ""
 
-    private var share : WriteDataRequestTransfer? = null
+    private var data : WriteDataRequestTransfer? = null
 
     private val  SpringServerCall= SpringServerAPI()
     private lateinit var binding : ActivityBluetoothServerBinding
-    private lateinit var svLogView: ScrollView
-    private lateinit var tvLogView: TextView
+//    private lateinit var svLogView: ScrollView
+//    private lateinit var tvLogView: TextView
 //    private lateinit var etMessage: EditText
 
     private var handler: Handler = Handler()
@@ -135,7 +141,33 @@ class BluetoothServerActivity : AppCompatActivity() {
         btServer.accept()
 
         binding.mainDiarysharepageContentBtn.setOnClickListener {
-            //여기서 이어쓰기 호출한다
+
+            //이어쓰기 완료하면 보내준다
+            val friendcode =data?.code;
+            val content = binding.shareContent.text.toString();
+            val diaryId = data?.diaryId
+            //함수 구현 해야된다
+            //call back은 Unit으로 설정하고 3번째 intent로 가는 걸로 한다
+            //이어쓰기 완료 인터페이즈 구현
+            //그리고 누르면 바로 프레그먼트 3번쨰 페이지로 넘어가야한다
+
+            Log.d("ITTTTM","이건가? $diaryId")
+            SpringServerCall.relayWrite(accessToken, diaryId!!, friendcode!!, content,   onSuccess = {->
+                Log.d("ITTTTM","이건가? $diaryId")
+                // 성공 시 실행될 코드
+//                Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+//                val intent =
+                val intent = Intent(this, MainMainpage::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.putExtra("FRAGMENT_NAME", "MainShareFragment")
+                startActivity(intent)
+
+            }, onFailure = {
+                // 실패 시 실행될 코드
+                Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+            })
+
+
         }
         //버튼누르면 permission 체크하고
         //"codeAndContent", transferData
@@ -161,13 +193,12 @@ class BluetoothServerActivity : AppCompatActivity() {
 
     // 여기서 아마 UI 가 겹칠거임
     private fun initUI() {
-        svLogView = binding.svLogViewServer //데이터 전송
-        tvLogView = binding.tvLogViewServer // 스크롤뷰 안에 textView 있다
+//        svLogView = binding.svLogViewServer //데이터 전송
+//        tvLogView = binding.tvLogViewServer // 스크롤뷰 안에 textView 있다
 //        etMessage = binding.etMessageServer // 메시지 입력 edit
     }
 
     private fun setListener() {
-
         binding.btnAcceptServer.setOnClickListener {
             btServer.accept()
         }
@@ -187,26 +218,26 @@ class BluetoothServerActivity : AppCompatActivity() {
 
     // 텍스트 뷰에 post 한다
     // 곧있으면 날릴예정
-    private fun log(message: String) {
-        sbLog.append(message.trimIndent() + "\n")
-        handler.post {
-            tvLogView.text = sbLog.toString()
-            svLogView.fullScroll(ScrollView.FOCUS_DOWN)
-        }
-    }
+//    private fun log(message: String) {
+//        sbLog.append(message.trimIndent() + "\n")
+//        handler.post {
+//            tvLogView.text = sbLog.toString()
+//            svLogView.fullScroll(ScrollView.FOCUS_DOWN)
+//        }
+//    }
 
     private val mOnSocketListener: SocketListenerServer = object : SocketListenerServer {
         override fun onConnect() {
-            log("Connect!\n")
+//            log("Connect!\n")
             //바로 연결 됬을떄 내 코드를 친구 한테 보내 준다
         }
 
         override fun onDisconnect() {
-            log("Disconnect!\n")
+//            log("Disconnect!\n")
         }
 
         override fun onError(e: Exception?) {
-            e?.let { log(e.toString() + "\n") }
+//            e?.let { log(e.toString() + "\n") }
         }
 
         override fun onReceive(msg: String?) {
@@ -223,35 +254,65 @@ class BluetoothServerActivity : AppCompatActivity() {
 //                // 실패 시 실행될 코드
 //                Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
 //            })
-            val data = msg as? WriteDataRequestTransfer
+
+            //
+            Log.d("ITTTTM", "데이터 파싱전 ${msg}")
+            val gson = Gson()
+            data = gson.fromJson(msg, WriteDataRequestTransfer::class.java)
+            Log.d("ITTTTM", "데이터 파싱 후${data?.diaryId}")
             var friendCode = ""
             if (data != null) {
                 // 캐스팅 성공, data 사용
-                friendCode = share!!.code
+                friendCode = data!!.code
                 Log.d("ITM", "${friendCode}")
+
+                //친구체크
+                SpringServerCall.checkIfFriend(accessToken, friendCode, onSuccess = { CheckNumber ->
+                    // 성공 시 실행될 코드
+//                    binding.shareContent.setText(share!!.context)
+//                    binding.shareTitle.setText(share!!.title)
+                    //친구가 아니면 다이어로그 띄워서 친구 추가 메세지 구현
+                    if(CheckNumber ==1){
+                        //다이어로그로 친구 추가할지 선택한다
+                        AlertDialog.Builder(this@BluetoothServerActivity)
+                            .setMessage(
+                               "Do you want add this person to Friend?"
+                            )
+                            //세팅으로 간다
+                            .setPositiveButton("Add Friend") { _, _ ->
+                                SpringServerCall.AddFriend(accessToken, friendCode)
+                            }
+                            //_-> 이게 뭐야
+                            .setNegativeButton("Keep Going") { dialog, _ ->
+
+                                dialog.dismiss()
+                            }.show()
+                    }
+
+                    binding.shareTitle.text =data?.title
+                    binding.shareContent.setText(data?.context)
+
+                }, onFailure = {
+
+                })
+
+                // 이어쓰기 파트 진행
+
+
             } else {
                 // 캐스팅 실패, 적절한 처리 수행
-
 
             }
 
 
-            SpringServerCall.checkIfFriend( accessToken, friendCode, onSuccess = { diaryList ->
-                // 성공 시 실행될 코드
-                binding.shareContent.setText(share!!.context)
-                binding.shareTitle.setText(share!!.title)
-            }, onFailure = {
-
-            })
-
         }
 
         override fun onSend(msg: String?) {
-            msg?.let { log("Send : $it\n") }
+//            msg?.let { log("Send : $it\n") }
         }
 
         override fun onLogPrint(msg: String?) {
-            msg?.let { log("$it\n") }
+//            msg?.let { log("$it\n") }
         }
     }
 

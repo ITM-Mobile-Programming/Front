@@ -18,6 +18,7 @@ class MainMainpage : AppCompatActivity() {
 
     private lateinit var binding: MainMainpageBinding
     private lateinit var secondFragment : Fragment
+    private lateinit var thirdFragment : Fragment
 
     val sharedPreferences: SharedPreferences by lazy {
         val masterKeyAlias = MasterKey
@@ -41,13 +42,23 @@ class MainMainpage : AppCompatActivity() {
         super.onNewIntent(intent)
         if (intent.getStringExtra("FRAGMENT_NAME") == "MainWriteFragment") {
             displaySecondFragment()
+        }else if(intent.getStringExtra("FRAGMENT_NAME") == "MainShareFragment"){
+            displayThirdFragment()
         }
     }
+
 
     private fun displaySecondFragment() {
         // SecondFragment를 표시하는 코드
         supportFragmentManager.beginTransaction()
             .replace(binding.mainMainpageBaseframe.id, secondFragment)
+            .commit()
+    }
+
+    private fun displayThirdFragment() {
+        // SecondFragment를 표시하는 코드
+        supportFragmentManager.beginTransaction()
+            .replace(binding.mainMainpageBaseframe.id, thirdFragment)
             .commit()
     }
 
@@ -61,7 +72,7 @@ class MainMainpage : AppCompatActivity() {
         Log.d("ITM"," $accessToken")
         val firstFragment = MainListpageFragment.newInstance(accessToken)
         secondFragment = MainDiaryWritepageFragment.newInstance(accessToken)
-        val thridFragment = MainDiarySharepageFragment.newInstance(accessToken)
+        thirdFragment  = MainDiarySharepageFragment.newInstance(accessToken)
         val fourthFragment = MainMypageFragment.newInstance(accessToken)
 
         val fManager = supportFragmentManager
@@ -91,7 +102,7 @@ class MainMainpage : AppCompatActivity() {
         binding.mainButtonDiaryShare.setOnClickListener {
 
             fManager.commit{
-                replace(binding.mainMainpageBaseframe.id,thridFragment)
+                replace(binding.mainMainpageBaseframe.id, thirdFragment)
             }
         }
 

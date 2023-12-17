@@ -8,6 +8,7 @@ data class myPageBaseData(
     @SerializedName("data") val data:getMyData?
 )
 data class getMyData(
+    @SerializedName("memberId")  val memberId: Int?,
     @SerializedName("diaryCount")  val diaryCount: Int?,
     @SerializedName("nickName") val nickName: String?,
     @SerializedName("email") val email : String?,
