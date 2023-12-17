@@ -71,10 +71,6 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
 
         updateDisplayedDate(calendarView.date)
 
-        // date 타입
-        //val date = Date(calendarView.date)
-
-
 
         // 날짜 변환
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
