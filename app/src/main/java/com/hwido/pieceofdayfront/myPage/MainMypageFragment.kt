@@ -65,7 +65,7 @@ class MainMypageFragment : Fragment() {
                 binding.mainMypageIntro.text = MyData.introduce
                 binding.mainMypageName.text = MyData.nickName
                 val memberID = MyData.memberId!!
-                SpringServerCall.getImagePage(11, onSuccess = { MyImage ->
+                SpringServerCall.getImagePage(memberID, onSuccess = { MyImage ->
 
                     binding.profileBasic.setImageBitmap(MyImage)
 

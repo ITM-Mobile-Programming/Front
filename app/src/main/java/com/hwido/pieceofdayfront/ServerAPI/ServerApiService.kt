@@ -116,7 +116,6 @@ interface ServerApiService {
     // 친구 목록
     @GET("friend/")
     fun getFriendList(@Header("Authorization") authToken: String?) : Call<FriendResponse>
-
     // 날짜별 다이어리
     @POST("diary/dateSearch")
     fun getDateDiary(@Header("Authorization") authToken: String?, @Body writtenDate : DateDiary) : Call<ListResponse>

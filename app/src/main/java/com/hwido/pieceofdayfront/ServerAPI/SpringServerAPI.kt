@@ -574,6 +574,7 @@ class SpringServerAPI {
 //                                callback.onSuccessSpringDiaryList(dairyList)
                                         onSuccess(dairyList)
 
+
                                     } catch (e: JsonSyntaxException) {
                                         Log.e("ITM", "JSON 파싱 오류: ", e)
                                         onFailure

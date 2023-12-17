@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_mainpage_loginButton"
-        android:text="로그인"
+        android:text="구글 사용자 인증"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:background="@drawable/rectangle_button"/>

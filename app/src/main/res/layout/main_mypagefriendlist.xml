@@ -20,10 +20,11 @@
             android:layout_margin="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:id="@+id/main_mypagefriendlist_list"
-            tools:listitem="@layout/main_friendlistformat">
+            tools:listitem="@layout/main_friendlistformat"
+            android:layout_gravity="center">
 
         </androidx.recyclerview.widget.RecyclerView>
 
