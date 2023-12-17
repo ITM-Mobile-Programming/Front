@@ -249,6 +249,7 @@ class SpringServerAPI {
                                 //바로 변수로 받고 리사이클러 뷰에 넣는다
 
                                 val diaryEntries = baseResponse.data
+                                Log.d("ITM", "Diary Entries: $diaryEntries")
 
                                 if (diaryEntries != null) {
                                     onSuccess(diaryEntries)
