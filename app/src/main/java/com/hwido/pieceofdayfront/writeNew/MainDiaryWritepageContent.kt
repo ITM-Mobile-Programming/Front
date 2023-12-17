@@ -27,8 +27,14 @@ import com.hwido.pieceofdayfront.BluetoothServer.BluetoothServerActivity
 import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
+
 import com.hwido.pieceofdayfront.DT.WriteDataRequest
 import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
+
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.FriendData
+
+
 import com.hwido.pieceofdayfront.login.LoginMainpage
 import com.hwido.pieceofdayfront.writeNew.Location.CoordinateTransformer
 import com.hwido.pieceofdayfront.writeNew.Location.KakaoResponseCallback
@@ -39,6 +45,8 @@ import java.util.Locale
 
 
 class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback{
+
+
 
     private lateinit var binding : MainDiarywritepageContentBinding
     private val kakaoAPI = KakaoRetrofitClient()
@@ -94,6 +102,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainDiarywritepageContentBinding.inflate(layoutInflater)
@@ -112,7 +121,9 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             val weather = binding.weatherText.text.toString()
 
 
+
             var writeRequestForm = WriteDataRequest(title, content, location, weather)
+
             showProgressBar()
             SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken, onSuccess =
             { longToInt, url,  hashTag ->
@@ -331,6 +342,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
     }
 
     // 프로그레스바 보이기
+
     private fun showProgressBar() {
         val pBar = binding.mainDiarywritepageContentProgressBar
         blockLayoutTouch()

@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 필요에 의해 사용 -->
@@ -62,6 +63,9 @@
             android:name=".BluetoothServer.BluetoothServerActivity"
             android:exported="false" />
         <activity
+            android:name=".myPage.MainMypageFriendList"
+            android:exported="false" />
+        <activity
             android:name=".writeNew.MainDiaryWritepageMBTI"
             android:exported="false" />
         <activity
@@ -78,16 +82,15 @@
             android:exported="false" />
         <activity
             android:name=".login.LoginSignInProfilePicture"
-            android:exported="false" />
-        <activity
-            android:name=".myPage.MainMypage"
-            android:exported="false" />
-        <activity
-            android:name=".MainDiarySharepage"
-            android:exported="false" />
-        <activity
-            android:name=".MainDiaryWritepage"
-            android:exported="false" />
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".myPage.MainMypage" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".MainDiarySharepage" -->
+        <!-- android:exported="false" /> -->
+        <!-- <activity -->
+        <!-- android:name=".MainDiaryWritepage" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".login.LoginSigninpagePopup"
             android:exported="false" />

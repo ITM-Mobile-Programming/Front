@@ -22,19 +22,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/main_diarywritepage_diary"
-            tools:listitem="@layout/main_diaryformat">
+            tools:listitem="@layout/main_diaryformat"
+            android:layout_marginLeft="42dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:id="@+id/main_diarywritepage_writeDiary"
-        android:text="다이어리 작성"
+        android:src="@drawable/plus"
         android:layout_margin="10dp"
-        android:layout_gravity="right"/>
+        android:layout_gravity="right"
+        android:background="@drawable/oval_button"/>
 
 </LinearLayout>
 
@@ -140,6 +142,7 @@
             android:hint="일기 내용"/>
 
 
+
         <LinearLayout
             android:gravity="center"
             android:layout_gravity="center"
@@ -174,6 +177,7 @@
 
 
         </LinearLayout>
+
 
 
     </LinearLayout>

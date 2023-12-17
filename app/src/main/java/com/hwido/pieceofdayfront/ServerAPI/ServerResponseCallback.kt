@@ -1,5 +1,6 @@
 package com.hwido.pieceofdayfront.ServerAPI
 
+
 import com.hwido.pieceofdayfront.DT.DiaryEntry
 
 interface ServerResponseCallback {
@@ -10,4 +11,5 @@ interface ServerResponseCallback {
     fun onSuccessSpring(diaryId :Int, hashTags :String, imageUrl:String)
 
     fun onErrorSpring(error: Throwable)
+
 }

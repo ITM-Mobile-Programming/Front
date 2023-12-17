@@ -1,6 +1,7 @@
 package com.hwido.pieceofdayfront.ServerAPI
 
 
+
 import com.hwido.pieceofdayfront.DT.BaseResponse
 import com.hwido.pieceofdayfront.DT.BaseResponse2
 import com.hwido.pieceofdayfront.DT.BasicResponse
@@ -17,6 +18,10 @@ import com.hwido.pieceofdayfront.DT.diaryID
 import com.hwido.pieceofdayfront.DT.getDiaryResponse
 import com.hwido.pieceofdayfront.DT.myPageBaseData
 import com.hwido.pieceofdayfront.DT.reloadDairy
+import com.hwido.pieceofdayfront.DT.DateDiary
+import com.hwido.pieceofdayfront.DT.FriendResponse
+
+
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -27,6 +32,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface ServerApiService {
@@ -99,4 +105,21 @@ interface ServerApiService {
     @POST("share/write")
     fun relayWrite(@Header("Authorization") authToken: String?, @Body request : RelayDataRequest) : Call<BasicResponse>
 
+
+
+    //중복작성
+//    @GET("/diary/verification")
+//    fun checkDouble(@Header("Authorization") authToken: String?) :
+    //다이어리 수정
+    //다이어리 삭제
+
+    // 친구 목록
+    @GET("friend/")
+    fun getFriendList(@Header("Authorization") authToken: String?) : Call<FriendResponse>
+
+    // 날짜별 다이어리
+    @POST("diary/dateSearch")
+    fun getDateDiary(@Header("Authorization") authToken: String?, @Body writtenDate : DateDiary) : Call<ListResponse>
+
 }
+

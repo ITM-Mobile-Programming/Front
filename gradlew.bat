@@ -1,6 +1,8 @@
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -92,6 +94,7 @@ if "%OS%"=="Windows_NT" endlocal
 :omega
 =======
 >>>>>>> temp
+>>>>>>> afb14fd114c300af66aecc259cee14716a3c6411
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -183,5 +186,8 @@ if "%OS%"=="Windows_NT" endlocal
 :omega
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 >>>>>>> 1d6e8e0 (test)
 >>>>>>> temp
+>>>>>>> afb14fd114c300af66aecc259cee14716a3c6411

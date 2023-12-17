@@ -95,8 +95,9 @@ class MainMypageFragment : Fragment() {
             navigateToShareList()
         }
 
-        binding.mainMypageMbtipageBtn.setOnClickListener {
-            navigateToMbti()
+
+        binding.mainMypageFriendlistpageBtn.setOnClickListener {
+            navigateToFriendList()
         }
 
 
@@ -110,9 +111,9 @@ class MainMypageFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun navigateToMbti() {
-        val intent = Intent(activity, MainMypageMBTI::class.java)
-        startActivity(intent)
+    private fun navigateToFriendList() {
+        val intent = Intent(activity, MainMypageFriendList::class.java)
+        startActivity((intent))
     }
 
     companion object {

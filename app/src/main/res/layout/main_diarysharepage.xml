@@ -22,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/main_diarysharepage_diary"
-                tools:listitem="@layout/main_diaryformat">
+                tools:listitem="@layout/main_diaryformat"
+                android:layout_marginLeft="42dp">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -47,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-
+        android:visibility="gone"
         >
         <LinearLayout
             android:background="#FFFFFF"
@@ -164,7 +165,6 @@
 
 
 </FrameLayout>
-
 
 
 

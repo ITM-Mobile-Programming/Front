@@ -27,6 +27,7 @@
         android:id="@+id/login_mainpage_loginButton"
         android:text="로그인"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:background="@drawable/rectangle_button"/>
 
 </LinearLayout>

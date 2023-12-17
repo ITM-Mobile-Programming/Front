@@ -39,7 +39,7 @@
             android:text="일기 목록"
             android:textSize="12sp"
             android:id="@+id/main_button_diaryList"
-            />
+            android:background="@drawable/rectangle_button"/>
 
         <Button
             android:layout_width="100dp"
@@ -47,7 +47,7 @@
             android:text="일기 작성"
             android:textSize="12sp"
             android:id="@+id/main_button_diaryWrite"
-            />
+            android:background="@drawable/rectangle_button"/>
 
         <Button
             android:layout_width="100dp"
@@ -55,7 +55,7 @@
             android:text="친구와 공유"
             android:textSize="10sp"
             android:id="@+id/main_button_diaryShare"
-            />
+            android:background="@drawable/rectangle_button"/>
 
         <Button
             android:layout_width="110dp"
@@ -63,7 +63,7 @@
             android:text="마이 페이지"
             android:textSize="12sp"
             android:id="@+id/main_button_myPage"
-            />
+            android:background="@drawable/rectangle_button"/>
 
     </LinearLayout>
 

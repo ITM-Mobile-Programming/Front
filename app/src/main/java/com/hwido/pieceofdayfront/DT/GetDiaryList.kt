@@ -25,3 +25,7 @@ data class HashTag(
     @SerializedName("diaryToHashTagIde") val diaryToHashTagId: Int,
     @SerializedName("hashTag") val hashTag: String
 )
+
+data class DateDiary(
+    @SerializedName("writtenDate") val writtenDate : String
+)

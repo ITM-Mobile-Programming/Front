@@ -15,9 +15,9 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
@@ -42,6 +42,9 @@ import java.text.SimpleDateFormat
 
 
 class LoginSignInProfilePicture : AppCompatActivity() {
+    private val CAMERA_PERMISSION_REQUEST_CODE = 200
+    private val STORAGE_PERMISSION_REQUEST_CODE = 201
+
 
     private lateinit var  binding : LoginSignInProfilePictureBinding
     private lateinit var pictureBinaryFileUri : Uri
@@ -65,10 +68,10 @@ class LoginSignInProfilePicture : AppCompatActivity() {
 
 
     companion object {
-        val CAMERA = arrayOf(android.Manifest.permission.CAMERA)
-        val STORAGE = arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES)
-        const val CAMERA_CODE = 98
-        const val STORAGE_CODE = 99
+        private val CAMERA_PERMISSION_REQUEST_CODE = 200
+        private val STORAGE_PERMISSION_REQUEST_CODE = 201
+        const val CAMERA_CODE = 100
+        const val STORAGE_CODE = 101
     }
 
 
@@ -79,10 +82,6 @@ class LoginSignInProfilePicture : AppCompatActivity() {
         binding.loginSigninpageTakePicture.setOnClickListener {
             CallCamera()
         }
-        binding.loginSigninpageTakePicture.setOnClickListener {
-            CallCamera()
-        }
-
         // 사진 저장
         binding.loginSigninpageChangeProfileGalleryPicture.setOnClickListener {
             GetAlbum()
@@ -247,57 +246,79 @@ class LoginSignInProfilePicture : AppCompatActivity() {
 
 
     // 카메라 권한, 저장소 권한
-// 요청 권한
+    // 요청 권한
+    private val requestCameraPermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val allPermissionsGranted = permissions.entries.all { it.value }
+            if (allPermissionsGranted) {
+                CallCamera()
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show()
+                showRotationalDialogForPermission()
+            }
+        }
+
+    private val requestStoragePermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val allPermissionsGranted = permissions.entries.all { it.value }
+            if (allPermissionsGranted) {
+                GetAlbum()
+            } else {
+                Toast.makeText(this, "Storage permission denied", Toast.LENGTH_LONG).show()
+                showRotationalDialogForPermission()
+            }
+        }
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when(requestCode){
-            CAMERA_CODE -> {
+            STORAGE_CODE, CAMERA_CODE -> {
                 for (grant in grantResults){
                     if(grant != PackageManager.PERMISSION_GRANTED){
-                        Toast.makeText(this, "카메라 권한을 승인해 주세요", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "권한을 승인해 주세요", Toast.LENGTH_LONG).show()
                         showRotationalDialogForPermission()
+                        return
                     }
                 }
-            }
-
-            STORAGE_CODE -> {
-                for(grant in grantResults){
-                    if(grant != PackageManager.PERMISSION_GRANTED){
-                        Toast.makeText(this, "저장소 권한을 승인해 주세요", Toast.LENGTH_LONG).show()
-                        showRotationalDialogForPermission()
-                    }
+                when (requestCode) {
+                    CAMERA_CODE -> CallCamera()
                 }
             }
         }
     }
 
-
     // 다른 권한등도 확인이 가능하도록
-    fun checkPermission(permissions: Array<out String>, type:Int):Boolean{
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            for (permission in permissions){
-                if(ContextCompat.checkSelfPermission(this, permission)
-                    != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(this, permissions, type)
-                    return false
-                }
-            }
+    fun checkPermission(permission: String, requestCode: Int): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestCameraPermissions.launch(arrayOf(permission))
+            false // Return false for now, as the actual permission result will be handled in the callback
+        } else {
+            true // If SDK version is less than M, consider permission granted
         }
-        return true
     }
 
 
     // 카메라 촬영 - 권한 처리
-    fun CallCamera(){
-        if(checkPermission(CAMERA, CAMERA_CODE) && checkPermission(
-                STORAGE,
-                STORAGE_CODE
-            )){
-            val itt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(itt, CAMERA_CODE)
+    private fun CallCamera() {
+        // Check if the camera permission is granted
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CAMERA // Use android.Manifest instead of your package name
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is already granted, start the camera intent
+            startCameraIntent()
+        } else {
+            // Permission is not granted, request the camera permission
+            requestCameraPermissions.launch(arrayOf(android.Manifest.permission.CAMERA))
         }
+    }
+
+    private fun startCameraIntent() {
+        val itt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(itt, CAMERA_CODE)
     }
 
 
@@ -367,13 +388,25 @@ class LoginSignInProfilePicture : AppCompatActivity() {
     }
 
     // 갤러리 취득
-    fun GetAlbum(){
-        if(checkPermission(STORAGE, STORAGE_CODE)){
-            val itt = Intent(Intent.ACTION_PICK)
-            itt.type = MediaStore.Images.Media.CONTENT_TYPE
-            startActivityForResult(itt, STORAGE_CODE)
-
+    private fun GetAlbum() {
+        // Check if the storage permission is granted
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE // Use android.Manifest instead of your package name
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is already granted, start the gallery intent
+            startGalleryIntent()
+        } else {
+            // Permission is not granted, request the storage permission
+            requestStoragePermissions.launch(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE))
         }
+    }
+
+    private fun startGalleryIntent() {
+        val itt = Intent(Intent.ACTION_PICK)
+        itt.type = MediaStore.Images.Media.CONTENT_TYPE
+        startActivityForResult(itt, STORAGE_CODE)
     }
 
 
@@ -401,55 +434,4 @@ class LoginSignInProfilePicture : AppCompatActivity() {
                 dialog.dismiss()
             }.show()
     }
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
