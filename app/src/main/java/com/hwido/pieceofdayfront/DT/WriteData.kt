@@ -66,3 +66,9 @@ data class SendMBTI(
     @SerializedName("mbtiCode") val mbtiCode : String
 )
 
+
+data class diaryID(
+    @SerializedName("diaryId") val diaryID: Int?
+)
+
+

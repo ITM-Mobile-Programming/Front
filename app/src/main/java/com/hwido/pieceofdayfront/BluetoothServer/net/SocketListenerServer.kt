@@ -1,6 +1,6 @@
-package com.hwido.pieceofdayfront.Bluetooth.net
+package com.hwido.pieceofdayfront.BluetoothClient.net
 
-interface SocketListener {
+interface SocketListenerServer {
     fun onConnect()
     fun onDisconnect()
     fun onError(e: Exception?)

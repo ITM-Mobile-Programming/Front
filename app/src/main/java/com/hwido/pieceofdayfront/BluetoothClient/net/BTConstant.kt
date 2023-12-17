@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.Bluetooth.net
+package com.hwido.pieceofdayfront.BluetoothClient.net
 import java.util.*
 
 object BTConstant {

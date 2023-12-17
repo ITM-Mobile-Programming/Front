@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.Bluetooth.net
+package com.hwido.pieceofdayfront.BluetoothClient.net
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
@@ -148,7 +148,7 @@ class BluetoothClient {
         init {
             try {
                 socket =
-                    device.createRfcommSocketToServiceRecord(BTConstant.BLUETOOTH_UUID_INSECURE)
+                    device.createRfcommSocketToServiceRecord(BTConstantServer.BLUETOOTH_UUID_INSECURE)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

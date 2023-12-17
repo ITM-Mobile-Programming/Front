@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.Bluetooth.adapter
+package com.hwido.pieceofdayfront.BluetoothClient.adapter
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.hwido.pieceofdayfront.Bluetooth.activity.ScanActivity
+import com.hwido.pieceofdayfront.BluetoothClient.activity.ScanActivity
 import com.hwido.pieceofdayfront.R
 
 

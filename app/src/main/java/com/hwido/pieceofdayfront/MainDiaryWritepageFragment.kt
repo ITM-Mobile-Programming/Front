@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
@@ -32,7 +34,7 @@ class MainDiaryWritepageFragment : Fragment()  {
     private lateinit var binding: MainDiarywritepageBinding
     private lateinit var diaryAdapter: DiaryAdapter
     private val springServer = SpringServerAPI()
-
+    private var id : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +72,40 @@ class MainDiaryWritepageFragment : Fragment()  {
         binding = MainDiarywritepageBinding.inflate(inflater, container, false)
 
         // adapter 빈 list로 기본 설정
+        val removeButton = binding.mainDiaryformatPopupRemove
+
+
+        //            springServer.getDiaryList(it1,  onSuccess = { diaryList ->
+//                // 성공 시 실행될 코드
+//                Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+//                diaryAdapter.updateData(diaryList.reversed())
+//            }, onFailure = {
+//                // 실패 시 실행될 코드
+//                Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+//            })
+
+
+
+        removeButton.setOnClickListener {
+            // 버튼 클릭 이벤트 처리
+            param1?.let { it1 -> id?.let { it2 -> springServer.deleteDiary(it1, it2,
+                onSuccess = {
+                    springServer.getDiaryList(it1,  onSuccess = { diaryList ->
+                        // 성공 시 실행될 코드
+                        Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+                        diaryAdapter.updateData(diaryList.reversed())
+                    }, onFailure = {
+                        // 실패 시 실행될 코드
+                        Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+                    })
+
+            }, onFailure = {
+                // 실패 시 실행될 코드
+                Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+            })
+            }}
+
+        }
 
 
         diaryAdapter = DiaryAdapter(emptyList())
@@ -86,18 +122,24 @@ class MainDiaryWritepageFragment : Fragment()  {
                 val location = clickedItem.location
                 val weatherCode = clickedItem.weatherCode
                 val content = clickedItem.context
-                val hashTags = clickedItem.hashTagList.toString()
+                Log.d("ITM_write", "$content")
+                val hashTags = "${clickedItem.hashTagList.get(0).hashTag}, ${clickedItem.hashTagList.get(1).hashTag}, ${clickedItem.hashTagList.get(2).hashTag}"
                 val imageUrl = clickedItem.thumbnailUrl.toString()
                 val title = clickedItem.title
+                id = clickedItem.diaryId
+
+
 
                 //아이템 데이터 가져와서 여기 레이아웃에 넣어주고 돌린다
-
                 val detailPage = binding.mainShowDetailContents
                 binding.mainDiaryformatPopupDiaryName.text = title
-                binding.mainDiaryformatPopupDiaryImage
-//                binding.mainDiaryformatPopupDate.text =
                 binding.mainDiaryformatPopupLocation.text = location
                 binding.mainDiaryformatPopupDetail.text = content
+                binding.mainDiarywriteformatPopupHastag.text = hashTags
+                Glide.with(this@MainDiaryWritepageFragment)
+                    .load(imageUrl)
+                    .fitCenter()
+                    .into(binding.mainDiarywriteformatPopupDiaryImage)
 
 
                 when(weatherCode){
@@ -130,6 +172,8 @@ class MainDiaryWritepageFragment : Fragment()  {
 
         }
 
+
+
         binding.backToLinearpage.setOnClickListener {
             val detailPage = binding.mainShowDetailContents
             detailPage.isVisible = false
@@ -137,19 +181,12 @@ class MainDiaryWritepageFragment : Fragment()  {
 
 
 
+
+
         binding.mainDiarywritepageWriteDiary.setOnClickListener {
 
             navigateToContent()
 
-//            param1?.let { it1 ->
-//                springServer.checkOneDay(it1,  onSuccess = { token ->
-//                    // 성공 시 실행될 코드
-//                    navigateToContent()
-//                }, onFailure = {
-//                    // 실패 시 실행될 코드
-//                    Toast.makeText(activity, "Just one is allowed", Toast.LENGTH_SHORT).show()
-//                })
-//            }
 
         }
 

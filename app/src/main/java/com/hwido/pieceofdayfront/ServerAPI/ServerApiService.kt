@@ -11,6 +11,7 @@ import com.hwido.pieceofdayfront.DT.SendMBTI
 import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
 import com.hwido.pieceofdayfront.DT.SignUpRequest
 import com.hwido.pieceofdayfront.DT.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.diaryID
 import com.hwido.pieceofdayfront.DT.getDiaryResponse
 import com.hwido.pieceofdayfront.DT.myPageBaseData
 import com.hwido.pieceofdayfront.DT.reloadDairy
@@ -73,5 +74,17 @@ interface ServerApiService {
 
     @POST("friend/check")
     fun checkIfFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+
+    @POST("diary/delete")
+    fun deleteDiary(@Header("Authorization") authToken: String?, @Body request : diaryID) : Call<BasicResponse>
+
+
+    @GET("share/")
+    fun getSharedDiary(@Header("Authorization") authToken: String?) : Call<getDiaryResponse>
+//    @POST("diary/delete")
+//    fun deleteDiary(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+
+
+
 
 }

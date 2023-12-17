@@ -25,6 +25,7 @@
         android:id="@+id/main_mainpage_baseframe"
         android:layout_weight="1">
 
+
     </FrameLayout>
 
     <LinearLayout

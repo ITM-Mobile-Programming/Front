@@ -9,7 +9,7 @@ data class getDiaryResponse(
 )
 
 data class DiaryEntry(
-    @SerializedName("diaryId") val diaryId : String,
+    @SerializedName("diaryId") val diaryId : Int?,
     @SerializedName("title") val title: String,
     @SerializedName("context") val context: String,
     @SerializedName("location") val location: String,

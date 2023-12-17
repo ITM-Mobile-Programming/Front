@@ -1,28 +1,25 @@
-package com.hwido.pieceofdayfront.Bluetooth
+package com.hwido.pieceofdayfront.BluetoothClient
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.widget.Toast
-import com.hwido.pieceofdayfront.Bluetooth.net.BTConstant
-import com.hwido.pieceofdayfront.Bluetooth.net.BluetoothClient
-import com.hwido.pieceofdayfront.Bluetooth.net.BluetoothServer
+import com.hwido.pieceofdayfront.BluetoothClient.net.BTConstantServer
+import com.hwido.pieceofdayfront.BluetoothClient.net.BluetoothServer
 
 
 @SuppressLint("MissingPermission")
-enum class AppController {
+enum class AppControllerServer {
     Instance;
 
     lateinit var mainActivity: Activity
 
     private val btAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-    lateinit var bluetoothClient: BluetoothClient
     lateinit var bluetoothServer: BluetoothServer
 
-    fun init(activity: Activity, btClient: BluetoothClient, btServer: BluetoothServer) {
+    fun init(activity: Activity,  btServer: BluetoothServer) {
         mainActivity = activity
-        bluetoothClient = btClient
         bluetoothServer = btServer
 
         bluetoothOn()
@@ -39,7 +36,7 @@ enum class AppController {
                 val intentBluetoothEnable = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
                 mainActivity.startActivityForResult(
                     intentBluetoothEnable,
-                    BTConstant.BT_REQUEST_ENABLE
+                    BTConstantServer.BT_REQUEST_ENABLE
                 )
             }
         }
@@ -53,6 +50,4 @@ enum class AppController {
             //Toast.makeText(mainActivity, "블루투스가 이미 비활성화 되어 있습니다.", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 }

@@ -16,3 +16,5 @@ data class WriteDataRequestTransfer(
 data class FriendCode(
     @SerializedName("code") val code: String?
 )
+
+

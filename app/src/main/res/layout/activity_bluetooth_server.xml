@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".BluetoothServer.BluetoothServerActivity">
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:gravity="center"
+    android:text="Bluetooth-Server"
+    android:textAllCaps="false"
+    android:textSize="22sp"
+    android:textStyle="bold" />
+
+<!--<LinearLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:orientation="horizontal">-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/etMessage_Server"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="2"-->
+<!--        android:gravity="center"-->
+<!--        android:hint="Enter message"-->
+<!--        android:textSize="14dp" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnSendData_Server"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="1"-->
+<!--        android:text="Send"-->
+<!--        android:textAllCaps="false" />-->
+
+<!--</LinearLayout>-->
+
+
+    <ScrollView
+        android:id="@+id/svLogView_Server"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="3dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tvLogView_Server"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <Button
+                android:id="@+id/btnAccept_Server"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Accept"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="100dp"
+                android:id="@+id/btnStop_Server"
+                android:layout_height="wrap_content"
+                android:text="Stop"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+        <Button
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="AI에게 부탁하기"
+            android:layout_gravity="center"
+            android:id="@+id/main_diarysharepage_content_btn"/>
+
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="660dp"
+        tools:context=".writeNew.MainDiaryWritepageContent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="다이어리 제목"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/share_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:hint="제목을 입력하세요"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="다이어리 내용"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/share_content"
+                android:layout_width="match_parent"
+                android:layout_height="380dp"
+                android:layout_margin="10dp"
+                android:hint="내용을 입력하세요"/>
+
+
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/main_diarywritepage_content_progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+
+    </FrameLayout>
+
+
+
+</LinearLayout>
+</LinearLayout>

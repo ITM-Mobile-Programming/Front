@@ -9,6 +9,7 @@ import com.hwido.pieceofdayfront.DT.FriendCode
 import com.hwido.pieceofdayfront.DT.OneDayCheck
 import com.hwido.pieceofdayfront.DT.SendMBTI
 import com.hwido.pieceofdayfront.DT.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.diaryID
 import com.hwido.pieceofdayfront.DT.getDiaryResponse
 import com.hwido.pieceofdayfront.DT.getMyData
 import com.hwido.pieceofdayfront.DT.myPageBaseData
@@ -358,6 +359,101 @@ class SpringServerAPI {
             }
             // onFailure 구현...
             override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
+                onFailure
+            }
+        })
+    }
+
+
+//    deleteDiary
+
+
+    fun deleteDiary(accessToken :String, diaryID: Int, onSuccess: () -> Unit,
+                    onFailure: () -> Unit) {
+        Log.d("ITM", "삭제체크 들어옴1")
+        val diaryID = diaryID(diaryID)
+        writeRequest.deleteDiary("Bearer $accessToken", diaryID).enqueue(object :
+            Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
+                Log.d("ITM", "삭제체크 들어옴 2")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "삭제체크 들어옴 3")
+                    val baseResponse  = response.body()
+
+                    when (baseResponse?.status) {
+                        200 -> {
+                            Log.d("ITM", "삭제체크 들어옴 4")
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+                                onSuccess()
+
+                                Log.d("ITM", "다이어리 삭제완료 ")
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+
+                            }
+
+                        }
+                    }
+                } else
+                { Log.d("ITM", "삭제체크  들어옴4 ")
+                    Log.d("ITM", "$response")
+                    onFailure()}
+
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
+                Log.d("ITM", "삭제체크  실패 ${t.message}")
+                onFailure()
+            }
+        })
+    }
+
+
+
+
+    fun getSharedDiary(accessToken :String, onSuccess: (List<DiaryEntry>) -> Unit,
+                     onFailure: () -> Unit) {
+        Log.d("ITM", "리스트 함수 들어옴1 ")
+        writeRequest.getSharedDiary("Bearer $accessToken").enqueue(object :
+            Callback<getDiaryResponse> {
+            override fun onResponse(call: Call<getDiaryResponse>, response: Response<getDiaryResponse>) {
+                Log.d("ITM", "리스트 함수 들어옴2 ")
+
+                if (response.isSuccessful) {
+                    Log.d("ITM", "리스트 함수 들어옴3 ")
+                    val baseResponse  = response.body()
+
+
+                    when (baseResponse?.statusCode) {
+                        200 -> {
+//                            Log.d("ITM","${baseResponse.data.toString()}")
+                            try {
+                                //받은 데이터을 받은 폼으로 리스트로 넘겨준다
+                                //바로 변수로 받고 리사이클러 뷰에 넣는다
+
+                                val dairyList = baseResponse.data
+//                                callback.onSuccessSpringDiaryList(dairyList)
+                                onSuccess(dairyList)
+
+                            }catch (e: JsonSyntaxException) {
+                                Log.e("ITM", "JSON 파싱 오류: ", e)
+                                onFailure
+                            }
+
+                        }
+                    }
+                } else
+                { Log.d("ITM", "리스트 함수 들어옴4 ")
+                    Log.d("ITM", "$response")}
+                onFailure
+            }
+            // onFailure 구현...
+            override fun onFailure(call: Call<getDiaryResponse>, t: Throwable) {
                 Log.d("ITM", "리스트 가져오기 실패 ${t.message}")
                 onFailure
             }

@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.Bluetooth.net
+package com.hwido.pieceofdayfront.BluetoothClient.net
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
@@ -17,10 +17,10 @@ class BluetoothServer {
     private var commThread: CommThread? = null
     private var inputStream: InputStream? = null
     private var outputStream: OutputStream? = null
-    private var socketListener: SocketListener? = null
+    private var socketListener: SocketListenerServer? = null
 
     //콜백 메소드
-    fun setOnSocketListener(listener: SocketListener?) {
+    fun setOnSocketListener(listener: SocketListenerServer?) {
         socketListener = listener
     }
 
@@ -113,7 +113,7 @@ class BluetoothServer {
             try {
                 acceptSocket = btAdapter.listenUsingRfcommWithServiceRecord(
                     "bluetoothTest",
-                    BTConstant.BLUETOOTH_UUID_INSECURE
+                    BTConstantServer.BLUETOOTH_UUID_INSECURE
                 )
             } catch (e: Exception) {
                 e.printStackTrace()

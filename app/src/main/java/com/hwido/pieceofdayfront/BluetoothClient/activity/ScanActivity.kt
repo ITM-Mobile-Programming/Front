@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.Bluetooth.activity
+package com.hwido.pieceofdayfront.BluetoothClient.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -22,17 +22,21 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hwido.pieceofdayfront.Bluetooth.AppController
-import com.hwido.pieceofdayfront.Bluetooth.adapter.DeviceAdapter
-import com.hwido.pieceofdayfront.Bluetooth.adapter.PairingAdapter
+import com.hwido.pieceofdayfront.BluetoothClient.AppControllerClient
+import com.hwido.pieceofdayfront.BluetoothClient.AppControllerServer
+import com.hwido.pieceofdayfront.BluetoothClient.adapter.DeviceAdapter
+import com.hwido.pieceofdayfront.BluetoothClient.adapter.PairingAdapter
+import com.hwido.pieceofdayfront.BluetoothClient.net.BluetoothClient
 
-import com.hwido.pieceofdayfront.Bluetooth.net.BluetoothClient
 import com.hwido.pieceofdayfront.R
+import com.hwido.pieceofdayfront.databinding.ActivityBluetoothClientBinding
+import com.hwido.pieceofdayfront.databinding.ActivityScanBinding
 
 
 @SuppressLint("MissingPermission")
 class ScanActivity : AppCompatActivity() {
 
+    private lateinit var binding : ActivityScanBinding
     private var rvDevices: RecyclerView? = null
     private lateinit var btClient: BluetoothClient
     private val bluetoothAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -44,15 +48,17 @@ class ScanActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scan)
+        binding = ActivityScanBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btClient = AppController.Instance.bluetoothClient
 
-        rvDevices = findViewById(R.id.pairedDevices)
+        btClient = AppControllerClient.Instance.bluetoothClient
+
+        rvDevices = binding.pairedDevices
         rvDevices?.let {
             it.setHasFixedSize(true)
             //
-            it.layoutManager = LinearLayoutManager(AppController.Instance.mainActivity)
+            it.layoutManager = LinearLayoutManager(AppControllerClient.Instance.mainActivityC)
             //paired dev
             rvDevices?.adapter = DeviceAdapter(btClient.getPairedDevices(), onConnectListener)
             // 스캔하는부분 추가필요
@@ -68,7 +74,7 @@ class ScanActivity : AppCompatActivity() {
         val filterPairing = IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
         registerReceiver(pairingReceiver, filterPairing)
 
-        val scanButton = findViewById<Button>(R.id.btnScan2)
+        val scanButton = binding.btnScan2
 
         ///하면 scanButton을 누르면 scan 시갖
         //시작하면 연결 item view
@@ -118,7 +124,7 @@ class ScanActivity : AppCompatActivity() {
                             dialog.dismiss()
                         }.show()
                 }
-            }, 7000)
+            }, 10000)
 
         }
         //bonding 관리
@@ -181,7 +187,6 @@ class ScanActivity : AppCompatActivity() {
         }
     }
 
-//안넘어감
     private val pairingReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             Log.d("ITM","pairing")

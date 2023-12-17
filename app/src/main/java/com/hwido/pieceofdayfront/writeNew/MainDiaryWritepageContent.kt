@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -21,13 +22,11 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
-import com.google.gson.annotations.SerializedName
-import com.hwido.pieceofdayfront.Bluetooth.BluetoothMainActivity
+import com.hwido.pieceofdayfront.BluetoothClient.BluetoothClientActivity
+import com.hwido.pieceofdayfront.BluetoothServer.BluetoothServerActivity
 import com.hwido.pieceofdayfront.R
-import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
-import com.hwido.pieceofdayfront.DT.DiaryEntry
 import com.hwido.pieceofdayfront.DT.WriteDataRequest
 import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
 import com.hwido.pieceofdayfront.login.LoginMainpage
@@ -105,6 +104,8 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
 
 
+
+
         //여기 인스턴스  전역으로 만들고
         binding.mainDiarywritepageContentBtn.setOnClickListener {
             val title = binding.writeTitle.text.toString()
@@ -143,7 +144,7 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
                             //데이터 클래스에 넣어 둔다
                             val transferData =
                                 WriteDataRequestTransfer(longToInt, mycode, title, content, location, weather)
-                            val intent = Intent(this, BluetoothMainActivity::class.java)
+                            val intent = Intent(this, BluetoothClientActivity::class.java)
 
                             //데이터 클래스로 보낸
                             intent.putExtra("codeAndContent", transferData)
@@ -199,6 +200,10 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
 
 
     }
+
+
+
+
 
 
     // 수정 필요
