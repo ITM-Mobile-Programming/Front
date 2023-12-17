@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hwido.pieceofdayfront.databinding.MainSharediaryformatModifyBinding
-import com.hwido.pieceofdayfront.datamodel.SharedDiaryItem
+import com.hwido.pieceofdayfront.DT.SharedDiaryItem
 
 class SharedDiaryListAdapter(private val sharedDiaryList: List<SharedDiaryItem>) :
     RecyclerView.Adapter<SharedDiaryListAdapter.SharedDiaryViewHolder>() {

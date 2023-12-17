@@ -18,8 +18,8 @@ import com.bumptech.glide.request.target.Target
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainListpageBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.DiaryListLoad
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -43,15 +43,6 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        param1?.let { authToken ->
-            Log.d("ITM","들어옴")
-            springServer.getDiaryList(authToken, this)
-            Log.d("ITM","나감")
         }
     }
 

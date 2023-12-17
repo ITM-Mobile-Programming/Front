@@ -207,6 +207,11 @@ class SpringServerAPI {
         })
     }
 
+
+
+
+
+
     fun getFriendList(accessToken :String, onSuccess: (List<FriendData>) -> Unit, onFailure: () -> Unit) {
         Log.d("ITM", "친구 리스트 함수 들어옴1 ")
         writeRequest.getFriendList("Bearer $accessToken").enqueue(object :
