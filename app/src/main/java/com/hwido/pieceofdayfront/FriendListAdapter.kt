@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.hwido.pieceofdayfront.datamodel.FriendData
+import com.hwido.pieceofdayfront.DT.FriendData
 
 class FriendListAdapter : RecyclerView.Adapter<FriendListAdapter.FriendViewHolder>() {
 

@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -20,21 +22,29 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
+import com.hwido.pieceofdayfront.BluetoothClient.BluetoothClientActivity
+import com.hwido.pieceofdayfront.BluetoothServer.BluetoothServerActivity
 import com.hwido.pieceofdayfront.R
-import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageContentBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.FriendData
-import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
+
+import com.hwido.pieceofdayfront.DT.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.WriteDataRequestTransfer
+
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.FriendData
+
+
 import com.hwido.pieceofdayfront.login.LoginMainpage
+import com.hwido.pieceofdayfront.writeNew.Location.CoordinateTransformer
+import com.hwido.pieceofdayfront.writeNew.Location.KakaoResponseCallback
+import com.hwido.pieceofdayfront.writeNew.Location.KakaoRetrofitClient
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 
-class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback,
-    ServerResponseCallback {
+class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, WeatherCallback{
 
 
 
@@ -85,30 +95,10 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             }
         }
 
-
     //back 해도 돌아가게 해야됨
     override fun onResume() {
         super.onResume()
         requestLocation()
-    }
-
-    override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
-        val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
-        intent.putExtra("numberPost", "$diaryId")
-        intent.putExtra("url","$hashTags")
-        intent.putExtra("hashTags","$imageUrl")
-
-
-        hideProgressBar()
-        startActivity(intent)
-    }
-
-    override fun onSuccessSpring(ouPutData: String) {
-        //방치
-    }
-
-    override fun onErrorSpring(error: Throwable) {
-        Log.d("ITM","Content 가져올 수 없음 ")
     }
 
 
@@ -119,7 +109,10 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
         setContentView(binding.root)
 
 
-        val accessToken = sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
+        val accessToken =
+            sharedPreferences.getString(LoginMainpage.app_JWT_token, "access").toString()
+
+
         //여기 인스턴스  전역으로 만들고
         binding.mainDiarywritepageContentBtn.setOnClickListener {
             val title = binding.writeTitle.text.toString()
@@ -127,16 +120,96 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             val location = binding.mainWriteLocation.text.toString()
             val weather = binding.weatherText.text.toString()
 
-            //수정필요
-            var writeRequestForm  = WriteDataRequest(title, content, location, weather)
-//            Log.d("ITM", "$writeRequestForm")
 
-            SpringServerCall.sendDiaryToGetImage(writeRequestForm , accessToken, this)
+
+            var writeRequestForm = WriteDataRequest(title, content, location, weather)
 
             showProgressBar()
+            SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken, onSuccess =
+            { longToInt, url,  hashTag ->
+                // 성공 시 실행될 코드
+                val intent = Intent(this@MainDiaryWritepageContent, MainDiaryWritepageGetImage::class.java)
+                intent.putExtra("numberPost", "$longToInt")
+                intent.putExtra("url","$url")
+                intent.putExtra("hashTags","$hashTag")
+
+                hideProgressBar()
+                startActivity(intent)
+            }, onFailure = {
+                // 실패 시 실행될 코드
+                Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+            })
+//            springServer.getDiaryList(it1,  onSuccess = { diaryList ->
+//                // 성공 시 실행될 코드
+//                Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+//                diaryAdapter.updateData(diaryList.reversed())
+//            }, onFailure = {
+//                // 실패 시 실행될 코드
+//                Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+//            })
+
+//            onSuccess(longToInt, url, hashTag, resultCode)
+
+            //처음 다이어리 등록할때 yes  no에 따라서 이미지를 띄울지 아니면 다른 멤버한테 보낼지 정해야됨
+
+
+//            AlertDialog.Builder(this)
+//                .setMessage(
+//                    "Do you want Share?"
+//                )
+//                .setPositiveButton("Share") { dialog, _ ->
+//
+//                    var writeRequestForm = WriteDataRequest(title, content, location, weather)
+//                    SpringServerCall.sendDiaryToGetImage(writeRequestForm, accessToken,  onSuccess =
+//                    { longToInt, url,  hashTag->
+//                        // 성공 시 실행될 코드
+//
+//                        SpringServerCall.getMyPage(accessToken, onSuccess = { myData ->
+//                            // 성공 시 실행될 코드
+//                            //데이터 클래스에 넣어 둔다
+//
+//
+//                            val transferData =
+//                                myData!!.code?.let { it1 ->
+//                                    WriteDataRequestTransfer(longToInt,
+//                                        it1, title, content, location, weather)
+//                                }
+//                            val intent = Intent(this, BluetoothClientActivity::class.java)
+//
+//                            //데이터 클래스로 보낸
+//                            intent.putExtra("codeAndContent", transferData)
+//                            Log.d("ITMM","${transferData.toString()}")
+//                            //위치
+//                            hideProgressBar()
+//                            startActivity(intent)
+//
+//                        }, onFailure = {
+//                            // 실패 시 실행될 코드
+//                            Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+//                        })
+//
+//
+//                    }, onFailure = {
+//                        // 실패 시 실행될 코드
+//                        Toast.makeText(this, "NONO", Toast.LENGTH_SHORT).show()
+//                    })
+//
+//
+//                    showProgressBar()
+//                    dialog.dismiss()
+//                }
+//                //_-> 이게 뭐야
+//                .setNegativeButton("Just for me") { dialog, _ ->
+//
+//
+//
+//
+//                    dialog.dismiss()
+//                    showProgressBar()
+//                }.show()
+
+
         }
-
-
     }
 
 
@@ -220,9 +293,6 @@ class MainDiaryWritepageContent : AppCompatActivity(), KakaoResponseCallback, We
             }
 
 
-    }
-
-    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
     }
 
     //위치 날씨 콜백함수 구현

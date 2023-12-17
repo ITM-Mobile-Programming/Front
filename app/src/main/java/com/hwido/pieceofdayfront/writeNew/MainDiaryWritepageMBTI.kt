@@ -11,7 +11,7 @@ import androidx.security.crypto.MasterKey
 import com.hwido.pieceofdayfront.MainMainpage
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageMbtiBinding
-import com.hwido.pieceofdayfront.datamodel.SendMBTI
+import com.hwido.pieceofdayfront.DT.SendMBTI
 import com.hwido.pieceofdayfront.login.LoginMainpage
 
 class MainDiaryWritepageMBTI : AppCompatActivity() {

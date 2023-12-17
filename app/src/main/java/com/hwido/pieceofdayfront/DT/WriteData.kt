@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.datamodel
+package com.hwido.pieceofdayfront.DT
 
 import com.google.gson.annotations.SerializedName
 
@@ -15,6 +15,8 @@ data class DiarySendSuccessResponse(
     @SerializedName("imageUrl") val imageUrl: String?,
 )
 
+
+
 data class ListResponse(
     @SerializedName("statusCode")  val statusCode: Int?,
     @SerializedName("message") val message: String?,
@@ -22,7 +24,7 @@ data class ListResponse(
 
 )
 data class DiaryListLoad(
-    @SerializedName("diaryId") val diaryId: Int,
+    @SerializedName("diaryId") val diaryId:Int?,
     @SerializedName("title") val title:String?,
     @SerializedName("context") val context:String?,
     @SerializedName("location") val location: String?,
@@ -30,6 +32,7 @@ data class DiaryListLoad(
     @SerializedName("thumbnailUrl") val thumbnailUrl:String?,
     //@SerializedName("hashTagList") val hashTags: List<String>
 )
+
 
 
 data class KaKaoResponse(
@@ -62,4 +65,10 @@ data class SendMBTI(
     @SerializedName("diaryId") val diaryId : Int,
     @SerializedName("mbtiCode") val mbtiCode : String
 )
+
+
+data class diaryID(
+    @SerializedName("diaryId") val diaryID: Int?
+)
+
 

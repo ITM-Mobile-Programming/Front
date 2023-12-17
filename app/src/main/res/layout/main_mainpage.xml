@@ -25,41 +25,43 @@
         android:id="@+id/main_mainpage_baseframe"
         android:layout_weight="1">
 
+
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="4">
+        android:layout_height="50dp"
+        android:orientation="horizontal">
 
         <Button
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="일기 목록"
-            android:textSize="12sp"
+            android:layout_height="match_parent"
+            android:text="목록"
+            android:textSize="10sp"
             android:id="@+id/main_button_diaryList"
             android:background="@drawable/rectangle_button"/>
 
         <Button
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="일기 작성"
+            android:layout_height="match_parent"
+            android:text="작성"
             android:textSize="12sp"
             android:id="@+id/main_button_diaryWrite"
             android:background="@drawable/rectangle_button"/>
 
         <Button
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:text="친구와 공유"
-            android:textSize="10sp"
+            android:layout_height="match_parent"
+            android:text="공유"
+            android:textSize="12sp"
             android:id="@+id/main_button_diaryShare"
             android:background="@drawable/rectangle_button"/>
 
         <Button
+            android:layout_weight="1"
             android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:text="마이 페이지"
+            android:layout_height="match_parent"
+            android:text="마이페이지"
             android:textSize="12sp"
             android:id="@+id/main_button_myPage"
             android:background="@drawable/rectangle_button"/>

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hwido.pieceofdayfront.DiaryShareAdapter
 import com.hwido.pieceofdayfront.databinding.MainMypageSharelistBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
+import com.hwido.pieceofdayfront.DT.DiaryListLoad
 
 class MainMypageSharelist : AppCompatActivity() {
     private lateinit var binding : MainMypageSharelistBinding
@@ -29,8 +29,10 @@ class MainMypageSharelist : AppCompatActivity() {
         // 여기에 데이터 가져올 것들 수정할 필요 존재
         // 우선은 DiaryListLoad에서 가져오는 것으로 정의해둠
         return listOf(
+
             DiaryListLoad(1, "title", "Context", "Location", "Weather Code", "Thumbnail URL")
                     //DiaryListLoad(1, "title", "Context", "Location", "Weather Code", "Thumbnail URL", listOf("Tag1", "Tag2", "Tag3"))
+
         )
     }
 }

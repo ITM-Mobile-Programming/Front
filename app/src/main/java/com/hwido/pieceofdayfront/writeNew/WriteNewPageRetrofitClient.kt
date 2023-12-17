@@ -1,7 +1,7 @@
 package com.hwido.pieceofdayfront.writeNew
 
 import android.util.Log
-import com.hwido.pieceofdayfront.datamodel.WeatherTotalResponse
+import com.hwido.pieceofdayfront.DT.WeatherTotalResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 

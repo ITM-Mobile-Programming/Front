@@ -1,13 +1,24 @@
 package com.hwido.pieceofdayfront
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.hwido.pieceofdayfront.BluetoothServer.BluetoothServerActivity
+import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import android.widget.Button
+
 import com.hwido.pieceofdayfront.databinding.MainDiarysharepageBinding
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
+import com.hwido.pieceofdayfront.writeNew.MainDiaryWritepageContent
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +34,30 @@ class MainDiarySharepageFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private lateinit var binding: MainDiarysharepageBinding
+    private lateinit var diaryAdapter: DiaryAdapter
+    private val springServer = SpringServerAPI()
+    private var id : Int? = null
+
+    override fun onResume() {
+        super.onResume()
+        param1?.let {
+            Log.d("ITM","들어옴")
+            param1?.let { it1 ->
+                // 여기를
+                springServer.getSharedDiary(it1,  onSuccess = { diaryList ->
+                    // 성공 시 실행될 코드
+                    Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+                    diaryAdapter.updateData(diaryList.reversed())
+                }, onFailure = {
+                    // 실패 시 실행될 코드
+                    Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+                })
+            }
+            Log.d("ITM","나감")
+        }
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,28 +72,109 @@ class MainDiarySharepageFragment : Fragment() {
     ): View? {
         binding = MainDiarysharepageBinding.inflate(inflater, container, false)
 
-        // Replace the content of main_diarysharepage_baseframe with MainDiarySharepageDiaryListFragment by default
-        if (savedInstanceState == null) {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.main_diarysharepage_baseframe, MainDiarySharepageDiaryListFragment.newInstance("arg1", "arg2"))
-            transaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
-            transaction.commit()
+
+        diaryAdapter = DiaryAdapter(emptyList())
+        binding.mainDiarysharepageDiary.apply {
+            layoutManager = LinearLayoutManager(context) // 여기에서 LinearLayoutManager를 설정합니다.
+            adapter = diaryAdapter
         }
 
-        // Find the button in your layout
-        val diaryListButton: Button = binding.mainDiarysharepageDiarylistbtn
+        diaryAdapter.itemClick = object: DiaryAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
 
-        // Set a click listener for the button
-        diaryListButton.setOnClickListener {
-            // Replace the content of main_diarysharepage_baseframe with MainDiarySharepageDiaryListFragment
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.main_diarysharepage_baseframe, MainDiarySharepageDiaryListFragment.newInstance("arg1", "arg2"))
-            transaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
-            transaction.commit()
+                val clickedItem = diaryAdapter.getItem(position)
+
+                val location = clickedItem.location
+                val weatherCode = clickedItem.weatherCode
+                val content = clickedItem.context
+                Log.d("ITM_write", "$content")
+                val hashTags =
+                    "${clickedItem.hashTagList.get(0).hashTag}, ${clickedItem.hashTagList.get(1).hashTag}, ${
+                        clickedItem.hashTagList.get(2).hashTag
+                    }"
+                val imageUrl = clickedItem.thumbnailUrl
+                val title = clickedItem.title
+                id = clickedItem.diaryId
+
+
+                //아이템 데이터 가져와서 여기 레이아웃에 넣어주고 돌린다
+                val detailPage = binding.mainShowDetailContents
+                binding.mainDiaryformatPopupDiaryName.text = title
+                binding.mainDiaryformatPopupLocation.text = location
+                binding.mainDiaryformatSharePopupDetail.text = content
+                binding.mainDiarywriteformatPopupHastag.text = hashTags
+
+                Glide.with(this@MainDiarySharepageFragment)
+                    .load(imageUrl)
+                    .fitCenter()
+                    .into(binding.mainDiarywriteformatPopupDiaryImage)
+
+
+                when (weatherCode) {
+                    "Sunny" -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.sunny)
+                    }
+                    "LittleCloud" -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.littlecloud)
+                    }
+                    "Cloud" -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.cloud)
+                    }
+                    "Rain" -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.rain)
+                    }
+                    "Snow" -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.snow)
+                    }
+                    else -> {
+                        binding.mainDiaryformatPopupWeather.setImageResource(R.drawable.none)
+                    }
+
+                }
+//                binding.mainDiaryformatPopupHastag.text = hashTags
+                detailPage.isVisible = true
+            }
         }
+
+
+
+        binding.backToLinearpagehshare.setOnClickListener {
+            binding.mainShowDetailContents.isVisible = false
+            param1?.let {
+                Log.d("ITM","들어옴")
+                param1?.let { it1 ->
+                    // 여기를
+                    springServer.getSharedDiary(it1,  onSuccess = { diaryList ->
+                        // 성공 시 실행될 코드
+                        Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+                        diaryAdapter.updateData(diaryList.reversed())
+                    }, onFailure = {
+                        // 실패 시 실행될 코드
+                        Toast.makeText(activity, "NONO", Toast.LENGTH_SHORT).show()
+                    })
+                }
+                Log.d("ITM","나감")
+            }
+        }
+
+        binding.getSharedDiary.setOnClickListener {
+            navigateToContentServer()
+        }
+
+
 
         return binding.root
     }
+
+
+
+    private fun navigateToContentServer() {
+        //여기서
+        val intent = Intent(activity, BluetoothServerActivity::class.java)
+        startActivity(intent)
+    }
+
+
 
     companion object {
         /**

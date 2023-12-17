@@ -50,20 +50,14 @@
 
     </LinearLayout>
 
-
     <TextView
         android:gravity="center"
         android:textSize="20dp"
         android:id="@+id/main_diarywritepageGetImage_showHashtag"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
         android:hint="여기에 해시태그가 표시됩니다."
         android:background="@drawable/outline"/>
-
-
 
 
 
@@ -72,7 +66,6 @@
         android:layout_width="350dp"
         android:layout_height="370dp"
         android:layout_margin="20dp"
-        android:background="#BDB8B8"
         android:id="@+id/main_diarywritepage_second_showImage"/>
 
     <Button

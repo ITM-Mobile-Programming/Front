@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -18,11 +19,12 @@ import com.bumptech.glide.request.target.Target
 import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainListpageBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
+import com.hwido.pieceofdayfront.DT.DiaryEntry
+import com.hwido.pieceofdayfront.DT.DiaryListLoad
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,14 +48,19 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
-        param1?.let { authToken ->
-            Log.d("ITM","들어옴")
-            springServer.getDiaryList(authToken, this)
-            Log.d("ITM","나감")
-        }
+
+        // 오늘 날짜를 "yyyy년MM월dd일" 형식으로 포맷
+        val today = SimpleDateFormat("yyyy년MM월dd일", Locale.getDefault()).format(Date())
+
+        // 오늘 날짜에 해당하는 일기 데이터 요청
+        updateDiaryEntries(today)
+
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -143,6 +150,7 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
             //Log.d("Glide", "Loading image from URL: $url")
             Glide.with(requireContext())
                 .load(url)
+                .fitCenter()
                 .error(R.drawable.snow)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(

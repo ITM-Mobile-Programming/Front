@@ -19,11 +19,11 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.hwido.pieceofdayfront.databinding.LoginMainpageBinding
-import com.hwido.pieceofdayfront.datamodel.BaseResponse
-import com.hwido.pieceofdayfront.datamodel.LoginSuccessResponse
+import com.hwido.pieceofdayfront.DT.BaseResponse
+import com.hwido.pieceofdayfront.DT.LoginSuccessResponse
 
-import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
-import com.hwido.pieceofdayfront.datamodel.SignupNeededResponse
+import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
+import com.hwido.pieceofdayfront.DT.SignupNeededResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

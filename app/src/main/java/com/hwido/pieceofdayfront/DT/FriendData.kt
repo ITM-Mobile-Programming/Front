@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.datamodel
+package com.hwido.pieceofdayfront.DT
 
 data class FriendResponse(
     val statusCode: Int,

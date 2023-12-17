@@ -1,19 +1,29 @@
 package com.hwido.pieceofdayfront.ServerAPI
 
 
-import com.hwido.pieceofdayfront.datamodel.BaseResponse
-import com.hwido.pieceofdayfront.datamodel.BaseResponse2
-import com.hwido.pieceofdayfront.datamodel.BasicResponse
-import com.hwido.pieceofdayfront.datamodel.DateDiary
-import com.hwido.pieceofdayfront.datamodel.FriendResponse
-import com.hwido.pieceofdayfront.datamodel.ListResponse
-import com.hwido.pieceofdayfront.datamodel.SendMBTI
-import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
-import com.hwido.pieceofdayfront.datamodel.SignUpRequest
-import com.hwido.pieceofdayfront.datamodel.WriteDataRequest
-import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
-import com.hwido.pieceofdayfront.datamodel.reloadDairy
+
+import com.hwido.pieceofdayfront.DT.BaseResponse
+import com.hwido.pieceofdayfront.DT.BaseResponse2
+import com.hwido.pieceofdayfront.DT.BasicResponse
+import com.hwido.pieceofdayfront.DT.CheckResponse
+import com.hwido.pieceofdayfront.DT.FriendCode
+import com.hwido.pieceofdayfront.DT.ListResponse
+import com.hwido.pieceofdayfront.DT.OneDayCheck
+import com.hwido.pieceofdayfront.DT.RelayDataRequest
+import com.hwido.pieceofdayfront.DT.SendMBTI
+import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
+import com.hwido.pieceofdayfront.DT.SignUpRequest
+import com.hwido.pieceofdayfront.DT.WriteDataRequest
+import com.hwido.pieceofdayfront.DT.diaryID
+import com.hwido.pieceofdayfront.DT.getDiaryResponse
+import com.hwido.pieceofdayfront.DT.myPageBaseData
+import com.hwido.pieceofdayfront.DT.reloadDairy
+import com.hwido.pieceofdayfront.DT.DateDiary
+import com.hwido.pieceofdayfront.DT.FriendResponse
+
+
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -63,6 +73,40 @@ interface ServerApiService {
     fun getDiaryList(@Header("Authorization") authToken: String?) : Call<getDiaryResponse>
 
 
+    @GET("diary/verification")
+    fun checkVerification(@Header("Authorization") authToken: String?) : Call<OneDayCheck>
+
+
+    //마이페이지
+    @GET("member/")
+    fun getMyPage(@Header("Authorization") authToken: String?) : Call<myPageBaseData>
+
+    @POST("friend/check")
+    fun checkIfFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<CheckResponse>
+
+    @POST("diary/delete")
+    fun deleteDiary(@Header("Authorization") authToken: String?, @Body request : diaryID) : Call<BasicResponse>
+
+
+    @GET("share/")
+    fun getSharedDiary(@Header("Authorization") authToken: String?) : Call<getDiaryResponse>
+//    @POST("diary/delete")
+//    fun deleteDiary(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+
+    @GET("profile/read/{id}")
+    fun getImagePage(@Path("id") memberId: Int) : Call<ResponseBody>
+
+
+    @POST("friend/request")
+    fun AddFriend(@Header("Authorization") authToken: String?, @Body request : FriendCode) : Call<BasicResponse>
+
+
+
+    @POST("share/write")
+    fun relayWrite(@Header("Authorization") authToken: String?, @Body request : RelayDataRequest) : Call<BasicResponse>
+
+
+
     //중복작성
 //    @GET("/diary/verification")
 //    fun checkDouble(@Header("Authorization") authToken: String?) :
@@ -72,9 +116,9 @@ interface ServerApiService {
     // 친구 목록
     @GET("friend/")
     fun getFriendList(@Header("Authorization") authToken: String?) : Call<FriendResponse>
-
     // 날짜별 다이어리
     @POST("diary/dateSearch")
     fun getDateDiary(@Header("Authorization") authToken: String?, @Body writtenDate : DateDiary) : Call<ListResponse>
+
 }
 

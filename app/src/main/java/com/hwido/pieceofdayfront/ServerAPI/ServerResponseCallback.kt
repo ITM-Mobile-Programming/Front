@@ -1,7 +1,7 @@
 package com.hwido.pieceofdayfront.ServerAPI
 
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.FriendData
+
+import com.hwido.pieceofdayfront.DT.DiaryEntry
 
 interface ServerResponseCallback {
     fun onSuccessSpring(ouPutData: String)
@@ -11,6 +11,5 @@ interface ServerResponseCallback {
     fun onSuccessSpring(diaryId :Int, hashTags :String, imageUrl:String)
 
     fun onErrorSpring(error: Throwable)
-
 
 }

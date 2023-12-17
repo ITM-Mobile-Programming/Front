@@ -10,12 +10,12 @@
     android:background="@drawable/outline">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:id="@+id/main_friendlistformat_friendImage"
             android:layout_marginRight="20dp"
             android:src="@drawable/profile_basic"/>
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="친구 이름"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:id="@+id/main_friendlistformat_friendName"
                 android:layout_marginRight="10dp"/>
 

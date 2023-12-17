@@ -25,9 +25,9 @@ import com.google.gson.Gson
 import com.hwido.pieceofdayfront.R
 import com.hwido.pieceofdayfront.ServerAPI.ServerApiService
 import com.hwido.pieceofdayfront.databinding.LoginSignInProfilePictureBinding
-import com.hwido.pieceofdayfront.datamodel.BaseResponse
-import com.hwido.pieceofdayfront.datamodel.LoginSuccessResponse
-import com.hwido.pieceofdayfront.datamodel.ServerAccessTokenRequest
+import com.hwido.pieceofdayfront.DT.BaseResponse
+import com.hwido.pieceofdayfront.DT.LoginSuccessResponse
+import com.hwido.pieceofdayfront.DT.ServerAccessTokenRequest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -1,4 +1,4 @@
-package com.hwido.pieceofdayfront.writeNew
+package com.hwido.pieceofdayfront.writeNew.Location
 
 import java.lang.Math.pow
 import kotlin.math.*

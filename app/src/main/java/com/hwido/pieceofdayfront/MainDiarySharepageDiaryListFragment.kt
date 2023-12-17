@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hwido.pieceofdayfront.databinding.MainDiarysharepagediarylistBinding
 import com.hwido.pieceofdayfront.databinding.MainDiarywritepageBinding
-import com.hwido.pieceofdayfront.datamodel.SharedDiaryItem
+import com.hwido.pieceofdayfront.DT.SharedDiaryItem
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

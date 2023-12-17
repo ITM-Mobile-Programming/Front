@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BluetoothClient.activity.ScanActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Paired Devices"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pairedDevices"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        tools:listitem="@layout/item_device" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Scanned Devices"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchDevices"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        tools:listitem="@layout/item_device" />
+
+
+    <Button
+        android:id="@+id/btnScan2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        android:textAllCaps="false" />
+
+</LinearLayout>

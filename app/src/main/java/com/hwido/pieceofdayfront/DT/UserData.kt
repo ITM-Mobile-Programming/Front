@@ -1,7 +1,6 @@
-package com.hwido.pieceofdayfront.datamodel
+package com.hwido.pieceofdayfront.DT
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
 //Field => requestform
 //SerializedName => responseform
@@ -68,7 +67,11 @@ data class SignUpResponse(
     @SerializedName("memberId") val memberId : String?
 )
 
-
+data class OneDayCheck(
+    @SerializedName("statusCode")  val statusCode: Int?,
+    @SerializedName("message") val message: String?,
+    @SerializedName("status") val status: String?
+)
 
 
 

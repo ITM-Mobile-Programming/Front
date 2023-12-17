@@ -12,9 +12,9 @@ import androidx.security.crypto.MasterKey
 import com.google.gson.Gson
 import com.hwido.pieceofdayfront.ServerAPI.ServerApiService
 import com.hwido.pieceofdayfront.databinding.LoginSigninpageBinding
-import com.hwido.pieceofdayfront.datamodel.BaseResponse
-import com.hwido.pieceofdayfront.datamodel.SignUpRequest
-import com.hwido.pieceofdayfront.datamodel.SignUpResponse
+import com.hwido.pieceofdayfront.DT.BaseResponse
+import com.hwido.pieceofdayfront.DT.SignUpRequest
+import com.hwido.pieceofdayfront.DT.SignUpResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hwido.pieceofdayfront.databinding.MainDiaryformatBinding
-import com.hwido.pieceofdayfront.datamodel.DiaryEntry
+import com.hwido.pieceofdayfront.DT.DiaryEntry
 
 class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
     RecyclerView.Adapter<DiaryAdapter.DiaryViewHolder>() {
@@ -48,8 +48,6 @@ class DiaryAdapter(private var diaryItems: List<DiaryEntry>) :
     override fun getItemCount(): Int {
         return diaryItems.size
     }
-
-
 
 
 
