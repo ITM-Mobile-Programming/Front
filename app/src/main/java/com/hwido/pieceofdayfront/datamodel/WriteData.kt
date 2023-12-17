@@ -16,18 +16,19 @@ data class DiarySendSuccessResponse(
 )
 
 data class ListResponse(
-    @SerializedName("statusCode")  val status: Int?,
+    @SerializedName("statusCode")  val statusCode: Int?,
     @SerializedName("message") val message: String?,
     @SerializedName("data") val data: DiaryListLoad?
 
 )
 data class DiaryListLoad(
+    @SerializedName("diaryId") val diaryId: Int,
     @SerializedName("title") val title:String?,
     @SerializedName("context") val context:String?,
     @SerializedName("location") val location: String?,
     @SerializedName("weatherCode") val weatherCode:String?,
     @SerializedName("thumbnailUrl") val thumbnailUrl:String?,
-    @SerializedName("hashTagList") val hashTags: List<String>,
+    //@SerializedName("hashTagList") val hashTags: List<String>
 )
 
 

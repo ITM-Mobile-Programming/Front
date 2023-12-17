@@ -222,17 +222,13 @@ class MainDiaryWritepageMBTI : AppCompatActivity() {
         Log.d("MBTI","$jScore")
         Log.d("MBTI","$pScore")
 
-        return when {
-            iScore > eScore ->"I"
-            eScore > iScore -> "E"
-            sScore > nScore -> "S"
-            nScore > sScore -> "N"
-            tScore > fScore -> "T"
-            fScore > tScore -> "F"
-            jScore > pScore -> "J"
-            pScore > jScore -> "P"
-            else -> "Wrong"
-        }
+        val firstPreference = if (iScore > eScore) "I" else "E"
+        val secondPreference = if (sScore > nScore) "S" else "N"
+        val thirdPreference = if (tScore > fScore) "T" else "F"
+        val fourthPreference = if (jScore > pScore) "J" else "P"
+
+        return "$firstPreference$secondPreference$thirdPreference$fourthPreference"
+
 
     }
 

@@ -33,7 +33,7 @@
 
                 <View
                     android:layout_width="0dp"
-                    android:layout_height="650dp" />
+                    android:layout_height="730dp" />
 
                 <LinearLayout
                     android:layout_width="370dp"
@@ -406,20 +406,21 @@
                         android:text="상황에 따라 적응하며 자유롭게 움직이는 것을 선호" />
                 </LinearLayout>
 
-
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/main_diarywritepage_MBTI_saveBtn"
+                    android:text="다이어리 저장"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
+
 
         </ScrollView>
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/main_diarywritepage_MBTI_saveBtn"
-        android:text="다이어리 저장"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"/>
 
 </LinearLayout>

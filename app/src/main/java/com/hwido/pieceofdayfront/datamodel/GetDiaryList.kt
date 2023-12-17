@@ -1,5 +1,8 @@
 package com.hwido.pieceofdayfront.datamodel
 
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+
 data class getDiaryResponse(
     val statusCode: Int,
     val message: String,
@@ -25,5 +28,5 @@ data class HashTag(
 )
 
 data class DateDiary(
-    val writtenDate: String
+    @SerializedName("writtenDate") val writtenDate: String
 )

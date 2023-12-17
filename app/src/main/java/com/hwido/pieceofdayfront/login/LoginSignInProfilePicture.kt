@@ -82,10 +82,6 @@ class LoginSignInProfilePicture : AppCompatActivity() {
         binding.loginSigninpageTakePicture.setOnClickListener {
             CallCamera()
         }
-        binding.loginSigninpageTakePicture.setOnClickListener {
-            GetAlbum()
-        }
-
         // 사진 저장
         binding.loginSigninpageChangeProfileGalleryPicture.setOnClickListener {
             GetAlbum()

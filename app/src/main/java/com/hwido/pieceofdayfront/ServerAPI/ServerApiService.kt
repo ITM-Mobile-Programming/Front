@@ -22,6 +22,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 interface ServerApiService {
@@ -73,6 +74,7 @@ interface ServerApiService {
     fun getFriendList(@Header("Authorization") authToken: String?) : Call<FriendResponse>
 
     // 날짜별 다이어리
-    @GET("diary/dateSearch")
-    fun getDateDiary(@Header("Authorization") authToken: String?) : Call<DateDiary>
+    @POST("diary/dateSearch")
+    fun getDateDiary(@Header("Authorization") authToken: String?, @Body writtenDate : DateDiary) : Call<ListResponse>
 }
+

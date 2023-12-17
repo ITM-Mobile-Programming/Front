@@ -1,5 +1,6 @@
 package com.hwido.pieceofdayfront
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,18 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
+import android.widget.ImageView
 import android.widget.TextView
-import com.hwido.pieceofdayfront.ServerAPI.ServerApiService
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.hwido.pieceofdayfront.ServerAPI.ServerResponseCallback
 import com.hwido.pieceofdayfront.ServerAPI.SpringServerAPI
 import com.hwido.pieceofdayfront.databinding.MainListpageBinding
-import com.hwido.pieceofdayfront.databinding.MainMainpageBinding
 import com.hwido.pieceofdayfront.datamodel.DiaryEntry
-import com.hwido.pieceofdayfront.datamodel.getDiaryResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.hwido.pieceofdayfront.datamodel.DiaryListLoad
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -33,11 +34,9 @@ private const val ARG_PARAM1 = "param1"
  * Use the [MainListpageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MainListpageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+class MainListpageFragment : Fragment(), ServerResponseCallback {
     private var param1: String? = null
     private lateinit var binding: MainListpageBinding
-    private lateinit var diaryResponse: getDiaryResponse
     private val springServer = SpringServerAPI()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +46,14 @@ class MainListpageFragment : Fragment() {
         }
     }
 
-
+    override fun onResume() {
+        super.onResume()
+        param1?.let { authToken ->
+            Log.d("ITM","들어옴")
+            springServer.getDiaryList(authToken, this)
+            Log.d("ITM","나감")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,18 +69,24 @@ class MainListpageFragment : Fragment() {
         // 날짜 형태
         val dateFormat: DateFormat = SimpleDateFormat("yyyy년 MM월 dd일")
 
-        // date 타입
-        val date = Date(calendarView.date)
+        updateDisplayedDate(calendarView.date)
 
-        // 현재 날짜
-        dayText.text = dateFormat.format(date)
-        Log.d("mainpage","${dayText.text}")
+        // date 타입
+        //val date = Date(calendarView.date)
+
+
 
         // 날짜 변환
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
 
             // 날짜 변수에 담기
-            val selectedDate  = "${year}년 ${month+1}월 ${dayOfMonth}일"
+            val selectedDate  = "${year}년${month+1}월${dayOfMonth}일"
+
+            updateDisplayedDate(calendarView.date)
+
+            // 현재 날짜
+            dayText.text = selectedDate
+            Log.d("mainpage","${dayText.text}")
 
             // 변수를 텍스트뷰에 담아준다
             updateDiaryEntries(selectedDate)
@@ -83,46 +95,92 @@ class MainListpageFragment : Fragment() {
         return binding.root
     }
 
+    private fun updateDisplayedDate(selectedDateInMillis: Long) {
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy년MM월dd일")
+        val date = Date(selectedDateInMillis)
+        binding.mainMainpageDay.text = dateFormat.format(date)
+    }
+
     private fun updateDiaryEntries(selectedDate: String) {
-        // TODO: Implement logic to fetch diary entries for the selected date
-        // Example: You may have a function in your data source to get diary entries
-        getDiaryEntries(selectedDate)
+        getDateDiary(selectedDate)
     }
 
-    private fun getDiaryEntries(selectedDate: String) {
-        // TODO: Call your API or data source to fetch diary entries
-        // Example: Replace this with your actual API call using Retrofit or other networking libraries
-        val retrofit = Retrofit.Builder()
-            .baseUrl("your_base_url")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val apiService = retrofit.create(ServerApiService::class.java)
-
-        apiService.getDiaryList(selectedDate).enqueue(object : Callback<getDiaryResponse> {
-            override fun onResponse(
-                call: Call<getDiaryResponse>,
-                response: Response<getDiaryResponse>
-            ) {
-                if (response.isSuccessful) {
-                    diaryResponse = response.body() ?: getDiaryResponse(0, "", emptyList())
-                    updateDiaryView()
-                } else {
-                    // Handle error
-                    Log.e("MainListpageFragment", "Error fetching diary entries: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<getDiaryResponse>, t: Throwable) {
-                // Handle failure
-                Log.e("MainListpageFragment", "Failed to fetch diary entries: ${t.message}")
-            }
-        })
+    private fun getDateDiary(selectedDate: String) {
+        param1?.let {
+            springServer.getDateDiary(it, selectedDate, onSuccess = { diaryEntries ->
+                Log.d("ITM", "Successfully fetched date diary entries")
+                displayDiaryEntriesForDate(diaryEntries)
+            }, onFailure = {
+                Log.e("ITM", "Failed to fetch date diary entries")
+            })
+        }
     }
 
-    private fun updateDiaryView() {
-        // TODO: Update the UI with the fetched diary entries
-        // Use diaryResponse.data to access the list of DiaryEntry objects
+    private fun getWeatherImageResource(weatherCode: String?): Int {
+        return when (weatherCode) {
+            "Sunny" -> R.drawable.sunny
+            "LittleCloud" -> R.drawable.littlecloud
+            "Cloud" -> R.drawable.cloud
+            "Rain" -> R.drawable.rain
+            "Snow" -> R.drawable.snow
+            else -> R.drawable.none
+        }
+    }
+
+    private fun displayDiaryEntriesForDate(diaryEntries: DiaryListLoad) {
+        val locationTextView = binding.mainMainpageDiaryView.findViewById<TextView>(R.id.main_diaryformat_modify_location)
+        val titleTextView = binding.mainMainpageDiaryView.findViewById<TextView>(R.id.main_diaryformat_modify_diaryName)
+        val thumbnailImageView = binding.mainMainpageDiaryView.findViewById<ImageView>(R.id.main_diaryformat_modify_diaryImage)
+        val weatherImageView = binding.mainMainpageDiaryView.findViewById<ImageView>(R.id.main_diaryformat_modify_weather)
+        //val hashtagTextView = binding.mainMainpageDiaryView.findViewById<TextView>(R.id.main_diaryformat_modify_hastag)
+
+
+        val firstEntry = diaryEntries // Assuming you're showing details of the first diary entry
+        locationTextView.text = firstEntry.location
+        titleTextView.text = firstEntry.title
+
+        //Log.d("Glide", "DiaryEntry: $firstEntry")
+        Log.d("Glide", "Loading image from URL: ${firstEntry.thumbnailUrl}")
+        // image load
+        // Image load
+        firstEntry.thumbnailUrl?.let { url ->
+            Log.d("Glide", "Loading image from URL: $url")
+            Glide.with(requireContext())
+                .load(url)
+                .error(R.drawable.snow)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.e("Glide", "Error loading image", e)
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        Log.d("Glide", "Image loaded successfully")
+                        return false
+                    }
+                })
+                .into(thumbnailImageView)
+        }
+
+
+        firstEntry.weatherCode?.let {
+            weatherImageView.setImageResource(getWeatherImageResource(it))
+        }
+
+        // Build a string representation of hashtags
+        //val hashtagString = firstEntry.hashTagList.joinToString(", ") { hashtag -> hashtag.hashTag }
+        //hashtagTextView.text = hashtagString
     }
 
 
@@ -143,5 +201,19 @@ class MainListpageFragment : Fragment() {
                     putString(ARG_PARAM1, param1)
                 }
             }
+    }
+
+    override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
+        Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
+
+    }
+    override fun onSuccessSpring(ouPutData: String) {
+    }
+
+    override fun onSuccessSpring(diaryId: Int, hashTags: String, imageUrl: String) {
+    }
+
+    override fun onErrorSpring(error: Throwable) {
+        Log.e("ITM", "Error: ${error.message}")
     }
 }
