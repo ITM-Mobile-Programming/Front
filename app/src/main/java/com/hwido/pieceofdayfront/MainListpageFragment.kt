@@ -71,10 +71,6 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
 
         updateDisplayedDate(calendarView.date)
 
-        // date 타입
-        //val date = Date(calendarView.date)
-
-
 
         // 날짜 변환
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -139,12 +135,12 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
         locationTextView.text = firstEntry.location
         titleTextView.text = firstEntry.title
 
-        //Log.d("Glide", "DiaryEntry: $firstEntry")
+        Log.d("Glide", "DiaryEntry: $firstEntry")
         Log.d("Glide", "Loading image from URL: ${firstEntry.thumbnailUrl}")
-        // image load
+
         // Image load
         firstEntry.thumbnailUrl?.let { url ->
-            Log.d("Glide", "Loading image from URL: $url")
+            //Log.d("Glide", "Loading image from URL: $url")
             Glide.with(requireContext())
                 .load(url)
                 .error(R.drawable.snow)
@@ -205,7 +201,6 @@ class MainListpageFragment : Fragment(), ServerResponseCallback {
 
     override fun onSuccessSpringDiaryList(diaryList: List<DiaryEntry>) {
         Log.d("ITM", "리스트 콜백 ${diaryList.reversed()}")
-
     }
     override fun onSuccessSpring(ouPutData: String) {
     }

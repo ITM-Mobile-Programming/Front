@@ -57,18 +57,6 @@ class MainDiarySharepageFragment : Fragment() {
             transaction.commit()
         }
 
-        // Find the button in your layout
-        val friendListButton: Button = binding.mainDiarysharepageDiarylistbtn
-
-        // Set a click listener for the button
-        friendListButton.setOnClickListener {
-            // Replace the content of main_diarysharepage_baseframe with MainDiarySharepageFriendListFragment
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.main_diarysharepage_baseframe, MainDiarySharepageFriendListFragment.newInstance("arg1", "arg2"))
-            transaction.addToBackStack(null) // Optional: Adds the transaction to the back stack
-            transaction.commit()
-        }
-
         return binding.root
     }
 
