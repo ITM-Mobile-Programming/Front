@@ -23,11 +23,11 @@
 
 1. Google Authentication : {Google OAuth, Firebase, SharedPreferences}
 
-2. Profile Image: Camera
+2. Profile Image: {Camera}
 
 3. Write Diary: {Location Sensor, Kakao API for address, Weather API, GPT-4 DALL·E} 
 
-4. Share Diary: Bluetooth
+4. Share Diary: {Bluetooth}
 
 5. Common: {Retrofit, Glide}
 
