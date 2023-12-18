@@ -26,18 +26,23 @@
 - Firebase
 - SharedPreferences
 
+
+
 2. Profile Image
 - Camera
+
+
 
 3. Write Diary
 - Location Sensor
 - Kakao API for address
 - Weather API
-- Chat GPT Api 
 - GPT-4 DALL·E 
+
 
 4. Share Diary
 - Bluetooth
+
 
 5. Common
 - Retrofit
