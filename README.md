@@ -10,17 +10,18 @@
 
 # 02. Screen Configuration
 
+> 1. Splash, Google Oauth, Login
 <img width="500" alt="image" src="https://github.com/ITM-Mobile-Programming/Front/assets/119919849/6a309d30-0ccb-4a05-b557-73e60e54cafa">
 
-> 1. Splash, Google Oauth, Login
-
-<img width="500" alt="image" src="https://github.com/ITM-Mobile-Programming/Front/assets/119919849/5f120145-b23d-4a72-b11b-c48bc2fc8c05"> 
 
 > 2. Daily Diary, Write Diary
+<img width="500" alt="image" src="https://github.com/ITM-Mobile-Programming/Front/assets/119919849/5f120145-b23d-4a72-b11b-c48bc2fc8c05"> 
 
-<img width="500" alt="image" src="https://github.com/ITM-Mobile-Programming/Front/assets/119919849/1b334e7e-53c4-48da-b262-a11faaf63724">
 
 > 3. Share Diary, My Page
+<img width="500" alt="image" src="https://github.com/ITM-Mobile-Programming/Front/assets/119919849/1b334e7e-53c4-48da-b262-a11faaf63724">
+
+
 
 
 # 03. Libraries & Feature Used for Each Feature
@@ -45,7 +46,9 @@
 
 # 04. Key Features
 > Ability to write and manage diaries
+
 > Provides a view of diaries written on selected dates
+
 > Diary sharing using Bluetooth
 
 # 05. Limitations
