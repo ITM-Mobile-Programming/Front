@@ -22,29 +22,29 @@
 # 03. Libraries & Feature Used for Each Feature
 
 - Google Authentication
--- Google OAuth
--- Firebase
--- SharedPreferences
+1. Google OAuth
+2. Firebase
+3. SharedPreferences
 
 
 - Profile Image
--- Camera
+1. Camera
 
 
 - Write Diary
--- Location Sensor
--- Kakao API for address
--- Weather API
--- GPT-4 DALL·E 
+1. Location Sensor
+2. Kakao API for address
+3. Weather API
+4. GPT-4 DALL·E 
 
 
 - Share Diary
--- Bluetooth
+1. Bluetooth
 
 
 - Common
--- Retrofit
--- Glide
+1. Retrofit
+2. Glide
 
 # 04. Key Features
 - Ability to write and manage diaries
