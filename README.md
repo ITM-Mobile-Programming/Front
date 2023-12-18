@@ -1,14 +1,12 @@
-# 01. Information about the Project
-
-Piece of Day
-ITM Mobile Programming Team9
-- 황지환, 반영환, 정휘도
-
-Project Introduction
+# 01. ITM Mobile Programming: Piece of Day
 We have created a diary application.
 We made a small diary app connected to a Spring server.
 This application allows users to share their diaries with others nearby and write in a shared format.
 Users can view and manage their diaries by daily and total list views.
+
+- ITM Mobile Programming Team9
+-- 황지환, 반영환, 정휘도
+
 
 # 02. Screen Configuration
 1. Splash
